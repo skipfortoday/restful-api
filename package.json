@@ -18,6 +18,7 @@
   "homepage": "https://github.com/skipfortoday/restful-api#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "install": "^0.13.0",
     "mysql": "^2.18.1"
