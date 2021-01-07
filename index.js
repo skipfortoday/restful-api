@@ -76,7 +76,8 @@ app.put('/api/datang/:id',(req, res) => {
 
 //tampilkan semua data User
 app.get('/api/user',(req, res) => {
-  let sql = "SELECT * FROM user";
+  let sql = `SELECT a.UserID, a.Nama, c.NamaRole, b.NamaCabang, a.TglMasuk FROM user a JOIN cabang b ON a.KodeCabang = b.KodeCabang
+  JOIN Role c ON c.RoleUser = a.RoleUser`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
@@ -186,7 +187,7 @@ app.get('/api/cabang',(req, res) => {
 
 
 app.post('/api/test',(req, res) => {
-  let data = {id: req.body.id, tempat: req.body.tempat};
+  let data = {id: req.body.id, tempat: req.body.tempat, shift: req.body.shift};
   let sql = "INSERT INTO test SET ?";
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
