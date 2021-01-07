@@ -43,6 +43,17 @@ app.get('/api/attlog/:id',(req, res) => {
   });
 });
 
+
+//Post Scan Masuk 
+app.post('/api/attlog',(req, res) => {
+  let data = {UserID: req.body.UserID, TanggalScan: req.body.TanggalScan, ScanMasuk: req.body.ScanMasuk, Shift: req.body.Shift };
+  let sql = "INSERT INTO attlog SET ?";
+  let query = conn.query(sql, data,(err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
 //tampilkan semua data User
 app.get('/api/user',(req, res) => {
   let sql = "SELECT * FROM user";
@@ -51,6 +62,7 @@ app.get('/api/user',(req, res) => {
     res.send(JSON.stringify(results));
   });
 });
+
 
 //tampilkan data user berdasarkan id
 app.get('/api/user/:id',(req, res) => {
