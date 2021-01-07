@@ -55,10 +55,9 @@ app.post('/api/attlog',(req, res) => {
 });
 
 
-//GET Last DatangID Untuk Pulang
+//GET Last DatangID Untuk Pulang Dan Masuk
 app.get('/api/datang/:id',(req, res) => {
-  let sql = `SELECT DatangID FROM attlog WHERE UserID="`+req.params.id +`
-  "ORDER BY DatangID DESC LIMIT 1`;
+  let sql = `SELECT DatangID FROM attlog WHERE UserID=1 AND TanggalScan=CURRENT_DATE`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
@@ -76,8 +75,8 @@ app.put('/api/datang/:id',(req, res) => {
 
 //tampilkan semua data User
 app.get('/api/user',(req, res) => {
-  let sql = `SELECT a.UserID, a.Nama, c.NamaRole, b.NamaCabang, a.TglMasuk FROM user a JOIN cabang b ON a.KodeCabang = b.KodeCabang
-  JOIN Role c ON c.RoleUser = a.RoleUser`;
+  let sql = `SELECT a.UserID, a.Nama, c.NamaRole, b.NamaCabang, a.TglMasuk
+  FROM user a JOIN cabang b ON a.KodeCabang = b.KodeCabang JOIN Role c ON c.RoleUser = a.RoleUser`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
