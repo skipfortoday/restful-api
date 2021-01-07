@@ -74,8 +74,6 @@ app.put('/api/datang/:id',(req, res) => {
   });
 });
 
-
-
 //tampilkan semua data User
 app.get('/api/user',(req, res) => {
   let sql = "SELECT * FROM user";
@@ -108,12 +106,16 @@ app.post('/api/user',(req, res) => {
 
 //Edit data user berdasarkan id
 app.put('/api/user/:id',(req, res) => {
-  let sql = "UPDATE user SET nama='"+req.body.nama+"', pass='"+req.body.pass+"' WHERE pin="+req.params.id;
+  let sql = "UPDATE user SET nama='"+req.body.nama+"', pass='"+req.body.pass+"', RoleUser='"+req.body.RoleUser+"', KodeCabang='"+req.body.KodeCabang+"' WHERE UserID="+req.params.id;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
   });
 });
+
+
+////////////////////////////////////////////////////////////
+
 
 //tampilkan Kategori Izin
 app.get('/api/kategori_izin',(req, res) => {
@@ -182,7 +184,7 @@ app.get('/api/cabang',(req, res) => {
   });
 });
 
-//Tambahkan data user
+
 app.post('/api/test',(req, res) => {
   let data = {id: req.body.id, tempat: req.body.tempat};
   let sql = "INSERT INTO test SET ?";
@@ -192,17 +194,6 @@ app.post('/api/test',(req, res) => {
   });
 });
 
-
-
-//Tambahkan data SN & Cabang
-app.post('/api/sn',(req, res) => {
-  let data = {sn: req.body.sn, nama_cabang: req.body.nama_cabang};
-  let sql = "INSERT INTO cabang SET ?";
-  let query = conn.query(sql, data,(err, results) => {
-    if(err) throw err;
-    res.send(JSON.stringify(results));
-  });
-});
 
 //Server listening
 app.listen(3000,() =>{
