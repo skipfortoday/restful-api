@@ -31,6 +31,7 @@ app.get('/api/attlog',(req, res) => {
     res.send(JSON.stringify(results));
   });
 });
+
  
 //tampilkan data scan berdasarkan id
 app.get('/api/attlog/:id',(req, res) => {
@@ -178,6 +179,15 @@ app.get('/api/izin/:id',(req, res) => {
 //tampilkan semua cabang
 app.get('/api/cabang',(req, res) => {
   let sql = "SELECT * FROM cabang";
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+//GET TIME
+app.get('/api/gettime',(req, res) => {
+  let sql = `SELECT CURRENT_TIMESTAMP;`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
