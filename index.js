@@ -55,7 +55,7 @@ app.post('/api/attlog',(req, res) => {
 });
 
 
-//Get Last DatangID Untuk Pulang
+//GET Last DatangID Untuk Pulang
 app.get('/api/datang/:id',(req, res) => {
   let sql = `SELECT DatangID FROM attlog WHERE UserID="`+req.params.id +`
   "ORDER BY DatangID DESC LIMIT 1`;
@@ -64,6 +64,16 @@ app.get('/api/datang/:id',(req, res) => {
     res.send(JSON.stringify(results));
   });
 });
+
+//PUT Untuk Scan Pulang
+app.put('/api/datang/:id',(req, res) => {
+  let sql = "UPDATE attlog SET ScanPulang='"+req.body.ScanPulang+"'WHERE DatangID="+req.params.id;
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify());
+  });
+});
+
 
 
 //tampilkan semua data User
