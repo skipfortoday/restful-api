@@ -22,10 +22,10 @@ conn.connect((err) =>{
   console.log('Mysql Connected...');
 });
  
-//tampilkan semua data recent Scan
-app.get('/api/att_log',(req, res) => {
-  let sql = `SELECT a.pin, b.nama, a.scan_date, c.nama_cabang 
-  FROM att_log a JOIN user b ON a.pin = b.pin JOIN cabang c ON c.sn = a.sn ORDER BY a.scan_date DESC`;
+//Tampilkan 10 Recent Scan Untuk Admin
+app.get('/api/attlog',(req, res) => {
+  let sql = `SELECT a.TanggalScan, a.UserID, b.Nama, a.ScanMasuk, a.ScanPulang, a.Shift
+  FROM ATTLOG a JOIN user b ON a.UserID = b.UserID ORDER BY a.TanggalScan DESC LIMIT 10`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
@@ -33,8 +33,10 @@ app.get('/api/att_log',(req, res) => {
 });
  
 //tampilkan data scan berdasarkan id
-app.get('/api/att_log/:id',(req, res) => {
-  let sql = "SELECT * FROM att_log WHERE pin="+req.params.id;
+app.get('/api/attlog/:id',(req, res) => {
+  let sql = `SELECT a.TanggalScan, a.UserID, b.Nama, a.ScanMasuk, a.ScanPulang, a.Shift
+  FROM ATTLOG a JOIN user b ON a.UserID = b.UserID WHERE a.UserID="`+req.params.id +`
+  "ORDER BY a.TanggalScan DESC LIMIT 30`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
@@ -52,7 +54,7 @@ app.get('/api/user',(req, res) => {
 
 //tampilkan data user berdasarkan id
 app.get('/api/user/:id',(req, res) => {
-  let sql = "SELECT * FROM user WHERE pin="+req.params.id;
+  let sql = "SELECT * FROM user WHERE UserID="+req.params.id;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
@@ -61,8 +63,8 @@ app.get('/api/user/:id',(req, res) => {
 
 //Tambahkan data user
 app.post('/api/user',(req, res) => {
-  let data = {pin: req.body.pin, nama: req.body.nama, pass: req.body.pass, tgl_kerja: req.body.tgl_kerja,
-   level_jabatan: req.body.level_jabatan};
+  let data = {UserID: req.body.UserID, Nama: req.body.Nama, Pass: req.body.Pass, TglMasuk: req.body.TglMasuk,
+   RoleUser: req.body.RoleUser, KodeCabang: req.body.KodeCabang};
   let sql = "INSERT INTO user SET ?";
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
@@ -145,6 +147,18 @@ app.get('/api/cabang',(req, res) => {
     res.send(JSON.stringify(results));
   });
 });
+
+//Tambahkan data user
+app.post('/api/test',(req, res) => {
+  let data = {id: req.body.id, tempat: req.body.tempat};
+  let sql = "INSERT INTO test SET ?";
+  let query = conn.query(sql, data,(err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+
 
 //Tambahkan data SN & Cabang
 app.post('/api/sn',(req, res) => {
