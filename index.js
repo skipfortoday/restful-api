@@ -54,6 +54,18 @@ app.post('/api/attlog',(req, res) => {
   });
 });
 
+
+//Get Last DatangID Untuk Pulang
+app.get('/api/datang/:id',(req, res) => {
+  let sql = `SELECT DatangID FROM attlog WHERE UserID="`+req.params.id +`
+  "ORDER BY DatangID DESC LIMIT 1`;
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+
 //tampilkan semua data User
 app.get('/api/user',(req, res) => {
   let sql = "SELECT * FROM user";
