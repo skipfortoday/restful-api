@@ -24,8 +24,7 @@ conn.connect((err) =>{
  
 //Tampilkan 10 Recent Scan Untuk Admin
 app.get('/api/attlog',(req, res) => {
-  let sql = `SELECT a.TanggalScan, a.UserID, b.Nama, a.ScanMasuk, a.ScanPulang, a.Shift
-  FROM ATTLOG a JOIN user b ON a.UserID = b.UserID ORDER BY a.TanggalScan DESC LIMIT 10`;
+  let sql = `SELECT DAY(a.TanggalScan) as Hari, MONTH(a.TanggalScan)as Bulan, YEAR(a.TanggalScan) as Tahun,a.UserID, b.Nama, a.ScanMasuk, a.ScanPulang, a.Shift, IF(TIMEDIFF(a.ScanMasuk,a.JamMasuk)< '00:00:00','-',TIMEDIFF(a.ScanMasuk,a.JamMasuk)) as Terlambat, TIMEDIFF(a.ScanPulang,a.JamPulang) as diffLembur, IF(TIMEDIFF(a.ScanPulang,a.JamPulang)< '00:30:00','-',TIMEDIFF(a.ScanPulang,a.JamPulang)) as Lembur FROM ATTLOG a JOIN user b ON a.UserID = b.UserID ORDER BY a.TanggalScan DESC LIMIT 10  `;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
@@ -47,7 +46,7 @@ app.get('/api/attlog/:id',(req, res) => {
 
 //Post Scan Masuk 
 app.post('/api/attlog',(req, res) => {
-  let data = {UserID: req.body.UserID, TanggalScan: req.body.TanggalScan, ScanMasuk: req.body.ScanMasuk, Shift: req.body.Shift };
+  let data = {UserID: req.body.UserID, TanggalScan: req.body.TanggalScan, ScanMasuk: req.body.ScanMasuk, Shift: req.body.Shift, JamMasuk: req.body.JamMasuk, JamPulang: req.body.JamPulang };
   let sql = "INSERT INTO attlog SET ?";
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
@@ -76,7 +75,7 @@ app.put('/api/datang/:id',(req, res) => {
 
 //tampilkan semua data User
 app.get('/api/user',(req, res) => {
-  let sql = `SELECT a.UserID, a.Nama, c.NamaRole, b.NamaCabang, a.TglMasuk
+  let sql = `SELECT a.UserID, a.Nama, c.NamaRole, b.NamaCabang, DAY(a.TglMasuk) as Hari, MONTH(a.TglMasuk) as Bulan, YEAR(a.TglMasuk) as Tahun
   FROM user a JOIN cabang b ON a.KodeCabang = b.KodeCabang JOIN Role c ON c.RoleUser = a.RoleUser`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
@@ -96,7 +95,7 @@ app.get('/api/user/:id',(req, res) => {
 
 //Tambahkan data user
 app.post('/api/user',(req, res) => {
-  let data = {UserID: req.body.UserID, Nama: req.body.Nama, Pass: req.body.Pass, TglMasuk: req.body.TglMasuk,
+  let data = {UserID: req.body.UserID, Nama: req.body.Nama, Pass: req.body.Pass, TglMasuk: req.body.TglMasuk, 
    RoleUser: req.body.RoleUser, KodeCabang: req.body.KodeCabang};
   let sql = "INSERT INTO user SET ?";
   let query = conn.query(sql, data,(err, results) => {
@@ -185,9 +184,9 @@ app.get('/api/cabang',(req, res) => {
   });
 });
 
-//GET TIME
+//GET TIME & JAM Kerja
 app.get('/api/gettime',(req, res) => {
-  let sql = `SELECT CURRENT_TIMESTAMP;`;
+  let sql = `SELECT (CURRENT_TIMESTAMP) as Waktu,jamkerja.* FROM jamkerja`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
