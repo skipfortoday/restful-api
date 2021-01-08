@@ -58,7 +58,7 @@ app.post('/api/attlog',(req, res) => {
 
 //GET Last DatangID Untuk Pulang Dan Masuk
 app.get('/api/datang/:id',(req, res) => {
-  let sql = `SELECT DatangID FROM attlog WHERE UserID=1 AND TanggalScan=CURRENT_DATE`;
+  let sql = "SELECT DatangID FROM attlog WHERE UserID=`"+req.params.id+"` AND TanggalScan=CURRENT_DATE`";
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
