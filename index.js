@@ -96,7 +96,7 @@ app.get('/api/user/:id',(req, res) => {
 //Tambahkan data user
 app.post('/api/user',(req, res) => {
   let data = {UserID: req.body.UserID, Nama: req.body.Nama, Pass: req.body.Pass, TglMasuk: req.body.TglMasuk, 
-   RoleUser: req.body.RoleUser, KodeCabang: req.body.KodeCabang};
+   RoleUser: req.body.RoleUser,IdGroups: req.body.IdGroups, KodeCabang: req.body.KodeCabang};
   let sql = "INSERT INTO user SET ?";
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
