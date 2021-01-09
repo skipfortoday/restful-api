@@ -31,17 +31,15 @@ app.get('/api/attlog',(req, res) => {
   });
 });
 
- 
-//tampilkan data scan berdasarkan id
-app.get('/api/attlog/:id',(req, res) => {
-  let sql = `SELECT a.TanggalScan, a.UserID, b.Nama, a.ScanMasuk, a.ScanPulang, a.Shift
-  FROM ATTLOG a JOIN user b ON a.UserID = b.UserID WHERE a.UserID="`+req.params.id +`
-  "ORDER BY a.TanggalScan DESC LIMIT 30`;
+//Tampilkan 30 Day  Scan Untuk Admin
+app.get('/api/attlog',(req, res) => {
+  let sql = `SELECT DAY(a.TanggalScan) as Hari, MONTH(a.TanggalScan)as Bulan, YEAR(a.TanggalScan) as Tahun,a.UserID, b.Nama, a.ScanMasuk, a.ScanPulang, a.Shift, IF(TIMEDIFF(a.ScanMasuk,a.JamMasuk)< '00:00:00','-',TIMEDIFF(a.ScanMasuk,a.JamMasuk)) as Terlambat,IF(TIMEDIFF(a.ScanPulang,a.JamPulang)< '00:30:00','-',TIMEDIFF(a.ScanPulang,a.JamPulang)) as Lembur FROM ATTLOG a JOIN user b ON a.UserID = b.UserID WHERE a.UserID"`+req.params.id+`" ORDER BY a.TanggalScan DESC LIMIT 31   `;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
   });
 });
+
 
 
 //Post Scan Masuk 
