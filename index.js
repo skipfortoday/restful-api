@@ -3,6 +3,7 @@ var cors = require('cors')
 const bodyParser = require('body-parser');
 const app = express();
 const mysql = require('mysql');
+const { request } = require('express');
  
 // parse application/json
 app.use(bodyParser.json())
@@ -31,6 +32,8 @@ app.get('/api/attlog',(req, res) => {
   });
 });
 
+
+
 //Tampilkan 30 Day  Scan Untuk Admins
 app.get('/api/attlog/:id',(req, res) => {
   let sql = `SELECT DAYNAME(a.TanggalScan)as NamaHari, DAY(a.TanggalScan) as Hari, MONTH(a.TanggalScan)as Bulan, YEAR(a.TanggalScan) as Tahun,a.UserID, b.Nama, a.ScanMasuk, a.ScanPulang, a.Shift, IF(TIMEDIFF(a.ScanMasuk,a.JamMasuk)< '00:00:00','-',TIMEDIFF(a.ScanMasuk,a.JamMasuk)) as Terlambat,IF(TIMEDIFF(a.ScanPulang,a.JamPulang)< '00:30:00','-',TIMEDIFF(a.ScanPulang,a.JamPulang)) as Lembur FROM ATTLOG a JOIN user b ON a.UserID = b.UserID WHERE a.UserID="`+req.params.id+`" ORDER BY a.TanggalScan ASC LIMIT 31   `;
@@ -40,7 +43,25 @@ app.get('/api/attlog/:id',(req, res) => {
   });
 });
 
+//Tampilkan Data Scan Berdasarkan ID Karyawan Dan Menentukan Tanggal Mulai Dan Tanggal Akhir
 
+app.get('/api/tlog/:id&:tglin&:tglout',(req, res) => {
+  let sql = `SELECT DAYNAME(c.Tanggal)as NamaHari, DAY(c.Tanggal) as Hari, MONTH(c.Tanggal)as Bulan, YEAR(c.Tanggal) as Tahun,
+  IFNULL((SELECT a.UserID FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="`+req.params.id+`" ),"-") as USERID,
+  IFNULL((SELECT b.Nama FROM attlog a, user b WHERE c.Tanggal = a.TanggalScan AND a.UserID = b.UserID AND a.UserID="`+req.params.id+`" ),"TIDAK MASUK") as Nama,
+  IFNULL((SELECT a.ScanMasuk FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="`+req.params.id+`" ),"-") as ScanMasuk,
+  IFNULL((SELECT a.ScanPulang FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="`+req.params.id+`" ),"-") as ScanPulang,
+  IFNULL((SELECT a.Shift FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="`+req.params.id+`" ),"-") as Shift,
+  IFNULL((SELECT IF(TIMEDIFF(a.ScanMasuk,a.JamMasuk)< '00:00:00','-',TIMEDIFF(a.ScanMasuk,a.JamMasuk)) FROM attlog a
+   WHERE c.Tanggal = a.TanggalScan AND a.UserID="`+req.params.id+`" ),"-") as Terlambat,
+  IFNULL((SELECT IF(TIMEDIFF(a.ScanPulang,a.JamPulang)< '00:30:00','-',TIMEDIFF(a.ScanPulang,a.JamPulang)) FROM attlog a
+   WHERE c.Tanggal = a.TanggalScan AND a.UserID="`+req.params.id+`" ),"-") as Lembur
+  FROM tgl c WHERE c.tanggal between "`+req.params.tglin+`" and "`+req.params.tglout+`" ORDER BY c.Tanggal ASC LIMIT 31`;
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
 
 //Post Scan Masuk 
 app.post('/api/attlog',(req, res) => {
@@ -105,6 +126,55 @@ app.post('/api/user',(req, res) => {
 //Edit data user berdasarkan id
 app.put('/api/user/:id',(req, res) => {
   let sql = "UPDATE user SET nama='"+req.body.nama+"', pass='"+req.body.pass+"', RoleUser='"+req.body.RoleUser+"', KodeCabang='"+req.body.KodeCabang+"' WHERE UserID="+req.params.id;
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+//Tampilkan Data Cabang
+app.get('/api/namacabang',(req, res) => {
+  let sql = "SELECT * FROM cabang";
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+//Tampilkan Data Cabang
+app.get('/api/userlogin',(req, res) => {
+  let sql = "SELECT UserID, Pass From User ";
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+//Test user login post
+app.post('/api/auth',(req, res) => {
+  let UserID = request.body.UserID;
+  let Pass = request.body.Pass;
+  if (UserID && Pass){
+      conn.query('Select * FROM user WHERE UserID = ? AND Pass = ?', [UserID,])
+  }
+  let sql = "INSERT INTO product SET ?";
+  let query = conn.query(sql, data,(err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+  });
+});
+
+
+app.get('/api/roleuser',(req, res) => {
+  let sql = "SELECT * FROM role";
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+app.get('/api/departemen',(req, res) => {
+  let sql = "SELECT * FROM usergroups";
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
