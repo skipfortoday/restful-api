@@ -22,7 +22,8 @@ const conn = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'absensi'
+  database: 'absensi',
+  timezone: 'utc'
 });
  
 //connect to database
@@ -264,12 +265,16 @@ app.get('/api/cabang',(req, res) => {
 
 //GET TIME & JAM Kerja
 app.get('/api/gettime',(req, res) => {
-  let sql = `SELECT (CURRENT_TIMESTAMP) as Waktu,jamkerja.* FROM jamkerja`;
+  let sql = `SELECT Now() as Waktu,jamkerja.* FROM jamkerja`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
   });
 });
+
+
+
+
 
 
 app.post('/api/test',(req, res) => {
