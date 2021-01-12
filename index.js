@@ -4,11 +4,19 @@ const bodyParser = require('body-parser');
 const app = express();
 const mysql = require('mysql');
 const { request } = require('express');
+var session = require('express-session');
  
 // parse application/json
-app.use(bodyParser.json())
+
 app.use(cors())
- 
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json())
+
 //create database connection
 const conn = mysql.createConnection({
   host: 'localhost',
@@ -141,29 +149,6 @@ app.get('/api/namacabang',(req, res) => {
   });
 });
 
-//Tampilkan Data Cabang
-app.get('/api/userlogin',(req, res) => {
-  let sql = "SELECT UserID, Pass From User ";
-  let query = conn.query(sql, (err, results) => {
-    if(err) throw err;
-    res.send(JSON.stringify(results));
-  });
-});
-
-//Test user login post
-app.post('/api/auth',(req, res) => {
-  let UserID = request.body.UserID;
-  let Pass = request.body.Pass;
-  if (UserID && Pass){
-      conn.query('Select * FROM user WHERE UserID = ? AND Pass = ?', [UserID,])
-  }
-  let sql = "INSERT INTO product SET ?";
-  let query = conn.query(sql, data,(err, results) => {
-    if(err) throw err;
-    res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-  });
-});
-
 
 app.get('/api/roleuser',(req, res) => {
   let sql = "SELECT * FROM role";
@@ -180,6 +165,31 @@ app.get('/api/departemen',(req, res) => {
     res.send(JSON.stringify(results));
   });
 });
+
+/////////////////////////////////////////////////////////////
+
+app.post('/api/login',(req, res) => {
+  let post = {
+    Pass : req.body.Pass,
+    UserID : req.body.UserID}
+  let query = "Select * FROM ?? WHERE ??=? AND ??=?";
+  let table = ["user", "Pass", post.Pass , "UserID", post.UserID ];
+
+  query = mysql.format(query, table);
+  conn.query(query, function (error, rows) {
+    if (error) {
+         console.log(error);
+        } else {
+          if (rows.length == 1) {
+            res.json({ "Error": true, "Message": "OK" });
+          }
+          else {
+               res.json({ "Error": true, "Message": "UserID atau Pass salah!" });
+              }
+            }
+          });
+});
+
 
 
 ////////////////////////////////////////////////////////////
