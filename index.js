@@ -85,7 +85,7 @@ app.post('/api/attlog',(req, res) => {
 
 //GET Last DatangID Untuk Pulang Dan Masuk
 app.get('/api/datang/:id',(req, res) => {
-  let sql = `SELECT DatangID FROM attlog WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE`;
+  let sql = `SELECT DatangID, JamPulang  FROM attlog WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
@@ -134,10 +134,19 @@ app.post('/api/user',(req, res) => {
 
 //Edit data user berdasarkan id
 app.put('/api/user/:id',(req, res) => {
-  let sql = "UPDATE user SET nama='"+req.body.nama+"', pass='"+req.body.pass+"', RoleUser='"+req.body.RoleUser+"', KodeCabang='"+req.body.KodeCabang+"' WHERE UserID="+req.params.id;
+  let sql = `UPDATE user SET Nama="`+req.body.Nama+`", Pass="`+req.body.Pass+`", RoleUser="`+req.body.RoleUser+`", KodeCabang="`+req.body.KodeCabang+`" WHERE UserID="`+req.params.id+`"`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
+  });
+});
+
+//Delete Data User 
+app.delete('/api/user/:id',(req, res) => {
+  let sql = `DELETE FROM user WHERE UserID="`+req.params.id+`"`;
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+      res.send(JSON.stringify(results));
   });
 });
 
