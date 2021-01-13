@@ -74,7 +74,7 @@ app.get('/api/tlog/:id&:tglin&:tglout',(req, res) => {
 
 //Post Scan Masuk 
 app.post('/api/attlog',(req, res) => {
-  let data = {UserID: req.body.UserID, TanggalScan: req.body.TanggalScan, ScanMasuk: req.body.ScanMasuk, Shift: req.body.Shift, JamMasuk: req.body.JamMasuk, JamPulang: req.body.JamPulang };
+  let data = {UserID: req.body.UserID, TanggalScan: req.body.TanggalScan, ScanMasuk: req.body.ScanMasuk, Shift: req.body.Shift, JamMasuk: req.body.JamMasuk, JamPulang: req.body.JamPulang, KodeCabang: req.body.KodeCabang };
   let sql = "INSERT INTO attlog SET ?";
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
@@ -114,10 +114,10 @@ app.get('/api/user',(req, res) => {
 
 //tampilkan data user berdasarkan id
 app.get('/api/user/:id',(req, res) => {
-  let sql = `SELECT * FROM user WHERE UserID="`+req.params.id+`"`;
-  let query = conn.query(sql, (err, results) => {
+  conn.query(`SELECT * FROM user Where UserID="`+req.params.id+`"`, function(err,rows){
     if(err) throw err;
-    res.send(JSON.stringify(results));
+    var user= rows[0];
+    res.send(user);
   });
 });
 
@@ -289,9 +289,7 @@ app.post('/api/test',(req, res) => {
 
 //Server listening
 app.listen(3001,() =>{
-<<<<<<< Updated upstream
-  console.log('Server started on port 3000...');
-=======
   console.log('Server started on port 3001...');
->>>>>>> Stashed changes
+
+
 });
