@@ -185,7 +185,7 @@ app.get('/api/jamkerja',(req, res) => {
 });
 
 
-//Menampilkan detai data user berdasarkan User ID 
+//Menampilkan detai data jam kerja berdasarkan Shift
 app.get('/api/jamkerja/:id',(req, res) => {
   conn.query(`SELECT * FROM jamkerja Where Shift="`+req.params.id+`"`, function(err,rows){
     if(err) throw err;
@@ -197,23 +197,23 @@ app.get('/api/jamkerja/:id',(req, res) => {
 //Tambahkan jam kerja untuk jadwal
 app.post('/api/jamkerja',(req, res) => {
   let data = {Shift: req.body.Shift, JamMasuk: req.body.JamMasuk, JamPulang: req.body.JamPulang};
-  let sql = "INSERT INTO user SET ?";
+  let sql = "INSERT INTO jamkerja SET ?";
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
   });
 });
 
-//Mengedit data user untuk panel admin
+//Mengedit data jam kerja untuk untuk panel admin
 app.put('/api/jamkerja/:id',(req, res) => {
-  let sql = `UPDATE jamkerja SET JamMasuk="`+req.body.JamMasuk+`", JamPulang="`+req.body.JamPulang+`" WHERE UserID="`+req.params.id+`"`;
+  let sql = `UPDATE jamkerja SET JamMasuk="`+req.body.JamMasuk+`", JamPulang="`+req.body.JamPulang+`" WHERE Shift="`+req.params.id+`"`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
   });
 });
 
-//Menghapus data user untuk panel admin 
+//Menghapus data jam kerja untuk panel admin 
 app.delete('/api/jamkerja/:id',(req, res) => {
   let sql = `DELETE FROM jamkerja WHERE Shift="`+req.params.id+`"`;
   let query = conn.query(sql, (err, results) => {
@@ -243,7 +243,7 @@ app.get('/api/roleuser',(req, res) => {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-///////////////        API BERHUBUNGAN DENGAN DATA GROUP PEGAWAI         ///////////////////
+///////////////           API BERHUBUNGAN DENGAN DATA CABANG            ///////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -258,6 +258,51 @@ app.get('/api/cabang',(req, res) => {
 });
 
 
+//Menampilkan detai data cabang yang sudah terdaftar di panel admin
+app.get('/api/cabang/:id',(req, res) => {
+  conn.query(`SELECT * FROM cabang Where KodeCabang="`+req.params.id+`"`, function(err,rows){
+    if(err) throw err;
+    var cabang= rows[0];
+    res.send(cabang);
+  });
+});
+
+//Menambahkan Data Cabang dengan kode cabang dan nama cabang 
+app.post('/api/cabang',(req, res) => {
+  let data = {KodeCabang: req.body.KodeCabang, NamaCabang: req.body.NamaCabang};
+  let sql = "INSERT INTO cabang SET ?";
+  let query = conn.query(sql, data,(err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+//Mengedit Nama Cabang untuk untuk panel admin
+app.put('/api/cabang/:id',(req, res) => {
+  let sql = `UPDATE cabang SET NamaCabang="`+req.body.NamaCabang+`" WHERE KodeCabang="`+req.params.id+`"`;
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+//Menghapus data cabang untuk panel admin 
+app.delete('/api/jamkerja/:id',(req, res) => {
+  let sql = `DELETE FROM jamkerja WHERE Shift="`+req.params.id+`"`;
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+      res.send(JSON.stringify(results));
+  });
+});
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////         API BERHUBUNGAN DENGAN DATA DEPARTEMEN          ///////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 // Menampilkan bagian departemen dari karyawan
@@ -268,6 +313,46 @@ app.get('/api/departemen',(req, res) => {
     res.send(JSON.stringify(results));
   });
 });
+
+
+//Menampilkan detai data jam kerja berdasarkan Shift
+app.get('/api/jamkerja/:id',(req, res) => {
+  conn.query(`SELECT * FROM jamkerja Where Shift="`+req.params.id+`"`, function(err,rows){
+    if(err) throw err;
+    var jamkerja= rows[0];
+    res.send(jamkerja);
+  });
+});
+
+//Tambahkan jam kerja untuk jadwal
+app.post('/api/jamkerja',(req, res) => {
+  let data = {Shift: req.body.Shift, JamMasuk: req.body.JamMasuk, JamPulang: req.body.JamPulang};
+  let sql = "INSERT INTO user SET ?";
+  let query = conn.query(sql, data,(err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+//Mengedit data jam kerja untuk untuk panel admin
+app.put('/api/jamkerja/:id',(req, res) => {
+  let sql = `UPDATE jamkerja SET JamMasuk="`+req.body.JamMasuk+`", JamPulang="`+req.body.JamPulang+`" WHERE UserID="`+req.params.id+`"`;
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+//Menghapus data jam kerja untuk panel admin 
+app.delete('/api/jamkerja/:id',(req, res) => {
+  let sql = `DELETE FROM jamkerja WHERE Shift="`+req.params.id+`"`;
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+      res.send(JSON.stringify(results));
+  });
+});
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -381,6 +466,7 @@ app.get('/api/gettime',(req, res) => {
     res.send(JSON.stringify(results));
   });
 });
+
 
 
 //Server listening
