@@ -169,36 +169,34 @@ app.delete('/api/user/:id',(req, res) => {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-///////////////////////        API BERHUBUNGAN DENGAN DATA USER         ////////////////////
+////////////////////        API BERHUBUNGAN DENGAN DATA Jam Kerja & Jadwal      /////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
 //Menampilkan Seluruh List Jam Kerja
-app.get('/api/user',(req, res) => {
-  let sql = `SELECT a.UserID, a.Nama, c.NamaRole, b.NamaCabang, DAY(a.TglMasuk) as Hari, MONTH(a.TglMasuk) as Bulan, YEAR(a.TglMasuk) as Tahun
-  FROM user a JOIN cabang b ON a.KodeCabang = b.KodeCabang JOIN Role c ON c.RoleUser = a.RoleUser`;
+app.get('/api/jamkerja',(req, res) => {
+  let sql = `SELECT * FROM jamkerja`;
   let query = conn.query(sql, (err, results) => {
-    if(err) throw err;
+    if(err) throw err; 
     res.send(JSON.stringify(results));
   });
 });
 
 
-//menampilkan detai data user berdasarkan User ID 
-app.get('/api/user/:id',(req, res) => {
-  conn.query(`SELECT * FROM user Where UserID="`+req.params.id+`"`, function(err,rows){
+//Menampilkan detai data user berdasarkan User ID 
+app.get('/api/jamkerja/:id',(req, res) => {
+  conn.query(`SELECT * FROM jamkerja Where Shift="`+req.params.id+`"`, function(err,rows){
     if(err) throw err;
-    var user= rows[0];
-    res.send(user);
+    var jamkerja= rows[0];
+    res.send(jamkerja);
   });
 });
 
-//Tambahkan data user untuk panel admin
-app.post('/api/user',(req, res) => {
-  let data = {UserID: req.body.UserID, Nama: req.body.Nama, Pass: req.body.Pass, TglMasuk: req.body.TglMasuk, 
-   RoleUser: req.body.RoleUser,IdGroups: req.body.IdGroups, KodeCabang: req.body.KodeCabang};
+//Tambahkan jam kerja untuk jadwal
+app.post('/api/jamkerja',(req, res) => {
+  let data = {Shift: req.body.Shift, JamMasuk: req.body.JamMasuk, JamPulang: req.body.JamPulang};
   let sql = "INSERT INTO user SET ?";
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
@@ -207,8 +205,8 @@ app.post('/api/user',(req, res) => {
 });
 
 //Mengedit data user untuk panel admin
-app.put('/api/user/:id',(req, res) => {
-  let sql = `UPDATE user SET Nama="`+req.body.Nama+`", Pass="`+req.body.Pass+`", RoleUser="`+req.body.RoleUser+`", KodeCabang="`+req.body.KodeCabang+`" WHERE UserID="`+req.params.id+`"`;
+app.put('/api/jamkerja/:id',(req, res) => {
+  let sql = `UPDATE jamkerja SET JamMasuk="`+req.body.JamMasuk+`", JamPulang="`+req.body.JamPulang+`" WHERE UserID="`+req.params.id+`"`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
@@ -216,8 +214,8 @@ app.put('/api/user/:id',(req, res) => {
 });
 
 //Menghapus data user untuk panel admin 
-app.delete('/api/user/:id',(req, res) => {
-  let sql = `DELETE FROM user WHERE UserID="`+req.params.id+`"`;
+app.delete('/api/jamkerja/:id',(req, res) => {
+  let sql = `DELETE FROM jamkerja WHERE Shift="`+req.params.id+`"`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
       res.send(JSON.stringify(results));
@@ -228,13 +226,29 @@ app.delete('/api/user/:id',(req, res) => {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
+///////////////        API BERHUBUNGAN DENGAN DATA ROLE PEGAWAI         ///////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+// Menampilkan Role User Previlage untuk acc izin & lembur
+app.get('/api/roleuser',(req, res) => {
+  let sql = "SELECT * FROM role";
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
 ///////////////        API BERHUBUNGAN DENGAN DATA GROUP PEGAWAI         ///////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-//tampilkan semua cabang
+//Menampilkan Semua List cabang
 app.get('/api/cabang',(req, res) => {
   let sql = "SELECT * FROM cabang";
   let query = conn.query(sql, (err, results) => {
@@ -244,14 +258,9 @@ app.get('/api/cabang',(req, res) => {
 });
 
 
-app.get('/api/roleuser',(req, res) => {
-  let sql = "SELECT * FROM role";
-  let query = conn.query(sql, (err, results) => {
-    if(err) throw err;
-    res.send(JSON.stringify(results));
-  });
-});
 
+
+// Menampilkan bagian departemen dari karyawan
 app.get('/api/departemen',(req, res) => {
   let sql = "SELECT * FROM usergroups";
   let query = conn.query(sql, (err, results) => {
@@ -372,8 +381,6 @@ app.get('/api/gettime',(req, res) => {
     res.send(JSON.stringify(results));
   });
 });
-
-
 
 
 //Server listening
