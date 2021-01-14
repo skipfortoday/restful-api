@@ -80,7 +80,7 @@ app.get('/api/tlog/:id&:tglin&:tglout',(req, res) => {
 
 //Post Untuk input prosesi absensi dari APP
 app.post('/api/attlog',(req, res) => {
-  let data = {UserID: req.body.UserID, TanggalScan: req.body.TanggalScan, ScanMasuk: req.body.ScanMasuk, Shift: req.body.Shift, JamMasuk: req.body.JamMasuk, JamPulang: req.body.JamPulang, KodeCabang: req.body.KodeCabang };
+  let data = {UserID: req.body.UserID, TanggalScan: req.body.TanggalScan, ScanMasuk: req.body.ScanMasuk, Shift: req.body.Shift, KodeCabang: req.body.KodeCabang, GroupID: req.body.GroupID };
   let sql = "INSERT INTO attlog SET ?";
   let query = conn.query(sql, data,(err, results) => {
     if(err) throw err;
@@ -93,7 +93,11 @@ app.post('/api/attlog',(req, res) => {
 // untuk prosesi validasi scan pulang karyawan
 
 app.get('/api/datang/:id',(req, res) => {
-  let sql = `SELECT DatangID, JamPulang  FROM attlog WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1`;
+  let sql = `SELECT DatangID, Shift, CASE
+  WHEN Shift = 1 THEN (SELECT b.JamPulang  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GrupID  WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1)
+  WHEN Shift = 2 THEN (SELECT b.JamPulangSiang  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GrupID  WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1)
+  WHEN Shift = 3 THEN (SELECT b.JamPulangSore  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GrupID  WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1)
+  END AS JamPulang from attlog WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
@@ -290,7 +294,7 @@ app.put('/api/cabang/:id',(req, res) => {
 app.delete('/api/jamkerja/:id',(req, res) => {
   let sql = `DELETE FROM jamkerja WHERE Shift="`+req.params.id+`"`;
   let query = conn.query(sql, (err, results) => {
-    if(err) throw err;
+    if(err) throw err; 
       res.send(JSON.stringify(results));
   });
 });
@@ -371,11 +375,13 @@ app.post('/api/login',(req, res) => {
 
   query = mysql.format(query, table);
   conn.query(query, function (error, rows) {
+   let grup = rows[0].GroupID
+   console.log(grup)
     if (error) {
          console.log(error);
         } else {
           if (rows.length == 1) {
-            res.json({ "Error": true, "Message": "OK" });
+            res.json({ "Error": true, "Message": "OK", "GroupID" : grup});
           }
           else {
                res.json({ "Error": true, "Message": "UserID atau Pass salah!" });
@@ -418,7 +424,7 @@ app.get('/api/izin',(req, res) => {
 //tampilkan semua izin yang sudah diterima level 1 (view Untuk jabatan level 2)
 app.get('/api/izin/acc1',(req, res) => {
   let sql = "SELECT * FROM izin Where acc_1 is Not Null";
-  let query = conn.query(sql, (err, results) => {
+  let query = conn.query(sql, (err, results)  => {
     if(err) throw err;
     res.send(JSON.stringify(results));
   });
@@ -460,7 +466,7 @@ app.get('/api/izin/:id',(req, res) => {
 //Mengambil waktu server dan data jam kerja untuk APP bisa scan
 
 app.get('/api/gettime',(req, res) => {
-  let sql = `SELECT Now() as Waktu,jamkerja.* FROM jamkerja`;
+  let sql = `SELECT Now() as Waktu`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
     res.send(JSON.stringify(results));
