@@ -136,7 +136,7 @@ app.post('/api/attlog',(req, res) => {
 
 app.get('/api/datang/:id',(req, res) => {
   let sql = `SELECT DatangID, Shift, CASE
-  WHEN Shift = 1 THEN (SELECT b.JamPulang  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GrupID  WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1)
+  WHEN Shift = 1 THEN (SELECT b.JamPulang  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GroupID  WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1)
   WHEN Shift = 2 THEN (SELECT b.JamPulangSiang  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GroupID  WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1)
   WHEN Shift = 3 THEN (SELECT b.JamPulangSore  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GroupID  WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1)
   END AS JamPulang from attlog WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1`;
@@ -213,60 +213,6 @@ app.delete('/api/user/:id',(req, res) => {
   });
 });
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////        API BERHUBUNGAN DENGAN DATA Jam Kerja & Jadwal      /////////////
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-//Menampilkan Seluruh List Jam Kerja
-app.get('/api/jamkerja',(req, res) => {
-  let sql = `SELECT * FROM jamkerja`;
-  let query = conn.query(sql, (err, results) => {
-    if(err) throw err; 
-    res.send(JSON.stringify(results));
-  });
-});
-
-
-//Menampilkan detai data jam kerja berdasarkan Shift
-app.get('/api/jamkerja/:id',(req, res) => {
-  conn.query(`SELECT * FROM jamkerja Where Shift="`+req.params.id+`"`, function(err,rows){
-    if(err) throw err;
-    var jamkerja= rows[0];
-    res.send(jamkerja);
-  });
-});
-
-//Tambahkan jam kerja untuk jadwal
-app.post('/api/jamkerja',(req, res) => {
-  let data = {Shift: req.body.Shift, JamMasuk: req.body.JamMasuk, JamPulang: req.body.JamPulang};
-  let sql = "INSERT INTO jamkerja SET ?";
-  let query = conn.query(sql, data,(err, results) => {
-    if(err) throw err;
-    res.send(JSON.stringify(results));
-  });
-});
-
-//Mengedit data jam kerja untuk untuk panel admin
-app.put('/api/jamkerja/:id',(req, res) => {
-  let sql = `UPDATE jamkerja SET JamMasuk="`+req.body.JamMasuk+`", JamPulang="`+req.body.JamPulang+`" WHERE Shift="`+req.params.id+`"`;
-  let query = conn.query(sql, (err, results) => {
-    if(err) throw err;
-    res.send(JSON.stringify(results));
-  });
-});
-
-//Menghapus data jam kerja untuk panel admin 
-app.delete('/api/jamkerja/:id',(req, res) => {
-  let sql = `DELETE FROM jamkerja WHERE Shift="`+req.params.id+`"`;
-  let query = conn.query(sql, (err, results) => {
-    if(err) throw err;
-      res.send(JSON.stringify(results));
-  });
-});
 
 
 
@@ -312,6 +258,26 @@ app.get('/api/group/:id',(req, res) => {
   });
 });
 
+//Tambahkan data user untuk panel admin
+app.post('/api/group',(req, res) => {
+  let data = {GroupID: req.body.GroupID, jabatan: req.body.Jabatan, JamDatang: req.body.JamDatang, MaxJamDatang: req.body.MaxJamDatang, 
+   JamPulang: req.body.JamPulang,MinJamLembur: req.body.MinJamLembur, RpPotonganTerlambat: req.body.RpPotonganTerlambat,
+   JamDatangSiang: req.body.JamDatangSiang,MaxJamDatang: req.body.MaxJamDatangSiang,MinJamLemburSiang: req.body.MinJamLemburSiang,
+   HariLibur: req.body.HariLibur, RpPotonganTerlambat: req.body.RpPotonganTerlambat, RpPotonganTidakMasuk: req.body.RpPotonganTidakMasuk,
+   RpLemburPerjam: req.body.RpLemburPerjam, JamDatangSore: req.body.JamDatangSore,MaxJamDatangSore: req.body.MaxJamDatangSore,
+   JamPulangSore: req.body.JamPulangSore,MinJamLemburSore: req.body.JamLemburSore };
+   
+  let sql = "INSERT INTO tblgrupjabatan SET ?";
+  let query = conn.query(sql, data,(err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+
 
 
 //Menampilkan detai data cabang yang sudah terdaftar di panel admin
@@ -347,63 +313,6 @@ app.delete('/api/jamkerja/:id',(req, res) => {
   let sql = `DELETE FROM jamkerja WHERE Shift="`+req.params.id+`"`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err; 
-      res.send(JSON.stringify(results));
-  });
-});
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
-///////////////         API BERHUBUNGAN DENGAN DATA DEPARTEMEN          ///////////////////
-
-///////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-// Menampilkan bagian departemen dari karyawan
-app.get('/api/departemen',(req, res) => {
-  let sql = "SELECT * FROM usergroups";
-  let query = conn.query(sql, (err, results) => {
-    if(err) throw err;
-    res.send(JSON.stringify(results));
-  });
-});
-
-
-//Menampilkan detai data jam kerja berdasarkan Shift
-app.get('/api/jamkerja/:id',(req, res) => {
-  conn.query(`SELECT * FROM jamkerja Where Shift="`+req.params.id+`"`, function(err,rows){
-    if(err) throw err;
-    var jamkerja= rows[0];
-    res.send(jamkerja);
-  });
-});
-
-//Tambahkan jam kerja untuk jadwal
-app.post('/api/jamkerja',(req, res) => {
-  let data = {Shift: req.body.Shift, JamMasuk: req.body.JamMasuk, JamPulang: req.body.JamPulang};
-  let sql = "INSERT INTO user SET ?";
-  let query = conn.query(sql, data,(err, results) => {
-    if(err) throw err;
-    res.send(JSON.stringify(results));
-  });
-});
-
-//Mengedit data jam kerja untuk untuk panel admin
-app.put('/api/jamkerja/:id',(req, res) => {
-  let sql = `UPDATE jamkerja SET JamMasuk="`+req.body.JamMasuk+`", JamPulang="`+req.body.JamPulang+`" WHERE UserID="`+req.params.id+`"`;
-  let query = conn.query(sql, (err, results) => {
-    if(err) throw err;
-    res.send(JSON.stringify(results));
-  });
-});
-
-//Menghapus data jam kerja untuk panel admin 
-app.delete('/api/jamkerja/:id',(req, res) => {
-  let sql = `DELETE FROM jamkerja WHERE Shift="`+req.params.id+`"`;
-  let query = conn.query(sql, (err, results) => {
-    if(err) throw err;
       res.send(JSON.stringify(results));
   });
 });
