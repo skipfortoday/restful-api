@@ -55,6 +55,17 @@ app.get('/api/lastscan/:id',(req, res) => {
 
 
 
+//Tampilkan 5 Recent Scan Untuk User per ID
+app.get('/api/lastscan/:id',(req, res) => {
+  let sql =`SELECT DAYNAME(a.TanggalScan)as NamaHari, DAY(a.TanggalScan) as Hari, MONTH(a.TanggalScan)as Bulan, YEAR(a.TanggalScan) as Tahun, b.Nama, a.ScanMasuk, a.ScanPulang, a.Shift FROM attlog a JOIN user b ON a.UserID = b.UserID WHERE a.UserID="`+req.params.id+`" ORDER BY a.TanggalScan DESC LIMIT 5`;
+  let query = conn.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+
+
 
 
 
@@ -126,8 +137,8 @@ app.post('/api/attlog',(req, res) => {
 app.get('/api/datang/:id',(req, res) => {
   let sql = `SELECT DatangID, Shift, CASE
   WHEN Shift = 1 THEN (SELECT b.JamPulang  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GrupID  WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1)
-  WHEN Shift = 2 THEN (SELECT b.JamPulangSiang  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GrupID  WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1)
-  WHEN Shift = 3 THEN (SELECT b.JamPulangSore  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GrupID  WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1)
+  WHEN Shift = 2 THEN (SELECT b.JamPulangSiang  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GroupID  WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1)
+  WHEN Shift = 3 THEN (SELECT b.JamPulangSore  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GroupID  WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1)
   END AS JamPulang from attlog WHERE UserID="`+req.params.id+`" AND TanggalScan=CURRENT_DATE Limit 1`;
   let query = conn.query(sql, (err, results) => {
     if(err) throw err;
@@ -291,6 +302,16 @@ app.get('/api/group',(req, res) => {
     res.send(JSON.stringify(results));
   });
 });
+
+//Menampilkan Detail grup Per ID
+app.get('/api/group/:id',(req, res) => {
+  conn.query(`SELECT * FROM tblgrupjabatan Where GroupID="`+req.params.id+`"`, function(err,rows){
+    if(err) throw err;
+    var group= rows[0];
+    res.send(group);
+  });
+});
+
 
 
 //Menampilkan detai data cabang yang sudah terdaftar di panel admin
