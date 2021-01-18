@@ -304,7 +304,7 @@ app.get("/api/group/:id", (req, res) => {
   );
 });
 
-//Tambahkan data user untuk panel admin
+//Tambahkan data GROUP untuk panel admin
 app.post("/api/group", (req, res) => {
   let data = {
     GroupID: req.body.GroupID,
@@ -334,6 +334,8 @@ app.post("/api/group", (req, res) => {
   });
 });
 
+
+//Mengedit Data GROUP untuk panel admin
 app.put("/api/group/:id", (req, res) => {
   let sql =
     `UPDATE tblgrupjabatan SET GroupID="` +
@@ -385,6 +387,15 @@ app.put("/api/group/:id", (req, res) => {
   });
 });
 
+
+//Menghapus data Group untuk panel admin
+app.delete("/api/group/:id", (req, res) => {
+  let sql = `DELETE FROM tblgrupjabatan WHERE GroupID="` + req.params.id + `"`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
 
 
 ////////////////////////////////////////////////////////////////////////////////
