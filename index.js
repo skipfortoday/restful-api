@@ -315,7 +315,7 @@ app.post("/api/group", (req, res) => {
     MinJamLembur: req.body.MinJamLembur,
     RpPotonganTerlambat: req.body.RpPotonganTerlambat,
     JamDatangSiang: req.body.JamDatangSiang,
-    MaxJamDatang: req.body.MaxJamDatangSiang,
+    MaxJamDatangSiang: req.body.MaxJamDatangSiang,
     MinJamLemburSiang: req.body.MinJamLemburSiang,
     HariLibur: req.body.HariLibur,
     RpPotonganTerlambat: req.body.RpPotonganTerlambat,
@@ -333,6 +333,55 @@ app.post("/api/group", (req, res) => {
     res.send(JSON.stringify(results));
   });
 });
+
+app.put("/api/group/:id", (req, res) => {
+  let sql =
+    `UPDATE group SET GroupID="` +
+    req.body.GroupID +
+    `", Jabatan="` +
+    req.body.Jabatan +
+    `", JamDatang="` +
+    req.body.JamDatang +
+    `", MaxJamDatang="` +
+    req.body.MaxJamDatang +
+    `", MinJamLembur="` +
+    req.body.MinJamLembur+
+    `", HariLibur="` +
+    req.body.HariLibur +
+    `", RpPotonganTerlambat="` +
+    req.body.RpPotonganTerlambat +
+    `", JamDatangSiang="` +
+    req.body.JamDatangSiang +
+    `", MaxJamDatangSiang="` +
+    req.body.MaxJamDatangSiang +
+    `", MinJamLemburSiang="` +
+    req.body.MinJamLemburSiang +
+    `", HariLibur="` +
+    req.body.HariLibur +
+    `", RpPotonganTerlambat="` +
+    req.body.RpPotonganTerlambat +
+    `", RpPotonganTidakMasuk="` +
+    req.body.RpPotonganTidakMasuk +
+    `", RpLemburPerjam="` +
+    req.body.RpLemburPerjam +
+    `", JamDatangSore="` +
+    req.body.JamDatangSore +
+    `", MaxJamDatangSore="` +
+    req.body.MaxJamDatangSore +
+    `", JamPulangSore="` +
+    req.body.JamPulangSore +
+    `", MinJamLemburSore="` +
+    req.body.MinJamLemburSore +
+    `" WHERE UserID="` +
+    req.params.id +
+    `"`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -518,7 +567,7 @@ app.get("/api/reportabsen/:id&:tglin&:tglout", (req, res) => {
   FROM tgl c WHERE c.tanggal between "`+req.params.tglin+`" and "`+req.params.tglout+`" ORDER BY c.Tanggal ASC`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(results));
+    res.send(JSON.stringify(results)   );
   });
 });
 
@@ -526,3 +575,4 @@ app.get("/api/reportabsen/:id&:tglin&:tglout", (req, res) => {
 app.listen(3001, () => {
   console.log("Server started on port 3001...");
 });
+                         
