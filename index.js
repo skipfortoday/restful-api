@@ -320,7 +320,7 @@ app.post("/api/group", (req, res) => {
     HariLibur: req.body.HariLibur,
     RpPotonganTerlambat: req.body.RpPotonganTerlambat,
     RpPotonganTidakMasuk: req.body.RpPotonganTidakMasuk,
-    RpLemburPerjam: req.body.RpLemburPerjam,
+    RpLemburPerJam: req.body.RpLemburPerJam,
     JamDatangSore: req.body.JamDatangSore,
     MaxJamDatangSore: req.body.MaxJamDatangSore,
     JamPulangSore: req.body.JamPulangSore,
@@ -336,12 +336,14 @@ app.post("/api/group", (req, res) => {
 
 app.put("/api/group/:id", (req, res) => {
   let sql =
-    `UPDATE group SET GroupID="` +
+    `UPDATE tblgrupjabatan SET GroupID="` +
     req.body.GroupID +
     `", Jabatan="` +
     req.body.Jabatan +
     `", JamDatang="` +
     req.body.JamDatang +
+    `",JamPulang="` +
+    req.body.JamPulang +
     `", MaxJamDatang="` +
     req.body.MaxJamDatang +
     `", MinJamLembur="` +
@@ -352,6 +354,8 @@ app.put("/api/group/:id", (req, res) => {
     req.body.RpPotonganTerlambat +
     `", JamDatangSiang="` +
     req.body.JamDatangSiang +
+    `",JamPulangSiang="` +
+    req.body.JamPulangSiang +
     `", MaxJamDatangSiang="` +
     req.body.MaxJamDatangSiang +
     `", MinJamLemburSiang="` +
@@ -362,8 +366,8 @@ app.put("/api/group/:id", (req, res) => {
     req.body.RpPotonganTerlambat +
     `", RpPotonganTidakMasuk="` +
     req.body.RpPotonganTidakMasuk +
-    `", RpLemburPerjam="` +
-    req.body.RpLemburPerjam +
+    `", RpLemburPerJam="` +
+    req.body.RpLemburPerJam +
     `", JamDatangSore="` +
     req.body.JamDatangSore +
     `", MaxJamDatangSore="` +
@@ -372,7 +376,7 @@ app.put("/api/group/:id", (req, res) => {
     req.body.JamPulangSore +
     `", MinJamLemburSore="` +
     req.body.MinJamLemburSore +
-    `" WHERE UserID="` +
+    `" WHERE GroupID="` +
     req.params.id +
     `"`;
   let query = conn.query(sql, (err, results) => {
