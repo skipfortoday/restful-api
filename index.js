@@ -283,7 +283,7 @@ app.get("/api/roleuser", (req, res) => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-//Menampilkan Semua List cabang
+//Menampilkan Semua List Group Pegawai
 app.get("/api/group", (req, res) => {
   let sql = "SELECT * FROM tblgrupjabatan";
   let query = conn.query(sql, (err, results) => {
@@ -292,7 +292,7 @@ app.get("/api/group", (req, res) => {
   });
 });
 
-//Menampilkan Detail grup Per ID
+//Menampilkan Detail grup Per ID Pegawai
 app.get("/api/group/:id", (req, res) => {
   conn.query(
     `SELECT * FROM tblgrupjabatan Where GroupID="` + req.params.id + `"`,
@@ -398,7 +398,25 @@ app.delete("/api/group/:id", (req, res) => {
 });
 
 
-////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////        API BERHUBUNGAN DENGAN CABANG         ///////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+//Menampilkan seluruh data cabang yang sudah terdaftar di panel admin
+app.get("/api/cabang", (req, res) => {
+  let sql = "SELECT * FROM cabang";
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+
+
 
 //Menampilkan detai data cabang yang sudah terdaftar di panel admin
 app.get("/api/cabang/:id", (req, res) => {
@@ -417,6 +435,9 @@ app.post("/api/cabang", (req, res) => {
   let data = {
     KodeCabang: req.body.KodeCabang,
     NamaCabang: req.body.NamaCabang,
+    Alamat: req.body.Alamat,
+    GeneralManagerID: req.body.GeneralManagerID,
+    hrdID: req.body.hrdID,
   };
   let sql = "INSERT INTO cabang SET ?";
   let query = conn.query(sql, data, (err, results) => {
@@ -430,6 +451,12 @@ app.put("/api/cabang/:id", (req, res) => {
   let sql =
     `UPDATE cabang SET NamaCabang="` +
     req.body.NamaCabang +
+    `Alamat="` +
+    req.body.Alamat +
+    `GeneralManagerID="` +
+    req.body.GeneralManagerID +
+    `hrdID="` +
+    req.body.hrdID +
     `" WHERE KodeCabang="` +
     req.params.id +
     `"`;
@@ -440,19 +467,24 @@ app.put("/api/cabang/:id", (req, res) => {
 });
 
 //Menghapus data cabang untuk panel admin
-app.delete("/api/jamkerja/:id", (req, res) => {
-  let sql = `DELETE FROM jamkerja WHERE Shift="` + req.params.id + `"`;
+app.delete("/api/cabang/:id", (req, res) => {
+  let sql = `DELETE *FROM cabang WHERE KodeCabang="` + req.params.id + `"`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
   });
 });
 
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-///////////////////////        API BERHUBUNGAN DENGAN LOGIN         ///////////////////
+///////////////////////        API BERHUBUNGAN DENGAN LOGIN         ///////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 // Api untuk proses login di APP
 app.post("/api/login", (req, res) => {
