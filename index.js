@@ -449,17 +449,17 @@ app.post("/api/cabang", (req, res) => {
 //Mengedit Nama Cabang untuk untuk panel admin
 app.put("/api/cabang/:id", (req, res) => {
   let sql =
-    `UPDATE cabang SET NamaCabang="` +
-    req.body.NamaCabang +
-    `Alamat="` +
-    req.body.Alamat +
-    `GeneralManagerID="` +
-    req.body.GeneralManagerID +
-    `hrdID="` +
-    req.body.hrdID +
-    `" WHERE KodeCabang="` +
-    req.params.id +
-    `"`;
+  `UPDATE cabang SET NamaCabang="` +
+  req.body.NamaCabang +
+  `", Alamat="` +
+  req.body.Alamat +
+  `", GeneralManagerID="` +
+  req.body.GeneralManagerID +
+  `", hrdID="` +
+  req.body.hrdID +
+  `" WHERE KodeCabang="` +
+  req.params.id +
+  `"`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
@@ -468,7 +468,7 @@ app.put("/api/cabang/:id", (req, res) => {
 
 //Menghapus data cabang untuk panel admin
 app.delete("/api/cabang/:id", (req, res) => {
-  let sql = `DELETE *FROM cabang WHERE KodeCabang="` + req.params.id + `"`;
+  let sql = `DELETE FROM cabang WHERE KodeCabang="` + req.params.id + `"`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
