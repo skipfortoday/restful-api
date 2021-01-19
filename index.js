@@ -379,7 +379,7 @@ app.put("/api/group/:id", (req, res) => {
     `", MinJamLemburSore="` +
     req.body.MinJamLemburSore +
     `" WHERE GroupID="` +
-    req.params.id +
+    req.params.id + 
     `"`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
@@ -485,59 +485,22 @@ app.post("/api/login", (req, res) => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-//tampilkan Kategori Izin
-app.get("/api/kategori_izin", (req, res) => {
-  let sql = "SELECT * FROM kategori_izin";
-  let query = conn.query(sql, (err, results) => {
-    if (err) throw err;
-    res.send(JSON.stringify(results));
-  });
-});
+
 
 //tampilkan Request (view untuk jabatan level 1)
 app.get("/api/izin", (req, res) => {
-  let sql = `SELECT a.nama, b.tgl_mulai, b.tgl_selesai, c.nama_cabang, d.kategori_izin
-  FROM user a JOIN izin b ON a.pin = b.pin
-  JOIN cabang c ON c.sn = a.sn
-  JOIN kategori_izin d ON d.id_kategori = b.id_kategori
-  ORDER BY b.tgl_mulai DESC`;
+  let sql = `SELECT * FROM attlog`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
   });
 });
 
-//tampilkan semua izin yang sudah diterima level 1 (view Untuk jabatan level 2)
-app.get("/api/izin/acc1", (req, res) => {
-  let sql = "SELECT * FROM izin Where acc_1 is Not Null";
-  let query = conn.query(sql, (err, results) => {
-    if (err) throw err;
-    res.send(JSON.stringify(results));
-  });
-});
-
-//tampilkan semua izin yang sudah diterima level 2 (view Untuk jabatan Level 3)
-app.get("/api/izin/acc2", (req, res) => {
-  let sql = "SELECT * FROM izin Where acc_2 is Not Null";
-  let query = conn.query(sql, (err, results) => {
-    if (err) throw err;
-    res.send(JSON.stringify(results));
-  });
-});
-
-//tampilkan semua izin yang sudah diterima
-app.get("/api/izin/final", (req, res) => {
-  let sql = "SELECT * FROM izin Where acc_3 is Not Null";
-  let query = conn.query(sql, (err, results) => {
-    if (err) throw err;
-    res.send(JSON.stringify(results));
-  });
-});
 
 //tampilkan data izin yang sudah diterima berdasakan id
 app.get("/api/izin/:id", (req, res) => {
   let sql =
-    "SELECT * FROM izin Where acc_3 is Not Null AND pin=" + req.params.id;
+    "SELECT * FROM attlog Where Status is Not Null AND DatangID=" + req.params.id;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
