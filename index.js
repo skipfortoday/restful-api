@@ -28,6 +28,14 @@ const conn = mysql.createConnection({
   timezone: "utc",
 });
 
+const conn2 = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "absensi",
+  timezone: "utc",
+});
+
 //connect to database
 conn.connect((err) => {
   if (err) throw err;
@@ -130,6 +138,34 @@ app.get("/api/tlog/:id&:tglin&:tglout", (req, res) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
   });
+});
+
+//Post Untuk input prosesi absensi dari APP
+app.post("/api/attlogUpdate", (req, res) => {
+  let post = {
+    Pass: req.body.Pass,
+    UserID: req.body.UserID,
+  };
+  let query = "Select * FROM ?? WHERE ??=? AND ??=?";
+  let table = ["user", "Pass", post.Pass, "UserID", post.UserID];
+
+  query = mysql.format(query, table);
+  conn.query(query, function (error, rows) {
+    let grup = rows[0].GroupID;
+    let kodecabang = rows[0].KodeCabang;
+    console.log(grup);
+    console.log(kodecabang);
+    if (error) {
+      console.log(error);
+    } else {
+      if (rows.length == 1) {
+        res.json({ Error: true, Message: "OK", GroupID: grup, KodeCabang: kodecabang});
+      } else {
+        res.json({ Error: true, Message: "UserID atau Pass salah!" });
+      }
+    }
+  });
+
 });
 
 //Post Untuk input prosesi absensi dari APP
@@ -509,6 +545,68 @@ app.post("/api/login", (req, res) => {
       }
     }
   });
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// Api untuk proses login di APP
+app.post("/api/loginLengkap", (req, res) => {
+  let post = {
+    Pass: req.body.Pass,
+    UserID: req.body.UserID,
+  };
+  let query = "Select * FROM ?? WHERE ??=? AND ??=?";
+  let table = ["user", "Pass", post.Pass, "UserID", post.UserID];
+  query = mysql.format(query, table);
+  let grup;
+  let kodecabang;
+  conn.query(query, function (error, rows) {
+    grup = rows[0].GroupID;
+    kodecabang = rows[0].KodeCabang;
+    console.log(grup);
+    console.log(kodecabang);
+    if (error) {
+      console.log('error karena -->'+error);
+    } else {
+      if (rows.length == 1) {
+        console.log('INI masuk '+ error);
+        //res.json({ Error: true, Message: "OK rubah", GroupID: grup, KodeCabang:kodecabang });
+      } else {
+        console.log('INI keluar '+ error);
+        //res.json({ Error: true, Message: "UserID atau Pass salah!" });
+      }
+    }
+  });
+  console.log("Model console 2");
+  let post2 = {
+    grup2: grup,
+    kodecabang2: kodecabang,
+  };
+  console.log("Model console 2b");
+  let query2 = "Select * FROM ?? WHERE ??=? ";
+  let table2 = ["tblgrupjabatan", "GroupID", post2.grup];
+
+  console.log("Model console 2c");
+
+  query2 = mysql.format(query2, table2);
+  console.log("Model console 2d");
+  conn2.query(query2, function (error2, rows2) {
+    let jamdatang = rows2[0].JamDatang;
+    let maxjamdatang = rows2[0].MaxJamDatang;
+    console.log("Model console 2e");
+    console.log(jamdatang);
+    console.log(maxjamdatang);
+    if (error2) {
+      console.log(error2);
+    } else {
+      if (rows2.length == 1) {
+        res.json({ Error: true, Message: "OK rubah", GroupID: grup, MaxJamDatang:maxjamdatang });
+      } else {
+        res.json({ Error: true, Message: "UserID atau Pass salah!" });
+      }
+    }
+  });
+  console.log("Model console 2f");
+
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////
