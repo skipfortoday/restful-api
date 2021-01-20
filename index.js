@@ -5,6 +5,9 @@ const app = express();
 const mysql = require("mysql");
 const { request } = require("express");
 var session = require("express-session");
+var pdf = require ('pdfkit');																	//to create PDF using NODE JS
+var fs = require('fs');																			// to create write streams
+var myDoc = new pdf;		
 
 // parse application/json
 
@@ -170,16 +173,15 @@ app.post("/api/attlogUpdate", (req, res) => {
 
 //Post Untuk input prosesi absensi dari APP
 app.post("/api/attlog", (req, res) => {
-  let data = {
-    UserID: req.body.UserID,
-    TanggalScan: req.body.TanggalScan,
-    ScanMasuk: req.body.ScanMasuk,
-    Shift: req.body.Shift,
-    KodeCabang: req.body.KodeCabang,
-    GroupID: req.body.GroupID,
-  };
-  let sql = "INSERT INTO attlog SET ?";
-  let query = conn.query(sql, data, (err, results) => {
+let sql = `CALL ProsesMasuk (
+'`+req.body.UserID+`',
+'`+req.body.TanggalScan+`',
+'`+req.body.ScanMasuk+`',
+'`+req.body.Shift+`',
+'`+req.body.KodeCabang+`',
+'`+req.body.GroupID+`'
+)`;
+let query = conn.query(sql,(err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
   });
