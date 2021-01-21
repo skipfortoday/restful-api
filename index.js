@@ -216,11 +216,13 @@ app.get("/api/datang/:id", (req, res) => {
 //Put data untuk update scan pulang setelah mendapatkan DatangID
 
 app.put("/api/datang/:id", (req, res) => {
-  let sql =
-    "UPDATE attlog SET ScanPulang='" +
-    req.body.ScanPulang +
-    "'WHERE DatangID=" +
-    req.params.id;
+  let sql = `CALL ProsesPulang (
+    '`+req.body.UserID+`',
+    '`+req.params.id+`',
+    '`+req.body.ScanPulang+`',
+    '`+req.body.GroupID+`',
+    '`+req.body.Keterangan+`'
+    )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify());
