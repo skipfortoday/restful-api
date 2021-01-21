@@ -171,6 +171,7 @@ app.post("/api/attlogUpdate", (req, res) => {
 
 });
 
+
 //Post Untuk input prosesi absensi dari APP
 app.post("/api/attlog", (req, res) => {
 let sql = `CALL ProsesMasuk (
@@ -186,6 +187,7 @@ let query = conn.query(sql,(err, results) => {
     res.send(JSON.stringify(results));
   });
 });
+
 
 //GET Data DatangID untuk karyawan yang sama dihari yang sama
 // untuk prosesi validasi scan pulang karyawan
@@ -535,15 +537,15 @@ app.post("/api/login", (req, res) => {
 
   query = mysql.format(query, table);
   conn.query(query, function (error, rows) {
-    let grup = rows[0].GroupID;
-    console.log(grup);
+   
     if (error) {
       console.log(error);
     } else {
       if (rows.length == 1) {
-        res.json({ Error: true, Message: "OK", GroupID: grup });
+        let grup = rows[0].GroupID;
+        res.json({ Message: "OK", GroupID: grup });
       } else {
-        res.json({ Error: true, Message: "UserID atau Pass salah!" });
+        res.json({ Error: true, Message: "Username atau Password Salah!" });
       }
     }
   });
