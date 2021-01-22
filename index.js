@@ -237,8 +237,8 @@ app.put("/api/datang/:id", (req, res) => {
 
 //Menampilkan Seluruh List User untuk table data karyawan di web admin
 app.get("/api/user", (req, res) => {
-  let sql = `SELECT a.UserID, a.Nama, c.NamaRole, b.NamaCabang, DAY(a.TglMasuk) as Hari, MONTH(a.TglMasuk) as Bulan, YEAR(a.TglMasuk) as Tahun
-  FROM user a JOIN cabang b ON a.KodeCabang = b.KodeCabang JOIN Role c ON c.RoleUser = a.RoleUser`;
+  let sql = `SELECT a.UserID, a.Nama, b.NamaCabang, a.TglMasuk, c.Jabatan
+  FROM user a JOIN cabang b ON a.KodeCabang = b.KodeCabang JOIN tblgrupjabatan c ON a.GroupID = c.GroupID  `;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
@@ -264,8 +264,7 @@ app.post("/api/user", (req, res) => {
     Nama: req.body.Nama,
     Pass: req.body.Pass,
     TglMasuk: req.body.TglMasuk,
-    RoleUser: req.body.RoleUser,
-    IdGroups: req.body.IdGroups,
+    GroupID: req.body.GroupID,
     KodeCabang: req.body.KodeCabang,
   };
   let sql = "INSERT INTO user SET ?";
@@ -282,8 +281,8 @@ app.put("/api/user/:id", (req, res) => {
     req.body.Nama +
     `", Pass="` +
     req.body.Pass +
-    `", RoleUser="` +
-    req.body.RoleUser +
+    `", GroupID="` +
+    req.body.GroupID +
     `", KodeCabang="` +
     req.body.KodeCabang +
     `" WHERE UserID="` +
