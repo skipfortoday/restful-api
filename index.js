@@ -193,24 +193,13 @@ let query = conn.query(sql,(err, results) => {
 // untuk prosesi validasi scan pulang karyawan
 
 app.get("/api/datang/:id", (req, res) => {
-  let sql =
-    `SELECT DatangID, Shift, CASE
-  WHEN Shift = 1 THEN (SELECT b.JamPulang  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GroupID  WHERE UserID="` +
-    req.params.id +
-    `" AND TanggalScan=CURRENT_DATE Limit 1)
-  WHEN Shift = 2 THEN (SELECT b.JamPulangSiang  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GroupID  WHERE UserID="` +
-    req.params.id +
-    `" AND TanggalScan=CURRENT_DATE Limit 1)
-  WHEN Shift = 3 THEN (SELECT b.JamPulangSore  FROM attlog a JOIN tblgrupjabatan b ON a.GroupID = b.GroupID  WHERE UserID="` +
-    req.params.id +
-    `" AND TanggalScan=CURRENT_DATE Limit 1)
-  END AS JamPulang from attlog WHERE UserID="` +
-    req.params.id +
-    `" AND TanggalScan=CURRENT_DATE Limit 1`;
-  let query = conn.query(sql, (err, results) => {
-    if (err) throw err;
-    res.send(JSON.stringify(results));
-  });
+  conn.query(`CALL MengambilDatangID ('` + req.params.id + `')`,
+    function (err, rows) {
+      if (err) throw err;
+      var datang = rows[0];
+      res.send(datang);
+    }
+  );
 });
 
 //Put data untuk update scan pulang setelah mendapatkan DatangID
@@ -237,8 +226,8 @@ app.put("/api/datang/:id", (req, res) => {
 
 //Menampilkan Seluruh List User untuk table data karyawan di web admin
 app.get("/api/user", (req, res) => {
-  let sql = `SELECT a.UserID, a.Nama, b.NamaCabang, a.TglMasuk, c.Jabatan
-  FROM user a JOIN cabang b ON a.KodeCabang = b.KodeCabang JOIN tblgrupjabatan c ON a.GroupID = c.GroupID  `;
+  let sql = `SELECT a.UserID, a.Nama, c.Jabatan
+  FROM user a JOIN tblgrupjabatan c ON a.GroupID = c.GroupID  `;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
@@ -247,12 +236,12 @@ app.get("/api/user", (req, res) => {
 
 //menampilkan detai data user berdasarkan User ID
 app.get("/api/user/:id", (req, res) => {
-  conn.query(
-    `SELECT * FROM user Where UserID="` + req.params.id + `"`,
+  conn.query(`CALL MenampilkanDetailUser('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
       var user = rows[0];
-      res.send(user);
+      var detailuser = user[0];
+      res.send(detailuser);
     }
   );
 });
@@ -283,6 +272,8 @@ app.put("/api/user/:id", (req, res) => {
     req.body.Pass +
     `", GroupID="` +
     req.body.GroupID +
+    `", TglMasuk="` +
+    req.body.TglMasuk +
     `", KodeCabang="` +
     req.body.KodeCabang +
     `" WHERE UserID="` +
