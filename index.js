@@ -5,9 +5,9 @@ const app = express();
 const mysql = require("mysql");
 const { request } = require("express");
 var session = require("express-session");
-var pdf = require ('pdfkit');																	//to create PDF using NODE JS
-var fs = require('fs');																			// to create write streams
-var myDoc = new pdf;		
+var pdf = require("pdfkit"); //to create PDF using NODE JS
+var fs = require("fs"); // to create write streams
+var myDoc = new pdf();
 
 // parse application/json
 
@@ -162,37 +162,51 @@ app.post("/api/attlogUpdate", (req, res) => {
       console.log(error);
     } else {
       if (rows.length == 1) {
-        res.json({ Error: true, Message: "OK", GroupID: grup, KodeCabang: kodecabang});
+        res.json({
+          Error: true,
+          Message: "OK",
+          GroupID: grup,
+          KodeCabang: kodecabang,
+        });
       } else {
         res.json({ Error: true, Message: "UserID atau Pass salah!" });
       }
     }
   });
-
 });
-
 
 //Post Untuk input prosesi absensi dari APP
 app.post("/api/attlog", (req, res) => {
-let sql = `CALL ProsesMasuk (
-'`+req.body.UserID+`',
-'`+req.body.TanggalScan+`',
-'`+req.body.ScanMasuk+`',
-'`+req.body.Shift+`',
-'`+req.body.KodeCabang+`'
+  let sql =
+    `CALL ProsesMasuk (
+'` +
+    req.body.UserID +
+    `',
+'` +
+    req.body.TanggalScan +
+    `',
+'` +
+    req.body.ScanMasuk +
+    `',
+'` +
+    req.body.Shift +
+    `',
+'` +
+    req.body.KodeCabang +
+    `'
 )`;
-let query = conn.query(sql,(err, results) => {
+  let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
   });
 });
 
-
 //GET Data DatangID untuk karyawan yang sama dihari yang sama
 // untuk prosesi validasi scan pulang karyawan
 
 app.get("/api/datang/:id", (req, res) => {
-  conn.query(`CALL MengambilDatangID ('` + req.params.id + `')`,
+  conn.query(
+    `CALL MengambilDatangID ('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
       var datang = rows[0];
@@ -204,10 +218,17 @@ app.get("/api/datang/:id", (req, res) => {
 //Put data untuk update scan pulang setelah mendapatkan DatangID
 
 app.put("/api/datang/:id", (req, res) => {
-  let sql = `CALL ProsesPulang (
-    '`+req.params.id+`',
-    '`+req.body.ScanPulang+`',
-    '`+req.body.Keterangan+`'
+  let sql =
+    `CALL ProsesPulang (
+    '` +
+    req.params.id +
+    `',
+    '` +
+    req.body.ScanPulang +
+    `',
+    '` +
+    req.body.Keterangan +
+    `'
     )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
@@ -221,27 +242,32 @@ app.put("/api/datang/:id", (req, res) => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-
 //Post Untuk input Keluar Kantor
 app.post("/api/keluarkantor", (req, res) => {
-  let sql = `CALL ProsesKeluarKantor (
-  '`+req.body.DatangID+`',
-  '`+req.body.JamKeluar+`',
-  '`+req.body.Keterangan+`'
+  let sql =
+    `CALL ProsesKeluarKantor (
+  '` +
+    req.body.DatangID +
+    `',
+  '` +
+    req.body.JamKeluar +
+    `',
+  '` +
+    req.body.Keterangan +
+    `'
   )`;
-  let query = conn.query(sql,(err, results) => {
-      if (err) throw err;
-      res.send(JSON.stringify(results));
-    });
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
   });
+});
 
-
-  
-//GET Data KeluarID untuk karyawan yang sama sesuai datang id dan validasi 
+//GET Data KeluarID untuk karyawan yang sama sesuai datang id dan validasi
 // untuk prosesi validasi scan balik kantor  karyawan
 
 app.get("/api/keluarkantor/:id", (req, res) => {
-  conn.query(`CALL MengambilKeluarID ('` + req.params.id + `')`,
+  conn.query(
+    `CALL MengambilKeluarID ('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
       var datang = rows[0];
@@ -250,28 +276,26 @@ app.get("/api/keluarkantor/:id", (req, res) => {
   );
 });
 
-
-
 //Put data untuk update scan pulang setelah mendapatkan DatangID
 
 app.put("/api/keluarkantor/:id", (req, res) => {
-  let sql = `CALL ProsesKembaliKantor (
-    '`+req.params.id+`',
-    '`+req.body.JamKembali+`',
-    '`+req.body.Keterangan+`'
+  let sql =
+    `CALL ProsesKembaliKantor (
+    '` +
+    req.params.id +
+    `',
+    '` +
+    req.body.JamKembali +
+    `',
+    '` +
+    req.body.Keterangan +
+    `'
     )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify());
   });
 });
-
-
-
-
-
-
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -289,9 +313,10 @@ app.get("/api/user", (req, res) => {
   });
 });
 
-//menampilkan detai data user berdasarkan User ID
+//menampilkan detail user  data  berdasarkan User ID
 app.get("/api/user/:id", (req, res) => {
-  conn.query(`CALL MenampilkanDetailUser('` + req.params.id + `')`,
+  conn.query(
+    `CALL MenampilkanDetailUser('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
       var user = rows[0];
@@ -303,16 +328,52 @@ app.get("/api/user/:id", (req, res) => {
 
 //Tambahkan data user untuk panel admin
 app.post("/api/user", (req, res) => {
-  let data = {
-    UserID: req.body.UserID,
-    Nama: req.body.Nama,
-    Pass: req.body.Pass,
-    TglMasuk: req.body.TglMasuk,
-    GroupID: req.body.GroupID,
-    KodeCabang: req.body.KodeCabang,
-  };
-  let sql = "INSERT INTO user SET ?";
-  let query = conn.query(sql, data, (err, results) => {
+  let sql =
+    `CALL MenambahUser (
+  '` +
+    req.body.UserID +
+    `',
+  '` +
+    req.body.Pass +
+    `',
+  '` +
+    req.body.Nama +
+    `',
+  '` +
+    req.body.Alamat +
+    `',
+  '` +
+    req.body.TglLahir +
+    `',
+  '` +
+    req.body.HP +
+    `',
+  '` +
+    req.body.TglMasuk +
+    `',
+  '` +
+    req.body.TglMulaiCuti +
+    `',
+  '` +
+    req.body.TglAwalKontrakPertama +
+    `',
+  '` +
+    req.body.GroupID +
+    `',
+  '` +
+    req.body.KodeCabang +
+    `',
+  '` +
+    req.body.Status +
+    `',
+  '` +
+    req.body.TampilkanLembur +
+    `',
+  '` +
+    req.body.TampilkanTerlambat +
+    `'
+  )`;
+  let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
   });
@@ -321,22 +382,53 @@ app.post("/api/user", (req, res) => {
 //Mengedit data user untuk panel admin
 app.put("/api/user/:id", (req, res) => {
   let sql =
-    `UPDATE user SET Nama="` +
-    req.body.Nama +
-    `", Pass="` +
-    req.body.Pass +
-    `", GroupID="` +
-    req.body.GroupID +
-    `", TglMasuk="` +
-    req.body.TglMasuk +
-    `", KodeCabang="` +
-    req.body.KodeCabang +
-    `" WHERE UserID="` +
+    `CALL EditUser (
+    '` +
     req.params.id +
-    `"`;
+    `',
+    '` +
+    req.body.Pass +
+    `',
+  '` +
+    req.body.Nama +
+    `',
+  '` +
+    req.body.Alamat +
+    `',
+  '` +
+    req.body.TglLahir +
+    `',
+  '` +
+    req.body.HP +
+    `',
+  '` +
+    req.body.TglMasuk +
+    `',
+  '` +
+    req.body.TglMulaiCuti +
+    `',
+  '` +
+    req.body.TglAwalKontrakPertama +
+    `',
+  '` +
+    req.body.GroupID +
+    `',
+  '` +
+    req.body.KodeCabang +
+    `',
+  '` +
+    req.body.Status +
+    `',
+  '` +
+    req.body.TampilkanLembur +
+    `',
+  '` +
+    req.body.TampilkanTerlambat +
+    `'
+    )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(results));
+    res.send(JSON.stringify());
   });
 });
 
@@ -421,7 +513,6 @@ app.post("/api/group", (req, res) => {
   });
 });
 
-
 //Mengedit Data GROUP untuk panel admin
 app.put("/api/group/:id", (req, res) => {
   let sql =
@@ -436,7 +527,7 @@ app.put("/api/group/:id", (req, res) => {
     `", MaxJamDatang="` +
     req.body.MaxJamDatang +
     `", MinJamLembur="` +
-    req.body.MinJamLembur+
+    req.body.MinJamLembur +
     `", HariLibur="` +
     req.body.HariLibur +
     `", RpPotonganTerlambat="` +
@@ -466,14 +557,13 @@ app.put("/api/group/:id", (req, res) => {
     `", MinJamLemburSore="` +
     req.body.MinJamLemburSore +
     `" WHERE GroupID="` +
-    req.params.id + 
+    req.params.id +
     `"`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
   });
 });
-
 
 //Menghapus data Group untuk panel admin
 app.delete("/api/group/:id", (req, res) => {
@@ -484,14 +574,11 @@ app.delete("/api/group/:id", (req, res) => {
   });
 });
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////        API BERHUBUNGAN DENGAN CABANG         ///////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 //Menampilkan seluruh data cabang yang sudah terdaftar di panel admin
 app.get("/api/cabang", (req, res) => {
@@ -501,9 +588,6 @@ app.get("/api/cabang", (req, res) => {
     res.send(JSON.stringify(results));
   });
 });
-
-
-
 
 //Menampilkan detai data cabang yang sudah terdaftar di panel admin
 app.get("/api/cabang/:id", (req, res) => {
@@ -536,17 +620,17 @@ app.post("/api/cabang", (req, res) => {
 //Mengedit Nama Cabang untuk untuk panel admin
 app.put("/api/cabang/:id", (req, res) => {
   let sql =
-  `UPDATE cabang SET NamaCabang="` +
-  req.body.NamaCabang +
-  `", Alamat="` +
-  req.body.Alamat +
-  `", GeneralManagerID="` +
-  req.body.GeneralManagerID +
-  `", hrdID="` +
-  req.body.hrdID +
-  `" WHERE KodeCabang="` +
-  req.params.id +
-  `"`;
+    `UPDATE cabang SET NamaCabang="` +
+    req.body.NamaCabang +
+    `", Alamat="` +
+    req.body.Alamat +
+    `", GeneralManagerID="` +
+    req.body.GeneralManagerID +
+    `", hrdID="` +
+    req.body.hrdID +
+    `" WHERE KodeCabang="` +
+    req.params.id +
+    `"`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
@@ -562,16 +646,11 @@ app.delete("/api/cabang/:id", (req, res) => {
   });
 });
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////        API BERHUBUNGAN DENGAN LOGIN         ///////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
 // Api untuk proses login di APP
 app.post("/api/login", (req, res) => {
@@ -584,7 +663,6 @@ app.post("/api/login", (req, res) => {
 
   query = mysql.format(query, table);
   conn.query(query, function (error, rows) {
-   
     if (error) {
       console.log(error);
     } else {
@@ -616,13 +694,13 @@ app.post("/api/loginLengkap", (req, res) => {
     console.log(grup);
     console.log(kodecabang);
     if (error) {
-      console.log('error karena -->'+error);
+      console.log("error karena -->" + error);
     } else {
       if (rows.length == 1) {
-        console.log('INI masuk '+ error);
+        console.log("INI masuk " + error);
         //res.json({ Error: true, Message: "OK rubah", GroupID: grup, KodeCabang:kodecabang });
       } else {
-        console.log('INI keluar '+ error);
+        console.log("INI keluar " + error);
         //res.json({ Error: true, Message: "UserID atau Pass salah!" });
       }
     }
@@ -650,14 +728,18 @@ app.post("/api/loginLengkap", (req, res) => {
       console.log(error2);
     } else {
       if (rows2.length == 1) {
-        res.json({ Error: true, Message: "OK rubah", GroupID: grup, MaxJamDatang:maxjamdatang });
+        res.json({
+          Error: true,
+          Message: "OK rubah",
+          GroupID: grup,
+          MaxJamDatang: maxjamdatang,
+        });
       } else {
         res.json({ Error: true, Message: "UserID atau Pass salah!" });
       }
     }
   });
   console.log("Model console 2f");
-
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -665,8 +747,6 @@ app.post("/api/loginLengkap", (req, res) => {
 ///////////////////////        API BERHUBUNGAN DENGAN DATA IZIN        ////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 //tampilkan Request (view untuk jabatan level 1)
 app.get("/api/izin", (req, res) => {
@@ -677,11 +757,11 @@ app.get("/api/izin", (req, res) => {
   });
 });
 
-
 //tampilkan data izin yang sudah diterima berdasakan id
 app.get("/api/izin/:id", (req, res) => {
   let sql =
-    "SELECT * FROM attlog Where Status is Not Null AND DatangID=" + req.params.id;
+    "SELECT * FROM attlog Where Status is Not Null AND DatangID=" +
+    req.params.id;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
@@ -711,22 +791,43 @@ app.get("/api/gettime", (req, res) => {
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 app.get("/api/reportabsen/:id&:tglin&:tglout", (req, res) => {
-  let sql = `SELECT DAYNAME(c.Tanggal)as NamaHari, DAY(c.Tanggal) as Hari, MONTH(c.Tanggal)as Bulan, YEAR(c.Tanggal) as Tahun,
-  IFNULL((SELECT a.UserID FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="`+req.params.id+`" ),"-") as USERID,
-  IFNULL((SELECT b.Nama FROM attlog a, user b WHERE c.Tanggal = a.TanggalScan AND a.UserID = b.UserID AND a.UserID="`+req.params.id+`" ),"TIDAK MASUK") as Nama,
-  IFNULL((SELECT a.ScanMasuk FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="`+req.params.id+`" ),"-") as ScanMasuk,
-  IFNULL((SELECT a.ScanPulang FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="`+req.params.id+`" ),"-") as ScanPulang,
-  IFNULL((SELECT a.Shift FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="`+req.params.id+`" ),"-") as Shift,
+  let sql =
+    `SELECT DAYNAME(c.Tanggal)as NamaHari, DAY(c.Tanggal) as Hari, MONTH(c.Tanggal)as Bulan, YEAR(c.Tanggal) as Tahun,
+  IFNULL((SELECT a.UserID FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="` +
+    req.params.id +
+    `" ),"-") as USERID,
+  IFNULL((SELECT b.Nama FROM attlog a, user b WHERE c.Tanggal = a.TanggalScan AND a.UserID = b.UserID AND a.UserID="` +
+    req.params.id +
+    `" ),"TIDAK MASUK") as Nama,
+  IFNULL((SELECT a.ScanMasuk FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="` +
+    req.params.id +
+    `" ),"-") as ScanMasuk,
+  IFNULL((SELECT a.ScanPulang FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="` +
+    req.params.id +
+    `" ),"-") as ScanPulang,
+  IFNULL((SELECT a.Shift FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="` +
+    req.params.id +
+    `" ),"-") as Shift,
 
-  IFNULL((SELECT IF(TIMEDIFF(a.ScanMasuk,'08:00:00') < '00:05:00','-','1') FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="`+req.params.id+`" ),"-") as JumlahTerlambat,
-  IFNULL((SELECT IF(TIMEDIFF(a.ScanMasuk,'08:00:00') < '00:05:00','-',TIMEDIFF(a.ScanMasuk,'08:00:00')) FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="`+req.params.id+`" ),"-") as Terlambat,
+  IFNULL((SELECT IF(TIMEDIFF(a.ScanMasuk,'08:00:00') < '00:05:00','-','1') FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="` +
+    req.params.id +
+    `" ),"-") as JumlahTerlambat,
+  IFNULL((SELECT IF(TIMEDIFF(a.ScanMasuk,'08:00:00') < '00:05:00','-',TIMEDIFF(a.ScanMasuk,'08:00:00')) FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="` +
+    req.params.id +
+    `" ),"-") as Terlambat,
 
 
-  IFNULL((SELECT IF(TIMEDIFF(a.ScanPulang,'16:00:00') < '00:30:00','-',TIMEDIFF(a.ScanPulang,'16:00:00')) FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="`+req.params.id+`" ),"-") as Lembur
-  FROM tgl c WHERE c.tanggal between "`+req.params.tglin+`" and "`+req.params.tglout+`" ORDER BY c.Tanggal ASC`;
+  IFNULL((SELECT IF(TIMEDIFF(a.ScanPulang,'16:00:00') < '00:30:00','-',TIMEDIFF(a.ScanPulang,'16:00:00')) FROM attlog a WHERE c.Tanggal = a.TanggalScan AND a.UserID="` +
+    req.params.id +
+    `" ),"-") as Lembur
+  FROM tgl c WHERE c.tanggal between "` +
+    req.params.tglin +
+    `" and "` +
+    req.params.tglout +
+    `" ORDER BY c.Tanggal ASC`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(results)   );
+    res.send(JSON.stringify(results));
   });
 });
 
@@ -734,4 +835,3 @@ app.get("/api/reportabsen/:id&:tglin&:tglout", (req, res) => {
 app.listen(3001, () => {
   console.log("Server started on port 3001...");
 });
-                         
