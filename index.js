@@ -179,8 +179,7 @@ let sql = `CALL ProsesMasuk (
 '`+req.body.TanggalScan+`',
 '`+req.body.ScanMasuk+`',
 '`+req.body.Shift+`',
-'`+req.body.KodeCabang+`',
-'`+req.body.GroupID+`'
+'`+req.body.KodeCabang+`'
 )`;
 let query = conn.query(sql,(err, results) => {
     if (err) throw err;
@@ -206,10 +205,8 @@ app.get("/api/datang/:id", (req, res) => {
 
 app.put("/api/datang/:id", (req, res) => {
   let sql = `CALL ProsesPulang (
-    '`+req.body.UserID+`',
     '`+req.params.id+`',
     '`+req.body.ScanPulang+`',
-    '`+req.body.GroupID+`',
     '`+req.body.Keterangan+`'
     )`;
   let query = conn.query(sql, (err, results) => {
@@ -217,6 +214,64 @@ app.put("/api/datang/:id", (req, res) => {
     res.send(JSON.stringify());
   });
 });
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////       API BERHUBUNGAN DENGAN DATA KELUAR MASUK KANTOR        /////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+//Post Untuk input Keluar Kantor
+app.post("/api/keluarkantor", (req, res) => {
+  let sql = `CALL ProsesKeluarKantor (
+  '`+req.body.DatangID+`',
+  '`+req.body.JamKeluar+`',
+  '`+req.body.Keterangan+`'
+  )`;
+  let query = conn.query(sql,(err, results) => {
+      if (err) throw err;
+      res.send(JSON.stringify(results));
+    });
+  });
+
+
+  
+//GET Data KeluarID untuk karyawan yang sama sesuai datang id dan validasi 
+// untuk prosesi validasi scan balik kantor  karyawan
+
+app.get("/api/keluarkantor/:id", (req, res) => {
+  conn.query(`CALL MengambilKeluarID ('` + req.params.id + `')`,
+    function (err, rows) {
+      if (err) throw err;
+      var datang = rows[0];
+      res.send(datang);
+    }
+  );
+});
+
+
+
+//Put data untuk update scan pulang setelah mendapatkan DatangID
+
+app.put("/api/keluarkantor/:id", (req, res) => {
+  let sql = `CALL ProsesKembaliKantor (
+    '`+req.params.id+`',
+    '`+req.body.JamKembali+`',
+    '`+req.body.Keterangan+`'
+    )`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify());
+  });
+});
+
+
+
+
+
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
