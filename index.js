@@ -432,6 +432,22 @@ app.put("/api/user/:id", (req, res) => {
   });
 });
 
+
+
+///////// TRIALLL
+
+//Menampilkan Detail grup Per ID Pegawai
+app.get("/api/usertest/:id", (req, res) => {
+  conn.query(
+    `SELECT * FROM user Where UserID="` + req.params.id + `"`,
+    function (err, rows) {
+      if (err) throw err;
+      var group = rows[0];
+      res.send(group);
+    }
+  );
+});
+
 //Menghapus data user untuk panel admin
 app.delete("/api/user/:id", (req, res) => {
   let sql = `DELETE FROM user WHERE UserID="` + req.params.id + `"`;
