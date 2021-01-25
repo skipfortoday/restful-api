@@ -3,7 +3,9 @@ var cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
 const mysql = require("mysql");
-const { request } = require("express");
+const {
+  request
+} = require("express");
 var session = require("express-session");
 var pdf = require("pdfkit"); //to create PDF using NODE JS
 var fs = require("fs"); // to create write streams
@@ -19,7 +21,9 @@ app.use(
     saveUninitialized: true,
   })
 );
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(bodyParser.json());
 
 //create database connection
@@ -84,12 +88,15 @@ app.get("/api/lastscan/:id", (req, res) => {
 ///////////////////////////////////////////////////////////////////////////
 
 //Tampilkan 10 Recent Scan Untuk Admin
-app.get("/api/attlog", (req, res) => {
-  let sql = `SELECT DAY(a.TanggalScan) as Hari, MONTH(a.TanggalScan)as Bulan, YEAR(a.TanggalScan) as Tahun,a.UserID, b.Nama, a.ScanMasuk, a.ScanPulang, a.Shift, IF(TIMEDIFF(a.ScanMasuk,a.JamMasuk)< '00:00:00','-',TIMEDIFF(a.ScanMasuk,a.JamMasuk)) as Terlambat, TIMEDIFF(a.ScanPulang,a.JamPulang) as diffLembur, IF(TIMEDIFF(a.ScanPulang,a.JamPulang)< '00:30:00','-',TIMEDIFF(a.ScanPulang,a.JamPulang)) as Lembur FROM ATTLOG a JOIN user b ON a.UserID = b.UserID ORDER BY a.TanggalScan DESC LIMIT 10  `;
-  let query = conn.query(sql, (err, results) => {
-    if (err) throw err;
-    res.send(JSON.stringify(results));
-  });
+app.get("/api/laporan", (req, res) => {
+  conn.query(
+    `CALL MenampilkanLaporan`,
+    function (err, rows) {
+      if (err) throw err;
+      var laporan = rows[0];
+      res.send(laporan);
+    }
+  );
 });
 
 //Tampilkan 30 Day  Scan Untuk Admins dan User
@@ -169,7 +176,10 @@ app.post("/api/attlogUpdate", (req, res) => {
           KodeCabang: kodecabang,
         });
       } else {
-        res.json({ Error: true, Message: "UserID atau Pass salah!" });
+        res.json({
+          Error: true,
+          Message: "UserID atau Pass salah!"
+        });
       }
     }
   });
@@ -193,13 +203,31 @@ app.post("/api/attlog", (req, res) => {
     `',
 '` +
     req.body.KodeCabang +
-    `'
+    `'  
 )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
   });
 });
+
+//Post Untuk input prosesi absensi dari APP
+app.put("/api/keterangan/:id", (req, res) => {
+  let sql =
+    `CALL InputKetTerlambat (
+    '` +
+    req.params.id +
+    `',
+    '` +
+    req.body.Keterangan +
+    `'
+    )`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify());
+  });
+});
+
 
 //GET Data DatangID untuk karyawan yang sama dihari yang sama
 // untuk prosesi validasi scan pulang karyawan
@@ -227,7 +255,7 @@ app.put("/api/datang/:id", (req, res) => {
     req.body.ScanPulang +
     `',
     '` +
-    req.body.Keterangan +
+    req.body.KeteranganPulang +
     `'
     )`;
   let query = conn.query(sql, (err, results) => {
@@ -684,9 +712,15 @@ app.post("/api/login", (req, res) => {
     } else {
       if (rows.length == 1) {
         let grup = rows[0].GroupID;
-        res.json({ Message: "OK", GroupID: grup });
+        res.json({
+          Message: "OK",
+          GroupID: grup
+        });
       } else {
-        res.json({ Error: true, Message: "Username atau Password Salah!" });
+        res.json({
+          Error: true,
+          Message: "Username atau Password Salah!"
+        });
       }
     }
   });
@@ -751,7 +785,10 @@ app.post("/api/loginLengkap", (req, res) => {
           MaxJamDatang: maxjamdatang,
         });
       } else {
-        res.json({ Error: true, Message: "UserID atau Pass salah!" });
+        res.json({
+          Error: true,
+          Message: "UserID atau Pass salah!"
+        });
       }
     }
   });
