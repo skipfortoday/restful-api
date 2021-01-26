@@ -884,6 +884,35 @@ app.get("/api/reportabsen/:id&:tglin&:tglout", (req, res) => {
   });
 });
 
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////        TRIAL VALIDATION API                    ////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+app.get("/api/vuser", (req, res) => {
+  let sql = "SELECT UserID FROM user";
+  let test = res[0];
+  let query = conn.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(JSON.stringify(test));
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
 //Server listening
 app.listen(3001, () => {
   console.log("Server started on port 3001...");
