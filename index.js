@@ -793,12 +793,16 @@ app.post("/api/loginLengkap", (req, res) => {
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 //tampilkan Request (view untuk jabatan level 1)
+
 app.get("/api/izin", (req, res) => {
-  let sql = `SELECT * FROM attlog`;
-  let query = conn.query(sql, (err, results) => {
-    if (err) throw err;
-    res.send(JSON.stringify(results));
-  });
+  conn.query(
+    `CALL MenampilkanIzin`,
+    function (err, rows) {
+      if (err) throw err;
+      var izin = rows[0];
+      res.send(izin);
+    }
+  );
 });
 
 //tampilkan data izin yang sudah diterima berdasakan id
