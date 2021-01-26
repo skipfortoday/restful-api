@@ -246,7 +246,7 @@ app.put("/api/datang/:id", (req, res) => {
     req.body.ScanPulang +
     `',
     '` +
-    req.body.KeteranganPulang +
+    req.body.KetPulang +
     `'
     )`;
   let query = conn.query(sql, (err, results) => {
