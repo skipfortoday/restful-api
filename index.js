@@ -88,16 +88,7 @@ app.get("/api/lastscan/:id", (req, res) => {
 ///////////////////////////////////////////////////////////////////////////
 
 //Tampilkan 10 Recent Scan Untuk Admin
-app.get("/api/laporan", (req, res) => {
-  conn.query(
-    `CALL MenampilkanLaporan`,
-    function (err, rows) {
-      if (err) throw err;
-      var laporan = rows[0];
-      res.send(laporan);
-    }
-  );
-});
+
 
 //Tampilkan 30 Day  Scan Untuk Admins dan User
 app.get("/api/attlog/:id", (req, res) => {
@@ -893,19 +884,29 @@ app.get("/api/reportabsen/:id&:tglin&:tglout", (req, res) => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-app.get("/api/vuser", (req, res) => {
-  let sql = "SELECT UserID FROM user";
-  let test = res[0];
-  let query = conn.query(sql, (err, result) => {
-    if (err) throw err;
-    res.send(JSON.stringify(test));
-  });
+
+
+
+//menampilkan detail user  data  berdasarkan User ID
+
+app.get("/api/laporan/:id", (req, res) => {
+  conn.query(
+    `CALL MenampilkanScan('` + req.params.id + `')`,
+    function (err, rows) {
+      if (err) throw err;
+      var scan = rows[0];
+      res.send(scan);
+    }
+  );
 });
 
-
-
-
-
+app.delete("/api/deletescan", (req, res) => {
+  let sql = `DELETE FROM attlog ORDER BY DatangID DESC LIMIT 1`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
 
 
 
