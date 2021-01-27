@@ -648,12 +648,15 @@ app.post("/api/cabang", (req, res) => {
   let sql = "INSERT INTO cabang SET ?";
   let query = conn.query(sql, data, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(results));
+    res.send(JSON.stringify(data));
   });
 });
 
 //Mengedit Nama Cabang untuk untuk panel admin
 app.put("/api/cabang/:id", (req, res) => {
+  let data = {
+    KodeCabang: req.body.KodeCabang,
+    NamaCabang: req.body.NamaCabang, };
   let sql =
     `UPDATE cabang SET NamaCabang="` +
     req.body.NamaCabang +
@@ -668,7 +671,7 @@ app.put("/api/cabang/:id", (req, res) => {
     `"`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(results));
+    res.send(JSON.stringify(data));
   });
 });
 
@@ -805,14 +808,64 @@ app.get("/api/izin", (req, res) => {
 
 //tampilkan data izin yang sudah diterima berdasakan id
 app.get("/api/izin/:id", (req, res) => {
+  conn.query(
+    `CALL MenampilkanDetailIzin('` + req.params.id + `')`,
+    function (err, rows) {
+      if (err) throw err;
+      var izin = rows[0];
+      var detailizin = izin[0];
+      res.send(detailizin);
+    }
+  );
+});
+
+
+//Tambahkan data user untuk panel admin
+app.post("/api/izin", (req, res) => {
   let sql =
-    "SELECT * FROM attlog Where Status is Not Null AND DatangID=" +
-    req.params.id;
+    `CALL InputIzinPerorang (
+  '` +
+    req.body.UserID +
+    `',
+  '` +
+    req.body.TanggalScan +
+    `',
+  '` +
+    req.body.Status +
+    `',
+  '` +
+    req.body.Keterangan +
+    `'
+  )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
   });
 });
+
+
+app.post("/api/izingroup", (req, res) => {
+  let sql =
+    `CALL InputIzinPergroup (
+  '` +
+    req.body.GroupID +
+    `',
+  '` +
+    req.body.TanggalScan +
+    `',
+  '` +
+    req.body.Status +
+    `',
+  '` +
+    req.body.Keterangan +
+    `'
+  )`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
