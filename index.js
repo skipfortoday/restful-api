@@ -702,10 +702,8 @@ app.post("/api/login", (req, res) => {
       console.log(error);
     } else {
       if (rows.length == 1) {
-        let grup = rows[0].GroupID;
         res.json({
           Message: "OK",
-          GroupID: grup
         });
       } else {
         res.json({
