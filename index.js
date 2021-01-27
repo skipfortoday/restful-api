@@ -822,6 +822,13 @@ app.get("/api/izin/:id", (req, res) => {
 
 //Tambahkan data user untuk panel admin
 app.post("/api/izin", (req, res) => {
+  
+  let data = {
+    TanggalScan: req.body.TanggalScan,
+    UserID: req.body.UserID,
+    Status: req.body.Status,
+    Keterangan: req.body.Keterangan,
+  };
   let sql =
     `CALL InputIzinPerorang (
   '` +
@@ -839,7 +846,7 @@ app.post("/api/izin", (req, res) => {
   )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(results));
+    res.send(JSON.stringify(data));
   });
 });
 
