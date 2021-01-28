@@ -3,9 +3,7 @@ var cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
 const mysql = require("mysql");
-const {
-  request
-} = require("express");
+const { request } = require("express");
 var session = require("express-session");
 var pdf = require("pdfkit"); //to create PDF using NODE JS
 var fs = require("fs"); // to create write streams
@@ -21,9 +19,11 @@ app.use(
     saveUninitialized: true,
   })
 );
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 app.use(bodyParser.json());
 
 //create database connection
@@ -88,7 +88,6 @@ app.get("/api/lastscan/:id", (req, res) => {
 ///////////////////////////////////////////////////////////////////////////
 
 //Tampilkan 10 Recent Scan Untuk Admin
-
 
 //Tampilkan 30 Day  Scan Untuk Admins dan User
 app.get("/api/attlog/:id", (req, res) => {
@@ -169,7 +168,7 @@ app.post("/api/attlogUpdate", (req, res) => {
       } else {
         res.json({
           Error: true,
-          Message: "UserID atau Pass salah!"
+          Message: "UserID atau Pass salah!",
         });
       }
     }
@@ -218,7 +217,6 @@ app.put("/api/keterangan/:id", (req, res) => {
     res.send(JSON.stringify());
   });
 });
-
 
 //GET Data DatangID untuk karyawan yang sama dihari yang sama
 // untuk prosesi validasi scan pulang karyawan
@@ -351,7 +349,7 @@ app.post("/api/user", (req, res) => {
     Nama: req.body.Nama,
     UserID: req.body.UserID,
   };
-  
+
   let sql =
     `CALL MenambahUser (
   '` +
@@ -409,7 +407,7 @@ app.put("/api/user/:id", (req, res) => {
     Nama: req.body.Nama,
     UserID: req.body.UserID,
   };
-  
+
   let sql =
     `CALL EditUser (
     '` +
@@ -460,8 +458,6 @@ app.put("/api/user/:id", (req, res) => {
     res.send(JSON.stringify(data));
   });
 });
-
-
 
 ///////// TRIALLL
 
@@ -666,7 +662,8 @@ app.post("/api/cabang", (req, res) => {
 app.put("/api/cabang/:id", (req, res) => {
   let data = {
     KodeCabang: req.body.KodeCabang,
-    NamaCabang: req.body.NamaCabang, };
+    NamaCabang: req.body.NamaCabang,
+  };
   let sql =
     `UPDATE cabang SET NamaCabang="` +
     req.body.NamaCabang +
@@ -721,7 +718,7 @@ app.post("/api/login", (req, res) => {
       } else {
         res.json({
           Error: true,
-          Message: "Username atau Password Salah!"
+          Message: "Username atau Password Salah!",
         });
       }
     }
@@ -789,7 +786,7 @@ app.post("/api/loginLengkap", (req, res) => {
       } else {
         res.json({
           Error: true,
-          Message: "UserID atau Pass salah!"
+          Message: "UserID atau Pass salah!",
         });
       }
     }
@@ -806,14 +803,11 @@ app.post("/api/loginLengkap", (req, res) => {
 //tampilkan Request (view untuk jabatan level 1)
 
 app.get("/api/izin", (req, res) => {
-  conn.query(
-    `CALL MenampilkanIzin`,
-    function (err, rows) {
-      if (err) throw err;
-      var izin = rows[0];
-      res.send(izin);
-    }
-  );
+  conn.query(`CALL MenampilkanIzin`, function (err, rows) {
+    if (err) throw err;
+    var izin = rows[0];
+    res.send(izin);
+  });
 });
 
 //tampilkan data izin yang sudah diterima berdasakan id
@@ -829,10 +823,8 @@ app.get("/api/izin/:id", (req, res) => {
   );
 });
 
-
 //Tambahkan data user untuk panel admin
 app.post("/api/izin", (req, res) => {
-  
   let data = {
     TanggalScan: req.body.TanggalScan,
     UserID: req.body.UserID,
@@ -860,7 +852,6 @@ app.post("/api/izin", (req, res) => {
   });
 });
 
-
 app.post("/api/izingroup", (req, res) => {
   let sql =
     `CALL InputIzinPergroup (
@@ -882,7 +873,6 @@ app.post("/api/izingroup", (req, res) => {
     res.send(JSON.stringify(results));
   });
 });
-
 
 //Menghapus data izin untuk panel admin
 app.delete("/api/izin/:id", (req, res) => {
@@ -956,17 +946,11 @@ app.get("/api/reportabsen/:id&:tglin&:tglout", (req, res) => {
   });
 });
 
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////        TRIAL VALIDATION API                    ////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
 //menampilkan detail Laporan  data scan berdasarkan User ID
 
@@ -992,6 +976,41 @@ app.get("/api/applaporan/:id", (req, res) => {
   );
 });
 
+// Menampilkan Recent Scan Untuk APP Android Berdasarkan Tgl Mulai Dan Tgl Akhir
+app.get("/api/apprecentscan/:id&:TglMasuk&:TglSelesai", (req, res) => {
+  conn.query(
+    `CALL AppMenampilkanRecentScan ('` +
+      req.params.id +
+      `','` +
+      req.params.TglMasuk +
+      `','` +
+      req.params.TglSelesai +
+      `')`,
+    function (err, rows) {
+      if (err) throw err;
+      var scan = rows[0];
+      res.send(scan);
+    }
+  );
+});
+
+app.get("/api/tlaporan", (req, res) => {
+  conn.query(
+    `CALL MenampilkanLaporan ('` +
+      req.body.Nama +
+      `','` +
+      req.body.TglAwal +
+      `','` +
+      req.body.TglAkhir +
+      `')`,
+    function (err, rows) {
+      if (err) throw err;
+      var scan = rows[0];
+      res.send(scan);
+    }
+  );
+})
+
 app.delete("/api/deletescan", (req, res) => {
   let sql = `DELETE FROM attlog ORDER BY DatangID DESC LIMIT 1`;
   let query = conn.query(sql, (err, results) => {
@@ -999,12 +1018,6 @@ app.delete("/api/deletescan", (req, res) => {
     res.send(JSON.stringify(results));
   });
 });
-
-
-
-
-
-
 
 //Server listening
 app.listen(3001, () => {
