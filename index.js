@@ -347,6 +347,11 @@ app.get("/api/user/:id", (req, res) => {
 
 //Tambahkan data user untuk panel admin
 app.post("/api/user", (req, res) => {
+  let data = {
+    Nama: req.body.Nama,
+    UserID: req.body.UserID,
+  };
+  
   let sql =
     `CALL MenambahUser (
   '` +
@@ -394,12 +399,17 @@ app.post("/api/user", (req, res) => {
   )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(results));
+    res.send(JSON.stringify(data));
   });
 });
 
 //Mengedit data user untuk panel admin
 app.put("/api/user/:id", (req, res) => {
+  let data = {
+    Nama: req.body.Nama,
+    UserID: req.body.UserID,
+  };
+  
   let sql =
     `CALL EditUser (
     '` +
@@ -447,7 +457,7 @@ app.put("/api/user/:id", (req, res) => {
     )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify());
+    res.send(JSON.stringify(data));
   });
 });
 
@@ -949,11 +959,22 @@ app.get("/api/reportabsen/:id&:tglin&:tglout", (req, res) => {
 
 
 
-//menampilkan detail user  data  berdasarkan User ID
+//menampilkan detail Laporan  data scan berdasarkan User ID
 
 app.get("/api/laporan/:id", (req, res) => {
   conn.query(
     `CALL MenampilkanScan('` + req.params.id + `')`,
+    function (err, rows) {
+      if (err) throw err;
+      var scan = rows[0];
+      res.send(scan);
+    }
+  );
+});
+
+app.get("/api/applaporan/:id", (req, res) => {
+  conn.query(
+    `CALL AppMenampilkanScan ('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
       var scan = rows[0];
