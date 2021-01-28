@@ -884,6 +884,15 @@ app.post("/api/izingroup", (req, res) => {
 });
 
 
+//Menghapus data izin untuk panel admin
+app.delete("/api/izin/:id", (req, res) => {
+  let sql = `DELETE FROM attlog WHERE DatangID="` + req.params.id + `"`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////        API BERHUBUNGAN DENGAN DATA WAKTU        ////////////////////
