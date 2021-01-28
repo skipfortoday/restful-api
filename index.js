@@ -324,7 +324,7 @@ app.put("/api/keluarkantor/:id", (req, res) => {
 
 //Menampilkan Seluruh List User untuk table data karyawan di web admin
 app.get("/api/user", (req, res) => {
-  let sql = `SELECT a.UserID, a.Nama, c.Jabatan
+  let sql = `SELECT a.UserID, a.Nama, c.Jabatan, DATE_FORMAT(a.TglMulaiCuti, "%d-%m-%Y") as TglMulaiCuti
   FROM user a JOIN tblgrupjabatan c ON a.GroupID = c.GroupID  `;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
