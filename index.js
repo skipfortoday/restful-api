@@ -293,7 +293,7 @@ app.get("/api/keluarkantor/:id", (req, res) => {
   );
 });
 
-//Put data untuk update scan pulang setelah mendapatkan DatangID
+//Put data untuk update scan kembali Kantor setelah mendapatkan KeluarID
 
 app.put("/api/keluarkantor/:id", (req, res) => {
   let sql =
@@ -306,6 +306,56 @@ app.put("/api/keluarkantor/:id", (req, res) => {
     `',
     '` +
     req.body.KeteranganKembali +
+    `'
+    )`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify());
+  });
+});
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////       API BERHUBUNGAN DENGAN DATA ISTIRAHAT KANTOR        /////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+//Put Untuk input Istirahat Kantor Menggunakan Datang ID
+app.put("/api/istirahat/:id", (req, res) => {
+  let sql =
+    `CALL ProsesIstirahatKeluar(
+  '` +
+    req.params.id +
+    `',
+  '` +
+    req.body.IstirahatKeluar +
+    `',
+  '` +
+    req.body.KeteranganIstirahat +
+    `'
+  )`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+
+//Put data untuk update scan kembali Kantor setelah mendapatkan KeluarID
+
+app.put("/api/istirahatkembali/:id", (req, res) => {
+  let sql =
+    `CALL ProsesIstirahatKembali (
+    '` +
+    req.params.id +
+    `',
+    '` +
+    req.body.IstirahatKembali +
+    `',
+    '` +
+    req.body.KeteranganIstirahatKembali +
     `'
     )`;
   let query = conn.query(sql, (err, results) => {
