@@ -305,7 +305,7 @@ app.put("/api/keluarkantor/:id", (req, res) => {
     req.body.JamKembali +
     `',
     '` +
-    req.body.Keterangan +
+    req.body.KeteranganKembali +
     `'
     )`;
   let query = conn.query(sql, (err, results) => {
@@ -993,6 +993,8 @@ app.get("/api/apprecentscan/:id&:TglMasuk&:TglSelesai", (req, res) => {
     }
   );
 });
+
+
 
 app.get("/api/tlaporan", (req, res) => {
   conn.query(
