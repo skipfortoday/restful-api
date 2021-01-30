@@ -333,7 +333,7 @@ app.put("/api/istirahat/:id", (req, res) => {
     req.body.IstirahatKeluar +
     `',
   '` +
-    req.body.KeteranganIstirahat +
+    req.body.KetIstirahatKeluar +
     `'
   )`;
   let query = conn.query(sql, (err, results) => {
@@ -343,7 +343,7 @@ app.put("/api/istirahat/:id", (req, res) => {
 });
 
 
-//Put data untuk update scan kembali Kantor setelah mendapatkan KeluarID
+//Put data untuk Istirahat Kembali
 
 app.put("/api/istirahatkembali/:id", (req, res) => {
   let sql =
@@ -355,12 +355,12 @@ app.put("/api/istirahatkembali/:id", (req, res) => {
     req.body.IstirahatKembali +
     `',
     '` +
-    req.body.KeteranganIstirahatKembali +
+    req.body.KetIstirahatKembali +
     `'
     )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify());
+    res.send(JSON.stringify(results));
   });
 });
 
@@ -1027,14 +1027,14 @@ app.get("/api/applaporan/:id", (req, res) => {
 });
 
 // Menampilkan Recent Scan Untuk APP Android Berdasarkan Tgl Mulai Dan Tgl Akhir
-app.get("/api/apprecentscan/:id&:TglMasuk&:TglSelesai", (req, res) => {
+app.get("/api/apprecentscan/:id&:TglAwal&:TglAkhir", (req, res) => {
   conn.query(
     `CALL AppMenampilkanRecentScan ('` +
       req.params.id +
       `','` +
-      req.params.TglMasuk +
+      req.params.TglAwal +
       `','` +
-      req.params.TglSelesai +
+      req.params.TglAkhir +
       `')`,
     function (err, rows) {
       if (err) throw err;
