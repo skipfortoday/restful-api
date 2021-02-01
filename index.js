@@ -944,7 +944,7 @@ app.delete("/api/izin/:id", (req, res) => {
 app.get("/api/gettime", (req, res) => {
   let sql = `SELECT Now() as Waktu`;
   let query = conn.query(sql, (err, results) => {
-    if (err) throw err;
+    if (err) res.send(JSON.stringify(err));
     res.send(JSON.stringify(results));
   });
 });
