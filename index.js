@@ -35,14 +35,6 @@ const conn = mysql.createConnection({
   timezone: "utc",
 });
 
-const conn2 = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "absensi",
-  timezone: "utc",
-});
-
 //connect to database
 conn.connect((err) => {
   if (err) throw err;
