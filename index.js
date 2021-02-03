@@ -285,6 +285,19 @@ app.get("/api/keluarkantor/:id", (req, res) => {
   );
 });
 
+//GET List Jam Scan Keluar & Kembali Ke Kantor
+
+app.get("/api/keluarkantor/:id", (req, res) => {
+  conn.query(
+    `CALL ListKeluarKantor ('` + req.params.id + `')`,
+    function (err, rows) {
+      if (err) throw err;
+      var datang = rows[0];
+      res.send(datang);
+    }
+  );
+});
+
 //Put data untuk update scan kembali Kantor setelah mendapatkan KeluarID
 
 app.put("/api/keluarkantor/:id", (req, res) => {
@@ -305,8 +318,6 @@ app.put("/api/keluarkantor/:id", (req, res) => {
     res.send(JSON.stringify());
   });
 });
-
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -333,7 +344,6 @@ app.put("/api/istirahat/:id", (req, res) => {
     res.send(JSON.stringify(results));
   });
 });
-
 
 //Put data untuk Istirahat Kembali
 
@@ -570,26 +580,134 @@ app.get("/api/group/:id", (req, res) => {
 app.post("/api/group", (req, res) => {
   let data = {
     GroupID: req.body.GroupID,
-    jabatan: req.body.Jabatan,
+    Jabatan: req.body.Jabatan,
+    AdaOff: req.body.AdaOff,
+    CekJamKembali: req.body.CekJamKembali,
+    RuleTerlambatBertingkat: req.body.RuleTerlambatBertingkat,
     JamDatang: req.body.JamDatang,
     MaxJamDatang: req.body.MaxJamDatang,
     JamPulang: req.body.JamPulang,
     MinJamLembur: req.body.MinJamLembur,
+    JamMulaiLembur: req.body.JamMulaiLembur,
     RpPotonganTerlambat: req.body.RpPotonganTerlambat,
     JamDatangSiang: req.body.JamDatangSiang,
     MaxJamDatangSiang: req.body.MaxJamDatangSiang,
+    JamPulangSiang: req.body.JamPulangSiang,
+    JamMulaiLemburSiang: req.body.JamMulaiLemburSiang,
     MinJamLemburSiang: req.body.MinJamLemburSiang,
     HariLibur: req.body.HariLibur,
-    RpPotonganTerlambat: req.body.RpPotonganTerlambat,
+    RpPotonganTerlambatKembali: req.body.RpPotonganTerlambatKembali,
     RpPotonganTidakMasuk: req.body.RpPotonganTidakMasuk,
     RpLemburPerJam: req.body.RpLemburPerJam,
     JamDatangSore: req.body.JamDatangSore,
     MaxJamDatangSore: req.body.MaxJamDatangSore,
     JamPulangSore: req.body.JamPulangSore,
-    MinJamLemburSore: req.body.JamLemburSore,
+    MinJamLemburSore: req.body.MinJamLemburSore,
+    JamMulaiLemburSore: req.body.JamMulaiLemburSore,
+    JamMulaiPagi: req.body.JamMulaiPagi,
+    MaxJamKembali: req.body.MaxJamKembali,
+    JamMulaiSiang: req.body.JamMulaiSiang,
+    MaxJamKembaliSiang: req.body.MaxJamKembaliSiang,
+    JamMulaiSore: req.body.JamMulaiSore,
+    MaxJamKembaliSore: req.body.MaxJamKembaliSore,
   };
 
-  let sql = "INSERT INTO tblgrupjabatan SET ?";
+  let sql =
+    `CALL MenambahkanGrupKaryawan (
+  '` +
+    req.body.GroupID +
+    `',
+  '` +
+    req.body.Jabatan +
+    `',
+  '` +
+    req.body.AdaOff +
+    `',
+  '` +
+    req.body.CekJamKembali +
+    `',
+  '` +
+    req.body.RuleTerlambatBertingkat +
+    `',
+  '` +
+    req.body.JamDatang +
+    `',
+  '` +
+    req.body.MaxJamDatang +
+    `',
+  '` +
+    req.body.JamPulang +
+    `',
+  '` +
+    req.body.MinJamLembur +
+    `',
+  '` +
+    req.body.JamMulaiLembur +
+    `',
+  '` +
+    req.body.RpPotonganTerlambat +
+    `',
+  '` +
+    req.body.JamDatangSiang +
+    `',
+  '` +
+    req.body.MaxJamDatangSiang +
+    `',
+  '` +
+    req.body.JamPulangSiang +
+    `',
+  '` +
+    req.body.JamMulaiLemburSiang +
+    `',
+  '` +
+    req.body.MinJamLemburSiang +
+    `',
+  '` +
+    req.body.HariLibur +
+    `',
+  '` +
+    req.body.RpPotonganTerlambatKembali +
+    `',
+  '` +
+    req.body.RpPotonganTidakMasuk +
+    `',
+  '` +
+    req.body.RpLemburPerJam +
+    `',
+    '` +
+    req.body.JamDatangSore +
+    `',
+    '` +
+    req.body.MaxJamDatangSore +
+    `',
+    '` +
+    req.body.JamPulangSore +
+    `',
+    '` +
+    req.body.JamLemburSore +
+    `',
+    '` +
+    req.body.JamMulaiLemburSore +
+    `',
+    '` +
+    req.body.JamMulaiPagi +
+    `',
+    '` +
+    req.body.MaxJamKembali +
+    `',
+    '` +
+    req.body.JamMulaiSiang +
+    `',
+    '` +
+    req.body.MaxJamKembaliSiang +
+    `',
+  '` +
+    req.body.JamMulaiSore +
+  `',
+  '` +
+    req.body.MaxJamKembaliSore +
+    `'
+  )`;
   let query = conn.query(sql, data, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
@@ -626,7 +744,7 @@ app.put("/api/group/:id", (req, res) => {
     `", HariLibur="` +
     req.body.HariLibur +
     `", RpPotonganTerlambat="` +
-    req.body.RpPotonganTerlambat +
+    req.body.RpPotonganTerlambatKembali +
     `", RpPotonganTidakMasuk="` +
     req.body.RpPotonganTidakMasuk +
     `", RpLemburPerJam="` +
@@ -635,6 +753,18 @@ app.put("/api/group/:id", (req, res) => {
     req.body.JamDatangSore +
     `", MaxJamDatangSore="` +
     req.body.MaxJamDatangSore +
+    `", JamMulaiPagi="` +
+    req.body.JamMulaiPagi +
+    `", JamMulaiSiang="` +
+    req.body.JamMulaiSiang +
+    `", JamMulaiSore="` +
+    req.body.JamMulaiSore +
+    `", MaxJamKembali="` +
+    req.body.MaxJamKembali +
+    `", MaxJamKembaliSiang="` +
+    req.body.MaxJamKembaliSiang +
+    `", MaxJamKembaliSore="` +
+    req.body.MaxJamKembaliSore +
     `", JamPulangSore="` +
     req.body.JamPulangSore +
     `", MinJamLemburSore="` +
@@ -1001,33 +1131,35 @@ app.get("/api/laporan/:id", (req, res) => {
     `CALL MenampilkanScan('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
-      
+
       var scan = rows[0];
 
       var strDatangID = ""; // 1,2,3
-      var newArray= {};
-      scan.map(function(data,key){
+      var newArray = {};
+      scan.map(function (data, key) {
         strDatangID += data.DatangID;
-        data['detail'] = [];
+        data["detail"] = [];
         newArray[data.DatangID] = data;
-        if(key<scan.length-1) strDatangID += ',';
+        if (key < scan.length - 1) strDatangID += ",";
       });
 
-
-      var sql = `SELECT *, 
+      var sql =
+        `SELECT *, 
         IF(JamKembali IS NULL, DATE_FORMAT(JamKeluar, "%H:%i"), CONCAT(DATE_FORMAT(JamKeluar, "%H:%i"),' - ', DATE_FORMAT(JamKembali, "%H:%i"))) AS KelKan,
         CONCAT('Total = ',IF(JamKembali IS NULL, '', DATE_FORMAT(TIMEDIFF(JamKembali,JamKeluar), "%H:%i"))) AS Durasi ,
         CONCAT('Ket. : ',IFNULL(Keterangan,'')) AS Ket,
         CONCAT('Ket. Kembali : ',IFNULL(KeteranganKembali,'')) AS KetKembali
 
-        FROM tblkeluarkantor WHERE DatangID IN(`+strDatangID+`) `;
+        FROM tblkeluarkantor WHERE DatangID IN(` +
+        strDatangID +
+        `) `;
       let query = conn.query(sql, (err, results) => {
         if (err) throw err;
         console.log(results);
-        results.map(function(data,key){
-          data['k'] = 'Keluar Kantor';
+        results.map(function (data, key) {
+          data["k"] = "Keluar Kantor";
           console.log(data);
-          newArray[data.DatangID]['detail'].push(data);
+          newArray[data.DatangID]["detail"].push(data);
         });
         //console.log(newArray['105']);
         //res.send(JSON.stringify(results));
@@ -1082,8 +1214,6 @@ app.get("/api/apprecentscan/:id&:TglAwal&:TglAkhir", (req, res) => {
   );
 });
 
-
-
 app.get("/api/tlaporan", (req, res) => {
   conn.query(
     `CALL MenampilkanLaporan ('` +
@@ -1099,7 +1229,7 @@ app.get("/api/tlaporan", (req, res) => {
       res.send(scan);
     }
   );
-})
+});
 
 app.delete("/api/deletescan", (req, res) => {
   let sql = `DELETE FROM attlog ORDER BY DatangID DESC LIMIT 1`;
