@@ -1129,42 +1129,40 @@ app.get("/api/reportabsen/:id&:tglin&:tglout", (req, res) => {
 app.get("/api/laporan/:id", (req, res) => {
   conn.query(
     `CALL MenampilkanScan('` + req.params.id + `')`,
-    function (err, rows) {
-      if (err) throw err;
-
-      var scan = rows[0];
-
-      var strDatangID = ""; // 1,2,3
-      var newArray = {};
-      scan.map(function (data, key) {
-        strDatangID += data.DatangID;
-        data["detail"] = [];
-        newArray[data.DatangID] = data;
-        if (key < scan.length - 1) strDatangID += ",";
-      });
-
-      var sql =
-        `SELECT *, 
-        IF(JamKembali IS NULL, DATE_FORMAT(JamKeluar, "%H:%i"), CONCAT(DATE_FORMAT(JamKeluar, "%H:%i"),' - ', DATE_FORMAT(JamKembali, "%H:%i"))) AS KelKan,
-        CONCAT('Total = ',IF(JamKembali IS NULL, '', DATE_FORMAT(TIMEDIFF(JamKembali,JamKeluar), "%H:%i"))) AS Durasi ,
-        CONCAT('Ket. : ',IFNULL(Keterangan,'')) AS Ket,
-        CONCAT('Ket. Kembali : ',IFNULL(KeteranganKembali,'')) AS KetKembali
-
-        FROM tblkeluarkantor WHERE DatangID IN(` +
-        strDatangID +
-        `) `;
-      let query = conn.query(sql, (err, results) => {
-        if (err) throw err;
-        console.log(results);
-        results.map(function (data, key) {
-          data["k"] = "Keluar Kantor";
-          console.log(data);
-          newArray[data.DatangID]["detail"].push(data);
-        });
-        //console.log(newArray['105']);
-        //res.send(JSON.stringify(results));
-        res.send(newArray);
-      });
+    function (err, rows) { 
+      if (err) throw err; 
+       
+      var scan = rows[0]; 
+ 
+      var strDatangID = ""; // 1,2,3 
+      var newArray= {}; 
+      scan.map(function(data,key){ 
+        strDatangID += data.DatangID; 
+        data['detail'] = []; 
+        newArray[data.DatangID] = data; 
+        if(key<scan.length-1) strDatangID += ','; 
+      }); 
+ 
+ 
+      var sql = `SELECT *,  
+        IF(JamKembali IS NULL, DATE_FORMAT(JamKeluar, "%H:%i"), CONCAT(DATE_FORMAT(JamKeluar, "%H:%i"),' - ', DATE_FORMAT(JamKembali, "%H:%i"))) AS KelKan, 
+        CONCAT('Total = ',IF(JamKembali IS NULL, '', DATE_FORMAT(TIMEDIFF(JamKembali,JamKeluar), "%H:%i"))) AS Durasi , 
+        CONCAT('Ket. : ',IFNULL(Keterangan,'')) AS Ket, 
+        CONCAT('Ket. Kembali : ',IFNULL(KeteranganKembali,'')) AS KetKembali 
+ 
+        FROM tblkeluarkantor WHERE DatangID IN(`+strDatangID+`) `; 
+      let query = conn.query(sql, (err, results) => { 
+        if (err) throw err; 
+        console.log(results); 
+        results.map(function(data,key){ 
+          data['k'] = 'Keluar Kantor'; 
+          console.log(data); 
+          newArray[data.DatangID]['detail'].push(data); 
+        }); 
+        //console.log(newArray['105']); 
+        //res.send(JSON.stringify(results)); 
+        res.send(newArray); 
+      }); 
 
       // console.log("SELECT * FROM tblkeluarkantor WHERE DatangID IN('"+strDatangID+"') ");
       /*conn.query() => {
