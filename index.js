@@ -1071,6 +1071,41 @@ app.get("/api/gettime", (req, res) => {
   });
 });
 
+
+
+//menampilkan report summary perbulan
+app.get("/api/sumreport/:id", (req, res) => {
+  conn.query(
+    `CALL AppReportPerbulan('` + req.params.id + `')`,
+    function (err, rows) {
+      if (err) throw err;
+      var user = rows[0];
+      var detailuser = user[0];
+      res.send(detailuser);
+    }
+  );
+});
+
+
+// Menampilkan Recent Scan Untuk APP Android Berdasarkan Tgl Mulai Dan Tgl Akhir
+app.get("/api/reportpertanggal/:id&:TglAwal&:TglAkhir", (req, res) => {
+  conn.query(
+    `CALL ReportPertanggal ('` +
+      req.params.id +
+      `','` +
+      req.params.TglAwal +
+      `','` +
+      req.params.TglAkhir +
+      `')`,
+    function (err, rows) {
+      if (err) throw err;
+      var scan = rows[0];
+      res.send(scan);
+    }
+  );
+});
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////        TRIAL REPPORT API       ////////////////////
