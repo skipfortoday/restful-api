@@ -517,7 +517,7 @@ app.put("/api/user/:id", (req, res) => {
 
 app.put("/api/username/:id", (req, res) => {
   let data = {
-    Username : req.body.Username,
+    Username: req.body.Username,
     Pass: req.body.Pass,
   };
   let sql =
@@ -535,7 +535,6 @@ app.put("/api/username/:id", (req, res) => {
 });
 
 ///////////////
-
 
 //Menampilkan Detail grup Per ID Pegawai
 app.get("/api/usertest/:id", (req, res) => {
@@ -727,7 +726,7 @@ app.post("/api/group", (req, res) => {
     `',
   '` +
     req.body.JamMulaiSore +
-  `',
+    `',
   '` +
     req.body.MaxJamKembaliSore +
     `'
@@ -921,6 +920,66 @@ app.post("/api/login", (req, res) => {
   });
 });
 
+/////////////////////////////////////////////////
+////////////////////////////////////////////////
+
+// Api untuk proses login di APP
+app.post("/api/logindev", (req, res) => {
+  let post = {
+    Pass: req.body.Pass,
+    UserID: req.body.UserID,
+    DeviceID: req.body.DeviceID,
+  };
+  let query3 = `Select DeviceID FROM user WHERE UserID="`+ req.body.UserID +`" AND Pass="`+ req.body.UserID +`"`; 
+  let query = "Select DeviceID FROM ?? WHERE ??=? AND ??=? AND ??=?";
+  let table = [
+    "user",
+    "Pass",
+    post.Pass,
+    "UserID",
+    post.UserID,
+    "DeviceID",
+    post.DeviceID,
+  ];
+
+  let query2 =`UPDATE user SET DeviceID="`+req.body.DeviceID+`" WHERE UserID="` +req.body.UserID +`"`;
+
+  query = mysql.format(query, table);
+  conn.query(query, function (error, rows) {
+    if (error) {
+      console.log(error);
+    } else {
+      if (rows.length == 1) {
+        res.json({
+          Message: "OK",
+        });
+      }
+      else {
+        if (query3 != null && query3 != '' ) {
+
+          let qry= conn.query(query2, (err, results) => {
+            if (err) throw err;
+            res.send(JSON.stringify(post));
+          });
+          
+
+           
+
+        } else {
+
+         
+          
+          res.json({
+            Error: true,
+            Message:
+              "Username atau Password Salah! / Hubungi Admin Jika Ganti Device",
+          });
+        }
+      }
+    }
+  });
+});
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Api untuk proses login di APP
 app.post("/api/loginLengkap", (req, res) => {
@@ -1095,8 +1154,6 @@ app.get("/api/gettime", (req, res) => {
   });
 });
 
-
-
 //menampilkan report summary perbulan
 app.get("/api/sumreport/:id", (req, res) => {
   conn.query(
@@ -1109,7 +1166,6 @@ app.get("/api/sumreport/:id", (req, res) => {
     }
   );
 });
-
 
 // Menampilkan Recent Scan Untuk APP Android Berdasarkan Tgl Mulai Dan Tgl Akhir
 app.get("/api/reportpertanggal/:id&:TglAwal&:TglAkhir", (req, res) => {
@@ -1128,7 +1184,6 @@ app.get("/api/reportpertanggal/:id&:TglAwal&:TglAkhir", (req, res) => {
     }
   );
 });
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1188,40 +1243,42 @@ app.get("/api/reportabsen/:id&:tglin&:tglout", (req, res) => {
 app.get("/api/laporan/:id", (req, res) => {
   conn.query(
     `CALL MenampilkanScan('` + req.params.id + `')`,
-    function (err, rows) { 
-      if (err) throw err; 
-       
-      var scan = rows[0]; 
- 
-      var strDatangID = ""; // 1,2,3 
-      var newArray= {}; 
-      scan.map(function(data,key){ 
-        strDatangID += data.DatangID; 
-        data['detail'] = []; 
-        newArray[data.DatangID] = data; 
-        if(key<scan.length-1) strDatangID += ','; 
-      }); 
- 
- 
-      var sql = `SELECT *,  
+    function (err, rows) {
+      if (err) throw err;
+
+      var scan = rows[0];
+
+      var strDatangID = ""; // 1,2,3
+      var newArray = {};
+      scan.map(function (data, key) {
+        strDatangID += data.DatangID;
+        data["detail"] = [];
+        newArray[data.DatangID] = data;
+        if (key < scan.length - 1) strDatangID += ",";
+      });
+
+      var sql =
+        `SELECT *,  
         IF(JamKembali IS NULL, DATE_FORMAT(JamKeluar, "%H:%i"), CONCAT(DATE_FORMAT(JamKeluar, "%H:%i"),' - ', DATE_FORMAT(JamKembali, "%H:%i"))) AS KelKan, 
         CONCAT('Total = ',IF(JamKembali IS NULL, '', DATE_FORMAT(TIMEDIFF(JamKembali,JamKeluar), "%H:%i"))) AS Durasi , 
         CONCAT('Ket. : ',IFNULL(Keterangan,'')) AS Ket, 
         CONCAT('Ket. Kembali : ',IFNULL(KeteranganKembali,'')) AS KetKembali 
  
-        FROM tblkeluarkantor WHERE DatangID IN(`+strDatangID+`) `; 
-      let query = conn.query(sql, (err, results) => { 
-        if (err) throw err; 
-        console.log(results); 
-        results.map(function(data,key){ 
-          data['k'] = 'Keluar Kantor'; 
-          console.log(data); 
-          newArray[data.DatangID]['detail'].push(data); 
-        }); 
-        //console.log(newArray['105']); 
-        //res.send(JSON.stringify(results)); 
-        res.send(newArray); 
-      }); 
+        FROM tblkeluarkantor WHERE DatangID IN(` +
+        strDatangID +
+        `) `;
+      let query = conn.query(sql, (err, results) => {
+        if (err) throw err;
+        console.log(results);
+        results.map(function (data, key) {
+          data["k"] = "Keluar Kantor";
+          console.log(data);
+          newArray[data.DatangID]["detail"].push(data);
+        });
+        //console.log(newArray['105']);
+        //res.send(JSON.stringify(results));
+        res.send(newArray);
+      });
 
       // console.log("SELECT * FROM tblkeluarkantor WHERE DatangID IN('"+strDatangID+"') ");
       /*conn.query() => {
