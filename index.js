@@ -511,7 +511,31 @@ app.put("/api/user/:id", (req, res) => {
   });
 });
 
-///////// TRIALLL
+//////////////
+/// MENGEDIT USERNAME dan PASSWORD
+///////////////
+
+app.put("/api/username/:id", (req, res) => {
+  let data = {
+    Username : req.body.Username,
+    Pass: req.body.Pass,
+  };
+  let sql =
+    `UPDATE user SET Username="` +
+    req.body.Username +
+    `", Pass="` +
+    req.body.Pass +
+    `" WHERE UserID="` +
+    req.params.id +
+    `"`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(data));
+  });
+});
+
+///////////////
+
 
 //Menampilkan Detail grup Per ID Pegawai
 app.get("/api/usertest/:id", (req, res) => {
