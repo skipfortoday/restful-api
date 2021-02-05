@@ -1027,7 +1027,7 @@ conn.query(query, function (error, rows) {
                      if (rows.length == 1 && DvID == '') {
                       conn.query(query2, (err) => {
                         if (err) throw err;
-                        res.json({Message: "OK1",});
+                        res.json({Message: "OK",});
                          });
                            }
                            else {
