@@ -1005,7 +1005,7 @@ app.post("/api/logindev", (req, res) => {
 
   
   let query2 =`UPDATE user SET DeviceID="`+req.body.DeviceID+`" WHERE UserID="` +req.body.UserID +`"`;
-  let query3 = `SELECT DeviceID FROM user Where UserID="` + req.body.UserID + `" AND Pass="` + req.body.Pass +`"`; 
+  let query3 = `SELECT DeviceID FROM user Where UserID="` + req.body.UserID + `" AND Pass="` + req.body.Pass +`"`;  
 
   query = mysql.format(query, table);
 
@@ -1022,21 +1022,35 @@ conn.query(query, function (error, rows) {
           if (error) {
             console.log(error);
           } else {
-            var DvcID = rows[0];
-            var DvID = DvcID.DeviceID
-                     if (rows.length == 1 && DvID == '') {
-                      conn.query(query2, (err) => {
-                        if (err) throw err;
-                        res.json({Message: "OK",});
-                         });
-                           }
-                           else {
-                            res.json({
-                              Error: true,
-                              Message:
-                                "Username atau Password Salah! | Hubungi Admin Jika Ganti Device",
-                            });
-                          }
+                if (rows.length == 1) {
+        
+
+                            var DvcID = rows[0];
+                            var DvID = DvcID.DeviceID
+                                    if (rows.length == 1 && DvID == '') {
+                                      conn.query(query2, (err) => {
+                                        if (err) throw err;
+                                        res.json({Message: "OK",});
+                                        });
+                                          }
+                                          else {
+                                            res.json({
+                                              Error: true,
+                                              Message:
+                                                "Device Tidak Sesuai, Segera Hubungi Admin Jika Ganti Device",
+                                            });
+                                          }
+                                        } else {
+
+                                          res.json({
+                                            Error: true,
+                                            Message:
+                                              "Username atau Password Salah",
+                                          });
+
+
+
+                                        }
           }
         });
       }
