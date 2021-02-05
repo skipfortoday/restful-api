@@ -536,6 +536,55 @@ app.put("/api/username/:id", (req, res) => {
 
 ///////////////
 
+//////////////
+/// MENGEDIT USERNAME dan PASSWORD
+///////////////
+
+app.put("/api/username/:id", (req, res) => {
+  let data = {
+    Username: req.body.Username,
+    Pass: req.body.Pass,
+  };
+  let sql =
+    `UPDATE user SET Username="` +
+    req.body.Username +
+    `", Pass="` +
+    req.body.Pass +
+    `" WHERE UserID="` +
+    req.params.id +
+    `"`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(data));
+  });
+});
+
+///////////////
+
+
+//////////////
+/// MENGEDIT USERNAME dan PASSWORD
+///////////////
+
+app.put("/api/resetdevice/:id", (req, res) => {
+  let data = {
+    UserID: req.params.id,
+  };
+  let sql =
+    `UPDATE user SET DeviceID="" WHERE UserID="` +req.params.id +`"`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(data));
+  });
+});
+
+///////////////
+
+
+
+
+
+
 //Menampilkan Detail grup Per ID Pegawai
 app.get("/api/usertest/:id", (req, res) => {
   conn.query(
@@ -930,7 +979,19 @@ app.post("/api/logindev", (req, res) => {
     UserID: req.body.UserID,
     DeviceID: req.body.DeviceID,
   };
-  let query3 = `Select DeviceID FROM user WHERE UserID="`+ req.body.UserID +`" AND Pass="`+ req.body.UserID +`"`; 
+
+
+ //conn.query(
+ // `SELECT DeviceID FROM user Where UserID="` + req.body.UserID + `" AND Pass="` + req.body.Pass +`"`;
+  // function (err, rows) {
+  //    if (err) throw err;
+  //    var DvID = rows[0];
+  //  }
+ // );
+ //  var DevID = rows[0];
+ // var DvI = DevID.DeviceID
+
+
   let query = "Select DeviceID FROM ?? WHERE ??=? AND ??=? AND ??=?";
   let table = [
     "user",
@@ -942,43 +1003,47 @@ app.post("/api/logindev", (req, res) => {
     post.DeviceID,
   ];
 
+  
   let query2 =`UPDATE user SET DeviceID="`+req.body.DeviceID+`" WHERE UserID="` +req.body.UserID +`"`;
+  let query3 = `SELECT DeviceID FROM user Where UserID="` + req.body.UserID + `" AND Pass="` + req.body.Pass +`"`; 
 
   query = mysql.format(query, table);
-  conn.query(query, function (error, rows) {
+
+conn.query(query, function (error, rows) {
     if (error) {
       console.log(error);
     } else {
       if (rows.length == 1) {
-        res.json({
-          Message: "OK",
-        });
+        res.json({Message: "OK",});
       }
       else {
-        if (query3 != null && query3 != '' ) {
 
-          let qry= conn.query(query2, (err, results) => {
-            if (err) throw err;
-            res.send(JSON.stringify(post));
-          });
-          
-
-           
-
-        } else {
-
-         
-          
-          res.json({
-            Error: true,
-            Message:
-              "Username atau Password Salah! / Hubungi Admin Jika Ganti Device",
-          });
-        }
+        conn.query(query3, function (error, rows) {
+          if (error) {
+            console.log(error);
+          } else {
+            var DvcID = rows[0];
+            var DvID = DvcID.DeviceID
+                     if (rows.length == 1 && DvID == '') {
+                      conn.query(query2, (err) => {
+                        if (err) throw err;
+                        res.json({Message: "OK1",});
+                         });
+                           }
+                           else {
+                            res.json({
+                              Error: true,
+                              Message:
+                                "Username atau Password Salah! | Hubungi Admin Jika Ganti Device",
+                            });
+                          }
+          }
+        });
       }
     }
   });
 });
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Api untuk proses login di APP
@@ -1158,6 +1223,20 @@ app.get("/api/gettime", (req, res) => {
 app.get("/api/sumreport/:id", (req, res) => {
   conn.query(
     `CALL AppReportPerbulan('` + req.params.id + `')`,
+    function (err, rows) {
+      if (err) throw err;
+      var user = rows[0];
+      var detailuser = user[0];
+      res.send(detailuser);
+    }
+  );
+});
+
+
+//menampilkan report summary perbulan
+app.get("/api/rekaptahun/:id", (req, res) => {
+  conn.query(
+    `CALL AppRekapPertahun('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
       var user = rows[0];
