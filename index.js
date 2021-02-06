@@ -1427,7 +1427,6 @@ app.get("/api/laporan/:id", (req, res) => {
         console.log(results);
         results.map(function (data, key) {
           data["k"] = "Keluar Kantor";
-          console.log(data);
           newArray[data.DatangID]["detail"].push(data);
         });
         //console.log(newArray['105']);
@@ -1456,7 +1455,9 @@ app.get("/api/laporan/:id", (req, res) => {
 
 
 
-app.get("/api/laporanapp2/:id", (req, res) => {
+//menampilkan detail Laporan  data scan berdasarkan User ID
+
+app.get("/api/laporanarray/:id", (req, res) => {
   conn.query(
     `CALL MenampilkanScan('` + req.params.id + `')`,
     function (err, rows) {
@@ -1485,16 +1486,43 @@ app.get("/api/laporanapp2/:id", (req, res) => {
         `) `;
       let query = conn.query(sql, (err, results) => {
         if (err) throw err;
-        console.log(results);
         results.map(function (data, key) {
           data["k"] = "Keluar Kantor";
-          console.log(data);
           newArray[data.DatangID]["detail"].push(data);
         });
         //console.log(newArray['105']);
         //res.send(JSON.stringify(results));
         res.send(newArray);
       });
+
+      // console.log("SELECT * FROM tblkeluarkantor WHERE DatangID IN('"+strDatangID+"') ");
+      /*conn.query() => {
+
+      } 
+        function (err, rows){
+
+          if(err) throw err;
+          var details = rows[0];
+
+          details.map(function(data, key){
+            scan[data.DatangID]['detail'] = [$data]; 
+          });
+          console.log(scan);
+          res.send(scan);
+        }*/
+    }
+  );
+});
+
+
+
+app.get("/api/lp/:id", (req, res) => {
+  conn.query(
+    `CALL getID('` + req.params.id + `')`,
+    function (err, rows) {
+      if (err) throw err;
+      var scan = rows[0];
+        res.send(JSON.stringify(scan));
 
       // console.log("SELECT * FROM tblkeluarkantor WHERE DatangID IN('"+strDatangID+"') ");
       /*conn.query() => {
@@ -1522,6 +1550,11 @@ app.get("/api/laporanapp2/:id", (req, res) => {
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 
+//Menampilkan Seluruh Scan Karyawan yang sudah scan Dalam Hari itu 
+
+//Urut Berdasarkan Jam Scan (atas)
+
+
 app.get("/api/listscanperhari", (req, res) => {
   conn.query(
     `CALL ListScanPerhari `,
@@ -1533,30 +1566,18 @@ app.get("/api/listscanperhari", (req, res) => {
   );
 });
 
+//Urut Berdasarkan Nama (bawah)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+app.get("/api/listscanperharinama", (req, res) => {
+  conn.query(
+    `CALL ListScanPerhariNama `,
+    function (err, rows) {
+      if (err) throw err;
+      var scan = rows[0];
+      res.send(scan);
+    }
+  );
+});
 
 
 
@@ -1607,32 +1628,6 @@ app.get("/api/tlaporan", (req, res) => {
     }
   );
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
