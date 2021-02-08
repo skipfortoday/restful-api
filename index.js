@@ -373,13 +373,16 @@ app.put("/api/istirahatkembali/:id", (req, res) => {
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 //Menampilkan Seluruh List User untuk table data karyawan di web admin
+
 app.get("/api/user", (req, res) => {
-  let sql = `SELECT a.UserID, a.Nama, c.Jabatan, DATE_FORMAT(a.TglMulaiCuti, "%d-%m-%Y") as TglMulaiCuti
-  FROM user a JOIN tblgrupjabatan c ON a.GroupID = c.GroupID  `;
-  let query = conn.query(sql, (err, results) => {
-    if (err) throw err;
-    res.send(JSON.stringify(results));
-  });
+  conn.query(
+    `CALL MenampilkanUser`,
+    function (err, rows) {
+      if (err) throw err;
+      var user = rows[0];
+      res.send(user);
+    }
+  );
 });
 
 //menampilkan detail user  data  berdasarkan User ID
