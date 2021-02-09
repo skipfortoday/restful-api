@@ -1400,13 +1400,7 @@ app.get("/api/reportabsen/:id&:tglin&:tglout", (req, res) => {
 
 app.get("/api/laporan/:id", (req, res) => {
   conn.query(
-    `CALL ReportPertanggal ('` +
-      req.params.id +
-      `','` +
-      req.params.TglAwal +
-      `','` +
-      req.params.TglAkhir +
-      `')`,
+    `CALL MenampilkanScan('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
 
@@ -1468,9 +1462,15 @@ app.get("/api/laporan/:id", (req, res) => {
 
 ///////////////////////////////////////////////////////////////////
 
-app.get("/api/laporandetail/:id:TglAwal:TglAkhir", (req, res) => {
+app.get("/api/laporandetail/:id&:TglAwal&:TglAkhir", (req, res) => {
   conn.query(
-    `CALL MenampilkanScan('` + req.params.id + `')`,
+    `CALL LaporanPertanggal ('` +
+    req.params.id +
+    `','` +
+    req.params.TglAwal +
+    `','` +
+    req.params.TglAkhir +
+    `')`,
     function (err, rows) {
       if (err) throw err;
 
