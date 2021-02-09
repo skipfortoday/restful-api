@@ -1427,7 +1427,6 @@ app.get("/api/laporan/:id", (req, res) => {
         `) `;
       let query = conn.query(sql, (err, results) => {
         if (err) throw err;
-        console.log(results);
         results.map(function (data, key) {
           data["k"] = "Keluar Kantor";
           newArray[data.DatangID]["detail"].push(data);
@@ -1497,7 +1496,6 @@ app.get("/api/laporandetail/:id&:TglAwal&:TglAkhir", (req, res) => {
         `) `;
       let query = conn.query(sql, (err, results) => {
         if (err) throw err;
-        console.log(results);
         results.map(function (data, key) {
           data["k"] = "Keluar Kantor";
           newArray[data.DatangID]["detail"].push(data);
