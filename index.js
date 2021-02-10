@@ -1330,7 +1330,7 @@ app.get("/api/rekaptahun/:id", (req, res) => {
 });
 
 // Menampilkan Recent Scan Untuk APP Android Berdasarkan Tgl Mulai Dan Tgl Akhir
-app.get("/api/reportpertanggal/:id&:TglAwal&:TglAkhir", (req, res) => {
+app.get("/api/laporanrekap/:id&:TglAwal&:TglAkhir", (req, res) => {
   conn.query(
     `CALL ReportPertanggal ('` +
       req.params.id +
