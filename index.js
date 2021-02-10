@@ -1341,8 +1341,9 @@ app.get("/api/laporanrekap/:id&:TglAwal&:TglAkhir", (req, res) => {
       `')`,
     function (err, rows) {
       if (err) throw err;
-      var scan = rows[0];
-      res.send(scan);
+      var rek = rows[0];
+      var det = rek[0];
+      res.send(det);
     }
   );
 });
