@@ -957,6 +957,7 @@ app.post("/api/cabang", (req, res) => {
     KodeCabang: req.body.KodeCabang,
     NamaCabang: req.body.NamaCabang,
     Alamat: req.body.Alamat,
+    NoTelp: req.body.NoTelp,
     GeneralManagerID: req.body.GeneralManagerID,
     hrdID: req.body.hrdID,
   };
@@ -978,6 +979,8 @@ app.put("/api/cabang/:id", (req, res) => {
     req.body.NamaCabang +
     `", Alamat="` +
     req.body.Alamat +
+    `", NoTelp="` +
+    req.body.NoTelp +
     `", GeneralManagerID="` +
     req.body.GeneralManagerID +
     `", hrdID="` +
@@ -1545,6 +1548,95 @@ app.get("/api/laporandetail/:id&:TglAwal&:TglAkhir", (req, res) => {
     }
   );
 });
+
+///////////////////////////////////////////////////////////
+
+///////////                                         ///////
+
+///////////////////////////////////////////////////////////
+
+
+
+//menampilkan detail Laporan  data scan berdasarkan User ID
+
+app.get("/api/laporan2/:id", (req, res) => {
+  conn.query(
+    `CALL MenampilkanScan('` + req.params.id + `')`,
+    function (err, rows) {
+      if (err) throw err;
+
+      var scan = rows[0];
+
+      var strDatangID = ""; // 1,2,3
+      var newArray = {};
+      scan.map(function (data, key) {
+        strDatangID += data.DatangID;
+        data["detail"] = [];
+        newArray[data.DatangID] = data;
+        if (key < scan.length - 1) strDatangID += ",";
+      });
+      
+
+      var sql =
+        `SELECT *,  
+        IF(JamKembali IS NULL, DATE_FORMAT(JamKeluar, "%H:%i"), CONCAT(DATE_FORMAT(JamKeluar, "%H:%i"),' - ', DATE_FORMAT(JamKembali, "%H:%i"))) AS KelKan, 
+        CONCAT('Total = ',IF(JamKembali IS NULL, '', DATE_FORMAT(TIMEDIFF(JamKembali,JamKeluar), "%H:%i"))) AS Durasi , 
+        CONCAT('Ket. : ',IFNULL(Keterangan,'')) AS Ket, 
+        CONCAT('Ket. Kembali : ',IFNULL(KeteranganKembali,'')) AS KetKembali 
+ 
+        FROM tblkeluarkantor WHERE DatangID IN(` +
+        strDatangID +
+        `) `;
+      let query = conn.query(sql, (err, results) => {
+        if (err) throw err;
+        results.map(function (data, key) {
+          data["k"] = "Keluar Kantor";
+          newArray[data.DatangID]["detail"].push(data);
+        });
+        //console.log(newArray['105']);
+        //res.send(JSON.stringify(results));
+        res.send(newArray);
+      });
+
+      // console.log("SELECT * FROM tblkeluarkantor WHERE DatangID IN('"+strDatangID+"') ");
+      /*conn.query() => {
+
+      } 
+        function (err, rows){
+
+          if(err) throw err;
+          var details = rows[0];
+
+          details.map(function(data, key){
+            scan[data.DatangID]['detail'] = [$data]; 
+          });
+          console.log(scan);
+          res.send(scan);
+        }*/
+    }
+  );
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
