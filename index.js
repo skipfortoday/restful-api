@@ -1348,6 +1348,22 @@ app.get("/api/laporanrekap/:id&:TglAwal&:TglAkhir", (req, res) => {
   );
 });
 
+
+//menampilkan report summary perbulan
+app.get("/api/headerlaporan/:id", (req, res) => {
+  conn.query(
+    `CALL HeaderLaporan('` + req.params.id + `')`,
+    function (err, rows) {
+      if (err) throw err;
+      var user = rows[0];
+      var detailuser = user[0];
+      res.send(detailuser);
+    }
+  );
+});
+
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////        TRIAL REPPORT API       ////////////////////
