@@ -1432,9 +1432,10 @@ app.get("/api/laporan/:id", (req, res) => {
       scan.map(function (data, key) {
         strDatangID += data.DatangID;
         data["detail"] = [];
-        newArray[data.DatangID] = data;
+        newArray[data.TanggalScan] = data;
         if (key < scan.length - 1) strDatangID += ",";
       });
+      
 
       var sql =
         `SELECT *,  
@@ -1450,7 +1451,7 @@ app.get("/api/laporan/:id", (req, res) => {
         if (err) throw err;
         results.map(function (data, key) {
           data["k"] = "Keluar Kantor";
-          newArray[data.DatangID]["detail"].push(data);
+          newArray[data.TanggalScan]["detail"].push(data);
         });
         //console.log(newArray['105']);
         //res.send(JSON.stringify(results));
@@ -1501,7 +1502,7 @@ app.get("/api/laporandetail/:id&:TglAwal&:TglAkhir", (req, res) => {
       scan.map(function (data, key) {
         strDatangID += data.DatangID;
         data["detail"] = [];
-        newArray[data.DatangID] = data;
+        newArray[data.TanggalScan] = data;
         if (key < scan.length - 1) strDatangID += ",";
       });
 
@@ -1519,7 +1520,7 @@ app.get("/api/laporandetail/:id&:TglAwal&:TglAkhir", (req, res) => {
         if (err) throw err;
         results.map(function (data, key) {
           data["k"] = "Keluar Kantor";
-          newArray[data.DatangID]["detail"].push(data);
+          newArray[data.TanggalScan]["detail"].push(data);
         });
         //console.log(newArray['105']);
         //res.send(JSON.stringify(results));
