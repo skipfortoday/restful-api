@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "forever start --minUptime 1000 --spinSleepTime 1000 index.js",
-    "stop" : "forever stopall"
+    "start": "forever start --minUptime 1000 --spinSleepTime 1000 index.js",
+    "stop": "forever stopall"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,9 @@
     "express-session": "^1.17.1",
     "forever-monitor": "^3.0.3",
     "install": "^0.13.0",
+    "ip": "^1.1.5",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "pdfkit": "^0.11.0"
   }
