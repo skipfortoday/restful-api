@@ -1,5 +1,6 @@
 const express = require("express");
 var cors = require("cors");
+var md5 = require('md5');
 const bodyParser = require("body-parser");
 const app = express();
 const mysql = require("mysql");
@@ -403,6 +404,7 @@ app.post("/api/user", (req, res) => {
   let data = {
     Nama: req.body.Nama,
     UserID: req.body.UserID,
+    Pass: md5(req.body.Pass),
   };
 
   let sql =
@@ -411,7 +413,7 @@ app.post("/api/user", (req, res) => {
     req.body.UserID +
     `',
   '` +
-    req.body.Pass +
+    data.Pass +
     `',
   '` +
     req.body.Nama +
@@ -461,6 +463,7 @@ app.put("/api/user/:id", (req, res) => {
   let data = {
     Nama: req.body.Nama,
     UserID: req.body.UserID,
+    Pass: md5(req.body.Pass),
   };
 
   let sql =
@@ -469,7 +472,7 @@ app.put("/api/user/:id", (req, res) => {
     req.params.id +
     `',
     '` +
-    req.body.Pass +
+    data.Pass+
     `',
   '` +
     req.body.Nama +
@@ -522,6 +525,7 @@ app.put("/api/user/:id", (req, res) => {
   let data = {
     Nama: req.body.Nama,
     UserID: req.body.UserID,
+    Pass: md5(req.body.Pass),
   };
 
   let sql =
@@ -530,7 +534,7 @@ app.put("/api/user/:id", (req, res) => {
     req.params.id +
     `',
     '` +
-    req.body.Pass +
+    data.Pass +
     `',
   '` +
     req.body.Nama +
@@ -589,7 +593,7 @@ app.put("/api/username/:id", (req, res) => {
     `UPDATE user SET Username="` +
     req.body.Username +
     `", Pass="` +
-    req.body.Pass +
+    md5(req.body.Pass) +
     `" WHERE UserID="` +
     req.params.id +
     `"`;
@@ -614,7 +618,7 @@ app.put("/api/username/:id", (req, res) => {
     `UPDATE user SET Username="` +
     req.body.Username +
     `", Pass="` +
-    req.body.Pass +
+    md5(req.body.Pass) +
     `" WHERE UserID="` +
     req.params.id +
     `"`;
@@ -1016,7 +1020,7 @@ app.post("/api/login", (req, res) => {
     UserID: req.body.UserID,
   };
   let query = "Select * FROM ?? WHERE ??=? AND ??=?";
-  let table = ["user", "Pass", post.Pass, "UserID", post.UserID];
+  let table = ["user", "Pass", md5(post.Pass), "UserID", post.UserID];
 
   query = mysql.format(query, table);
   conn.query(query, function (error, rows) {
@@ -1064,7 +1068,7 @@ app.post("/api/logindev", (req, res) => {
   let table = [
     "user",
     "Pass",
-    post.Pass,
+    md5(post.Pass),
     "UserID",
     post.UserID,
     "DeviceID",
@@ -1073,7 +1077,7 @@ app.post("/api/logindev", (req, res) => {
 
   
   let query2 =`UPDATE user SET DeviceID="`+req.body.DeviceID+`" WHERE UserID="` +req.body.UserID +`"`;
-  let query3 = `SELECT DeviceID,RoleID FROM user Where UserID="` + req.body.UserID + `" AND Pass="` + req.body.Pass +`"`;  
+  let query3 = `SELECT DeviceID,RoleID FROM user Where UserID="` + req.body.UserID + `" AND Pass="` + md5(post.Pass) +`"`;  
 
   query = mysql.format(query, table);
 
