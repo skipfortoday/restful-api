@@ -1062,12 +1062,18 @@ app.post("/api/logindev", (req, res) => {
   //  var DevID = rows[0];
   // var DvI = DevID.DeviceID
 
-  let query = "Select DeviceID,RoleID FROM ?? WHERE ??=? AND ??=? AND ??=?";
+  let query = "Select DeviceID,RoleID,UserID FROM ?? WHERE (??=? AND ??=? AND ??=?) OR (??=? AND ??=? AND ??=?)";
   let table = [
     "user",
     "Pass",
     md5(post.Pass),
     "UserID",
+    post.UserID,
+    "DeviceID",
+    post.DeviceID,
+    "Pass",
+    md5(post.Pass),
+    "Username",
     post.UserID,
     "DeviceID",
     post.DeviceID,
@@ -1078,12 +1084,17 @@ app.post("/api/logindev", (req, res) => {
     req.body.DeviceID +
     `" WHERE UserID="` +
     req.body.UserID +
+    `" OR Username="`+
+    post.UserID +
     `"`;
+
   let query3 =
-    `SELECT DeviceID,RoleID FROM user Where UserID="` +
+    `SELECT DeviceID,RoleID,UserID FROM user Where UserID="` +
     req.body.UserID +
     `" AND Pass="` +
     md5(post.Pass) +
+    `" OR Username="`+
+    post.UserID +
     `"`;
 
   query = mysql.format(query, table);
@@ -1094,8 +1105,12 @@ app.post("/api/logindev", (req, res) => {
     } else {
       if (rows.length == 1) {
         var Ambil = rows[0];
+        var UID = Ambil.UserID;
+        console.log(UID);
+        console.log(Ambil);
+
         var Role = Ambil.RoleID;
-        res.json({ Message: "OK", Role });
+        res.json({ Message: "OK", Role, UID });
       } else {
         conn.query(query3, function (error, rows) {
           if (error) {
@@ -1107,9 +1122,10 @@ app.post("/api/logindev", (req, res) => {
               if (rows.length == 1 && DvID == "") {
                 conn.query(query2, (err) => {
                   var Ambil = rows[0];
+                  var UID = Ambil.UserID;
                   var Role = Ambil.RoleID;
                   if (err) throw err;
-                  res.json({ Message: "OK", Role });
+                  res.json({ Message: "OK", Role, UID });
                 });
               } else {
                 res.json({
