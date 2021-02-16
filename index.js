@@ -605,33 +605,13 @@ app.put("/api/username/:id", (req, res) => {
     req.params.id +
     `"`;
   let query = conn.query(sql, (err, results) => {
-    if (err) throw err;
-    res.send(JSON.stringify(data));
-  });
-});
-
-///////////////
-
-//////////////
-/// MENGEDIT USERNAME dan PASSWORD
-///////////////
-
-app.put("/api/username/:id", (req, res) => {
-  let data = {
-    Username: req.body.Username,
-    Pass: req.body.Pass,
-  };
-  let sql =
-    `UPDATE user SET Username="` +
-    req.body.Username +
-    `", Pass="` +
-    md5(req.body.Pass) +
-    `" WHERE UserID="` +
-    req.params.id +
-    `"`;
-  let query = conn.query(sql, (err, results) => {
-    if (err) throw err;
-    res.send(JSON.stringify(data));
+    if (err) {
+      let pesan = err.sqlMessage;
+      res.json({message: pesan});
+    }
+   else{ 
+    res.send(JSON.stringify(results));
+  }
   });
 });
 
@@ -900,6 +880,12 @@ app.put("/api/group/:id", (req, res) => {
     req.body.JamMulaiSiang +
     `", JamMulaiSore="` +
     req.body.JamMulaiSore +
+    `", JamMulaiLembur="` +
+    req.body.JamMulaiLembur +
+    `", JamMulaiLemburSiang="` +
+    req.body.JamMulaiLemburSiang +
+    `", JamMulaiLemburSore="` +
+    req.body.JamMulaiLemburSore +
     `", MaxJamKembali="` +
     req.body.MaxJamKembali +
     `", MaxJamKembaliSiang="` +
@@ -1897,6 +1883,19 @@ app.put("/api/reqizinlv2/:id", (req, res) => {
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(data));
+  });
+});
+
+/////////////////////////////////////////
+
+///////////  API Option
+//////////////////////////////////////
+
+app.get("/api/optuser", (req, res) => {
+  conn.query(`CALL optUser`, function (err, rows) {
+    if (err) throw err;
+    let user = rows[0];
+    res.send(user);
   });
 });
 
