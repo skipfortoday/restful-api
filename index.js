@@ -1,14 +1,14 @@
 const express = require("express");
-var cors = require("cors");
-var md5 = require("md5");
+let cors = require("cors");
+let md5 = require("md5");
 const bodyParser = require("body-parser");
 const app = express();
 const mysql = require("mysql");
 const { request } = require("express");
-var session = require("express-session");
-var pdf = require("pdfkit"); //to create PDF using NODE JS
-var fs = require("fs"); // to create write streams
-var myDoc = new pdf();
+let session = require("express-session");
+let pdf = require("pdfkit"); //to create PDF using NODE JS
+let fs = require("fs"); // to create write streams
+let myDoc = new pdf();
 
 // parse application/json
 
@@ -219,7 +219,7 @@ app.get("/api/datang/:id", (req, res) => {
     `CALL MengambilDatangID ('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
-      var datang = rows[0];
+      let datang = rows[0];
       res.send(datang);
     }
   );
@@ -280,7 +280,7 @@ app.get("/api/keluarkantor/:id", (req, res) => {
     `CALL MengambilKeluarID ('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
-      var datang = rows[0];
+      let datang = rows[0];
       res.send(datang);
     }
   );
@@ -293,7 +293,7 @@ app.get("/api/keluarkantor/:id", (req, res) => {
     `CALL ListKeluarKantor ('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
-      var datang = rows[0];
+      let datang = rows[0];
       res.send(datang);
     }
   );
@@ -378,7 +378,7 @@ app.put("/api/istirahatkembali/:id", (req, res) => {
 app.get("/api/user", (req, res) => {
   conn.query(`CALL MenampilkanUser`, function (err, rows) {
     if (err) throw err;
-    var user = rows[0];
+    let user = rows[0];
     res.send(user);
   });
 });
@@ -389,8 +389,8 @@ app.get("/api/user/:id", (req, res) => {
     `CALL MenampilkanDetailUser('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
-      var user = rows[0];
-      var detailuser = user[0];
+      let user = rows[0];
+      let detailuser = user[0];
       res.send(detailuser);
     }
   );
@@ -660,7 +660,7 @@ app.get("/api/usertest/:id", (req, res) => {
     `SELECT * FROM user Where UserID="` + req.params.id + `"`,
     function (err, rows) {
       if (err) throw err;
-      var group = rows[0];
+      let group = rows[0];
       res.send(group);
     }
   );
@@ -711,7 +711,7 @@ app.get("/api/group/:id", (req, res) => {
     `SELECT * FROM tblgrupjabatan Where GroupID="` + req.params.id + `"`,
     function (err, rows) {
       if (err) throw err;
-      var group = rows[0];
+      let group = rows[0];
       res.send(group);
     }
   );
@@ -949,7 +949,7 @@ app.get("/api/cabang/:id", (req, res) => {
     `SELECT * FROM cabang Where KodeCabang="` + req.params.id + `"`,
     function (err, rows) {
       if (err) throw err;
-      var cabang = rows[0];
+      let cabang = rows[0];
       res.send(cabang);
     }
   );
@@ -1056,11 +1056,11 @@ app.post("/api/logindev", (req, res) => {
   // `SELECT DeviceID FROM user Where UserID="` + req.body.UserID + `" AND Pass="` + req.body.Pass +`"`;
   // function (err, rows) {
   //    if (err) throw err;
-  //    var DvID = rows[0];
+  //    let DvID = rows[0];
   //  }
   // );
-  //  var DevID = rows[0];
-  // var DvI = DevID.DeviceID
+  //  let DevID = rows[0];
+  // let DvI = DevID.DeviceID
 
   let query = "Select DeviceID,RoleID,UserID FROM ?? WHERE (??=? AND ??=? AND ??=?) OR (??=? AND ??=? AND ??=?)";
   let table = [
@@ -1104,12 +1104,12 @@ app.post("/api/logindev", (req, res) => {
       console.log(error);
     } else {
       if (rows.length == 1) {
-        var Ambil = rows[0];
-        var UID = Ambil.UserID;
+        let Ambil = rows[0];
+        let UID = Ambil.UserID;
         console.log(UID);
         console.log(Ambil);
 
-        var Role = Ambil.RoleID;
+        let Role = Ambil.RoleID;
         res.json({ Message: "OK", Role, UID });
       } else {
         conn.query(query3, function (error, rows) {
@@ -1117,13 +1117,13 @@ app.post("/api/logindev", (req, res) => {
             console.log(error);
           } else {
             if (rows.length == 1) {
-              var DvcID = rows[0];
-              var DvID = DvcID.DeviceID;
+              let DvcID = rows[0];
+              let DvID = DvcID.DeviceID;
               if (rows.length == 1 && DvID == "") {
                 conn.query(query2, (err) => {
-                  var Ambil = rows[0];
-                  var UID = Ambil.UserID;
-                  var Role = Ambil.RoleID;
+                  let Ambil = rows[0];
+                  let UID = Ambil.UserID;
+                  let Role = Ambil.RoleID;
                   if (err) throw err;
                   res.json({ Message: "OK", Role, UID });
                 });
@@ -1227,7 +1227,7 @@ app.post("/api/loginLengkap", (req, res) => {
 app.get("/api/izin", (req, res) => {
   conn.query(`CALL MenampilkanIzin`, function (err, rows) {
     if (err) throw err;
-    var izin = rows[0];
+    let izin = rows[0];
     res.send(izin);
   });
 });
@@ -1238,8 +1238,8 @@ app.get("/api/izin/:id", (req, res) => {
     `CALL MenampilkanDetailIzin('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
-      var izin = rows[0];
-      var detailizin = izin[0];
+      let izin = rows[0];
+      let detailizin = izin[0];
       res.send(detailizin);
     }
   );
@@ -1327,8 +1327,8 @@ app.get("/api/sumreport/:id", (req, res) => {
     `CALL AppReportPerbulan('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
-      var user = rows[0];
-      var detailuser = user[0];
+      let user = rows[0];
+      let detailuser = user[0];
       res.send(detailuser);
     }
   );
@@ -1340,8 +1340,8 @@ app.get("/api/rekaptahun/:id", (req, res) => {
     `CALL AppRekapPertahun('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
-      var user = rows[0];
-      var detailuser = user[0];
+      let user = rows[0];
+      let detailuser = user[0];
       res.send(detailuser);
     }
   );
@@ -1359,8 +1359,8 @@ app.get("/api/laporanrekap/:id&:TglAwal&:TglAkhir", (req, res) => {
       `')`,
     function (err, rows) {
       if (err) throw err;
-      var rek = rows[0];
-      var det = rek[0];
+      let rek = rows[0];
+      let det = rek[0];
       res.send(det);
     }
   );
@@ -1372,8 +1372,8 @@ app.get("/api/headerlaporan/:id", (req, res) => {
     `CALL HeaderLaporan('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
-      var user = rows[0];
-      var detailuser = user[0];
+      let user = rows[0];
+      let detailuser = user[0];
       res.send(detailuser);
     }
   );
@@ -1440,10 +1440,10 @@ app.get("/api/laporan/:id", (req, res) => {
     function (err, rows) {
       if (err) throw err;
 
-      var scan = rows[0];
+      let scan = rows[0];
 
-      var strDatangID = ""; // 1,2,3
-      var newArray = {};
+      let strDatangID = ""; // 1,2,3
+      let newArray = {};
       scan.map(function (data, key) {
         strDatangID += data.DatangID;
         data["detail"] = [];
@@ -1451,7 +1451,7 @@ app.get("/api/laporan/:id", (req, res) => {
         if (key < scan.length - 1) strDatangID += ",";
       });
 
-      var sql =
+      let sql =
         `SELECT *,  
         IF(JamKembali IS NULL, DATE_FORMAT(JamKeluar, "%H:%i"), CONCAT(DATE_FORMAT(JamKeluar, "%H:%i"),' - ', DATE_FORMAT(JamKembali, "%H:%i"))) AS KelKan, 
         CONCAT('Total = ',IF(JamKembali IS NULL, '', DATE_FORMAT(TIMEDIFF(JamKembali,JamKeluar), "%H:%i"))) AS Durasi , 
@@ -1479,7 +1479,7 @@ app.get("/api/laporan/:id", (req, res) => {
         function (err, rows){
 
           if(err) throw err;
-          var details = rows[0];
+          let details = rows[0];
 
           details.map(function(data, key){
             scan[data.DatangID]['detail'] = [$data]; 
@@ -1509,10 +1509,10 @@ app.get("/api/laporandetail/:id&:TglAwal&:TglAkhir", (req, res) => {
     function (err, rows) {
       if (err) throw err;
 
-      var scan = rows[0];
+      let scan = rows[0];
 
-      var strDatangID = ""; // 1,2,3
-      var newArray = {};
+      let strDatangID = ""; // 1,2,3
+      let newArray = {};
       scan.map(function (data, key) {
         strDatangID += data.DatangID;
         data["detail"] = [];
@@ -1520,7 +1520,7 @@ app.get("/api/laporandetail/:id&:TglAwal&:TglAkhir", (req, res) => {
         if (key < scan.length - 1) strDatangID += ",";
       });
 
-      var sql =
+      let sql =
         `SELECT *,  
         IF(JamKembali IS NULL, DATE_FORMAT(JamKeluar, "%H:%i"), CONCAT(DATE_FORMAT(JamKeluar, "%H:%i"),' - ', DATE_FORMAT(JamKembali, "%H:%i"))) AS KelKan, 
         CONCAT('Total = ',IF(JamKembali IS NULL, '', DATE_FORMAT(TIMEDIFF(JamKembali,JamKeluar), "%H:%i"))) AS Durasi , 
@@ -1548,7 +1548,7 @@ app.get("/api/laporandetail/:id&:TglAwal&:TglAkhir", (req, res) => {
         function (err, rows){
 
           if(err) throw err;
-          var details = rows[0];
+          let details = rows[0];
 
           details.map(function(data, key){
             scan[data.DatangID]['detail'] = [$data]; 
@@ -1574,10 +1574,10 @@ app.get("/api/laporan2/:id", (req, res) => {
     function (err, rows) {
       if (err) throw err;
 
-      var scan = rows[0];
+      let scan = rows[0];
 
-      var strDatangID = ""; // 1,2,3
-      var newArray = {};
+      let strDatangID = ""; // 1,2,3
+      let newArray = {};
       scan.map(function (data, key) {
         strDatangID += data.DatangID;
         data["detail"] = [];
@@ -1585,7 +1585,7 @@ app.get("/api/laporan2/:id", (req, res) => {
         if (key < scan.length - 1) strDatangID += ",";
       });
 
-      var sql =
+      let sql =
         `SELECT *,  
         IF(JamKembali IS NULL, DATE_FORMAT(JamKeluar, "%H:%i"), CONCAT(DATE_FORMAT(JamKeluar, "%H:%i"),' - ', DATE_FORMAT(JamKembali, "%H:%i"))) AS KelKan, 
         CONCAT('Total = ',IF(JamKembali IS NULL, '', DATE_FORMAT(TIMEDIFF(JamKembali,JamKeluar), "%H:%i"))) AS Durasi , 
@@ -1613,7 +1613,7 @@ app.get("/api/laporan2/:id", (req, res) => {
         function (err, rows){
 
           if(err) throw err;
-          var details = rows[0];
+          let details = rows[0];
 
           details.map(function(data, key){
             scan[data.DatangID]['detail'] = [$data]; 
@@ -1633,10 +1633,10 @@ app.get("/api/laporanarray/:id", (req, res) => {
     function (err, rows) {
       if (err) throw err;
 
-      var scan = rows[0];
+      let scan = rows[0];
 
-      var strDatangID = ""; // 1,2,3
-      var newArray = {};
+      let strDatangID = ""; // 1,2,3
+      let newArray = {};
       scan.map(function (data, key) {
         strDatangID += data.DatangID;
         data["detail"] = [];
@@ -1644,7 +1644,7 @@ app.get("/api/laporanarray/:id", (req, res) => {
         if (key < scan.length - 1) strDatangID += ",";
       });
 
-      var sql =
+      let sql =
         `SELECT *,  
         IF(JamKembali IS NULL, DATE_FORMAT(JamKeluar, "%H:%i"), CONCAT(DATE_FORMAT(JamKeluar, "%H:%i"),' - ', DATE_FORMAT(JamKembali, "%H:%i"))) AS KelKan, 
         CONCAT('Total = ',IF(JamKembali IS NULL, '', DATE_FORMAT(TIMEDIFF(JamKembali,JamKeluar), "%H:%i"))) AS Durasi , 
@@ -1672,7 +1672,7 @@ app.get("/api/laporanarray/:id", (req, res) => {
         function (err, rows){
 
           if(err) throw err;
-          var details = rows[0];
+          let details = rows[0];
 
           details.map(function(data, key){
             scan[data.DatangID]['detail'] = [$data]; 
@@ -1687,7 +1687,7 @@ app.get("/api/laporanarray/:id", (req, res) => {
 app.get("/api/lp/:id", (req, res) => {
   conn.query(`CALL getID('` + req.params.id + `')`, function (err, rows) {
     if (err) throw err;
-    var scan = rows[0];
+    let scan = rows[0];
     res.send(JSON.stringify(scan));
 
     // console.log("SELECT * FROM tblkeluarkantor WHERE DatangID IN('"+strDatangID+"') ");
@@ -1697,7 +1697,7 @@ app.get("/api/lp/:id", (req, res) => {
         function (err, rows){
 
           if(err) throw err;
-          var details = rows[0];
+          let details = rows[0];
 
           details.map(function(data, key){
             scan[data.DatangID]['detail'] = [$data]; 
@@ -1721,7 +1721,7 @@ app.get("/api/lp/:id", (req, res) => {
 app.get("/api/listscanperhari", (req, res) => {
   conn.query(`CALL ListScanPerhari `, function (err, rows) {
     if (err) throw err;
-    var scan = rows[0];
+    let scan = rows[0];
     res.send(scan);
   });
 });
@@ -1731,7 +1731,7 @@ app.get("/api/listscanperhari", (req, res) => {
 app.get("/api/listscanperharinama", (req, res) => {
   conn.query(`CALL ListScanPerhariNama `, function (err, rows) {
     if (err) throw err;
-    var scan = rows[0];
+    let scan = rows[0];
     res.send(scan);
   });
 });
@@ -1743,7 +1743,7 @@ app.get("/api/applaporan/:id", (req, res) => {
     `CALL AppMenampilkanScan ('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
-      var scan = rows[0];
+      let scan = rows[0];
       res.send(scan);
     }
   );
@@ -1761,7 +1761,7 @@ app.get("/api/apprecentscan/:id&:TglAwal&:TglAkhir", (req, res) => {
       `')`,
     function (err, rows) {
       if (err) throw err;
-      var scan = rows[0];
+      let scan = rows[0];
       res.send(scan);
     }
   );
@@ -1778,7 +1778,7 @@ app.get("/api/tlaporan", (req, res) => {
       `')`,
     function (err, rows) {
       if (err) throw err;
-      var scan = rows[0];
+      let scan = rows[0];
       res.send(scan);
     }
   );
@@ -1791,6 +1791,116 @@ app.delete("/api/deletescan", (req, res) => {
     res.send(JSON.stringify(results));
   });
 });
+
+
+//////////////////////////////////////////////////////////////////////
+
+// API Temporari Izin
+
+/////////////////////////////////////////////////////////////////////
+
+
+// Menampilkan Seluruh Request Izin yang Pertama
+app.get("/api/reqizin", (req, res) => {
+  conn.query(`CALL MenampilkanReqIzin `, function (err, rows) {
+    if (err) throw err;
+    let izin = rows[0];
+    res.send(izin);
+  });
+});
+
+// Menampilkan Izin Yang DI Acc Orang 1 
+app.get("/api/reqizinlv1", (req, res) => {
+  conn.query(`CALL MReqIzinAccPertama`, function (err, rows) {
+    if (err) throw err;
+    let izin = rows[0];
+    res.send(izin);
+  });
+});
+
+
+// Menampilkan Izin yang di acc 
+app.get("/api/accizin", (req, res) => {
+  conn.query(`CALL MenampilkanAccIzin`, function (err, rows) {
+    if (err) throw err;
+    let izin = rows[0];
+    res.send(izin);
+  });
+});
+
+
+// Proses Request Izin Karyawan 
+//Menambahkan Data Request Izin
+app.post("/api/reqizin", (req, res) => {
+  let sql =
+    `CALL ProsesReqIzin (
+'` +
+    req.body.UserID +
+    `',
+'` +
+    req.body.Tanggal +
+    `',
+'` +
+    req.body.Status +
+    `',
+'` +
+    req.body.Keterangan +
+    `'  
+)`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+
+//Proses Acc User Pertama
+app.put("/api/reqizinlv1/:id", (req, res) => {
+  let data = {
+    UserID: req.body.UserID,
+    yn1: req.body.yn1,
+    Alasan: req.body.Alasan,
+  };
+  let sql =
+    `UPDATE cabang SET ACC3="` +
+    req.body.UserID +
+    `", YN1="` +
+    req.body.yn1 +
+    `", Alasan="` +
+    req.body.Alasan +
+    `" WHERE IzinID="` +
+    req.params.id +
+    `"`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(data));
+  });
+});
+
+//Proses Acc User kedua
+app.put("/api/reqizinlv2/:id", (req, res) => {
+  let data = {
+    UserID: req.body.UserID,
+    yn2: req.body.yn2,
+    Alasan: req.body.Alasan,
+  };
+  let sql =
+    `UPDATE cabang SET ACC3="` +
+    req.body.UserID +
+    `", YN2="` +
+    req.body.yn2 +
+    `", Alasan="` +
+    req.body.Alasan +
+    `" WHERE IzinID="` +
+    req.params.id +
+    `"`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(data));
+  });
+});
+
+
 
 //Server listening
 app.listen(3001, () => {
