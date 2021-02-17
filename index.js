@@ -1891,11 +1891,22 @@ app.put("/api/reqizinlv2/:id", (req, res) => {
 ///////////  API Option
 //////////////////////////////////////
 
+///////////// API OPTION USER /////////
 app.get("/api/optuser", (req, res) => {
   conn.query(`CALL optUser`, function (err, rows) {
     if (err) throw err;
     let user = rows[0];
     res.send(user);
+  });
+});
+
+
+///////////// API OPTION GROUP  /////////
+app.get("/api/optgroup", (req, res) => {
+  conn.query(`CALL optGroup`, function (err, rows) {
+    if (err) throw err;
+    let group = rows[0];
+    res.send(group);
   });
 });
 
