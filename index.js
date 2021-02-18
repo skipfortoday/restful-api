@@ -1418,7 +1418,7 @@ app.get("/api/reportabsen/:id&:tglin&:tglout", (req, res) => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-//menampilkan detail Laporan  data scan berdasarkan User ID
+//menampilkan detail Laporan  data scan berdasarkan TANGGAL SCAN
 
 app.get("/api/laporan/:id", (req, res) => {
   conn.query(
@@ -1611,11 +1611,14 @@ app.get("/api/laporan2/:id", (req, res) => {
   );
 });
 
-//menampilkan detail Laporan  data scan berdasarkan User ID
+//Menampilkan Scan Perhari ini
+// Dengan menampilkan Jam Keluar Kantor Karyawan
+// Key = User ID
 
-app.get("/api/laporanarray/:id", (req, res) => {
+
+app.get("/api/availkaryawan", (req, res) => {
   conn.query(
-    `CALL MenampilkanScan('` + req.params.id + `')`,
+    `CALL ListScanPerhari`,
     function (err, rows) {
       if (err) throw err;
 
