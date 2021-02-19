@@ -461,8 +461,74 @@ app.post("/api/user", (req, res) => {
   });
 });
 
-//Mengedit data user untuk panel admin
+
+//Edit User
 app.put("/api/user/:id", (req, res) => {
+  let data = {
+    Nama: req.body.Nama,
+    UserID: req.body.UserID,
+    Pass: md5(req.body.Pass),
+  };
+
+  let sql =
+  `CALL EditUser (
+  '` +
+  req.params.id +
+  `',
+  '` +
+  data.Pass +
+  `',
+'` +
+  req.body.Nama +
+  `',
+'` +
+  req.body.Alamat +
+  `',
+'` +
+  req.body.TglLahir +
+  `',
+'` +
+  req.body.HP +
+  `',
+'` +
+  req.body.TglMasuk +
+  `',
+'` +
+  req.body.TglMulaiCuti +
+  `',
+'` +
+  req.body.TglAwalKontrakPertama +
+  `',
+'` +
+  req.body.GroupID +
+  `',
+'` +
+  req.body.KodeCabang +
+  `',
+'` +
+  req.body.Status +
+  `',
+'` +
+  req.body.TampilkanLembur +
+  `',
+'` +
+  req.body.RoleID +
+  `',
+'` +
+  req.body.Posisi +
+  `',
+'` +
+  req.body.TampilkanTerlambat +
+  `'
+  )`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(data));
+  });
+});
+
+//Mengedit data user untuk panel admin
+app.put("/api/usertest/:id", (req, res) => {
   let data = {
     Nama: req.body.Nama,
     UserID: req.body.UserID,
@@ -1269,29 +1335,38 @@ app.delete("/api/cabang/:id", (req, res) => {
 
 // Api untuk proses login di APP
 app.post("/api/login", (req, res) => {
-  let post = {
-    Pass: req.body.Pass,
+  let data = {
+    Pass: md5(req.body.Pass),
     UserID: req.body.UserID,
   };
   let query = "Select * FROM ?? WHERE ??=? AND ??=?";
-  let table = ["user", "Pass", md5(post.Pass), "UserID", post.UserID];
+  let table = ["user", "Pass", data.Pass, "UserID", data.UserID];
 
   query = mysql.format(query, table);
-  conn.query(query, function (error, rows) {
-    if (error) {
-      console.log(error);
+  conn.query(query, function (err, rows) {
+    if (err) {
+      throw err;
     } else {
       if (rows.length == 1) {
-        res.json({
-          Message: "OK",
-        });
+        res.send(JSON.stringify(data))
       } else {
-        res.json({
-          Error: true,
-          Message: "Username atau Password Salah!",
-        });
+        throw err;
       }
     }
+  });
+});
+
+
+//
+app.post("/api/loginsu", (req, res) => {
+  let data = {
+    AdminID: req.body.AdminID,
+    Password: req.body.Password,
+  };
+  let sql = "INSERT INTO admin SET ?";
+  let query = conn.query(sql, data, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(data));
   });
 });
 
