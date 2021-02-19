@@ -467,6 +467,9 @@ app.put("/api/user/:id", (req, res) => {
     Nama: req.body.Nama,
     UserID: req.body.UserID,
     Pass: md5(req.body.Pass),
+    TglAwalKontrakPertama: req.body.TglAwalKontrakPertama,
+    TglMulaiCuti: req.body.TglMulaiCuti,
+
   };
 
   let sql =
@@ -520,24 +523,11 @@ app.put("/api/user/:id", (req, res) => {
     req.body.TampilkanTerlambat +
     `'
     )`;
-  let query = conn.query(sql, (err, results) => {
-    if (err) throw err;
-    res.send(JSON.stringify(data));
-  });
-});
-////////////////////
-//////////////////////
 
-//Mengedit data user untuk panel admin
-app.put("/api/user/:id", (req, res) => {
-  let data = {
-    Nama: req.body.Nama,
-    UserID: req.body.UserID,
-    Pass: md5(req.body.Pass),
-  };
 
-  let sql =
-    `CALL EditUser (
+  ///// Tnpa Tanggal Awal Kontrak Dan Tanpa Tanggal  Awla Cuti
+  let sql2 =
+    `CALL EditUserTKC (
     '` +
     req.params.id +
     `',
@@ -560,12 +550,6 @@ app.put("/api/user/:id", (req, res) => {
     req.body.TglMasuk +
     `',
   '` +
-    req.body.TglMulaiCuti +
-    `',
-  '` +
-    req.body.TglAwalKontrakPertama +
-    `',
-  '` +
     req.body.GroupID +
     `',
   '` +
@@ -578,14 +562,298 @@ app.put("/api/user/:id", (req, res) => {
     req.body.TampilkanLembur +
     `',
   '` +
+    req.body.RoleID +
+    `',
+  '` +
+    req.body.Posisi +
+    `',
+  '` +
     req.body.TampilkanTerlambat +
     `'
     )`;
-  let query = conn.query(sql, (err, results) => {
-    if (err) throw err;
-    res.send(JSON.stringify(data));
+
+
+  /// Tanpa Tanggal Awal Kontrak Pertama
+  let sql3 =
+    `CALL EditUserT (
+'` +
+    req.params.id +
+    `',
+'` +
+    data.Pass +
+    `',
+'` +
+    req.body.Nama +
+    `',
+'` +
+    req.body.Alamat +
+    `',
+'` +
+    req.body.TglLahir +
+    `',
+'` +
+    req.body.HP +
+    `',
+'` +
+    req.body.TglMasuk +
+    `',
+'` +
+    req.body.TglMulaiCuti +
+    `',
+'` +
+    req.body.GroupID +
+    `',
+'` +
+    req.body.KodeCabang +
+    `',
+'` +
+    req.body.Status +
+    `',
+'` +
+    req.body.TampilkanLembur +
+    `',
+'` +
+    req.body.RoleID +
+    `',
+'` +
+    req.body.Posisi +
+    `',
+'` +
+    req.body.TampilkanTerlambat +
+    `'
+)`;
+
+
+  // Tanpa Tanggal Mulai Cuti
+  let sql4 =
+    `CALL EditUserC (
+'` +
+    req.params.id +
+    `',
+'` +
+    data.Pass +
+    `',
+'` +
+    req.body.Nama +
+    `',
+'` +
+    req.body.Alamat +
+    `',
+'` +
+    req.body.TglLahir +
+    `',
+'` +
+    req.body.HP +
+    `',
+'` +
+    req.body.TglMasuk +
+    `',
+'` +
+    req.body.TglAwalKontrakPertama +
+    `',
+'` +
+    req.body.GroupID +
+    `',
+'` +
+    req.body.KodeCabang +
+    `',
+'` +
+    req.body.Status +
+    `',
+'` +
+    req.body.TampilkanLembur +
+    `',
+'` +
+    req.body.RoleID +
+    `',
+'` +
+    req.body.Posisi +
+    `',
+'` +
+    req.body.TampilkanTerlambat +
+    `'
+)`;
+
+
+  if (data.TglAwalKontrakPertama && data.TglMulaiCuti == undefined) {
+    conn.query(sql2, function (error, results) {
+      if (error) {
+        res.json({
+          Error: true,
+          Message: "Eror Rest Sql2",
+        })
+      } else {
+        res.json({
+          Error: false,
+          Message: "Berhasil yokkk",
+          Data,
+          results,
+        })
+      }
+    });
+  }
+  else {
+    if (data.TglAwalKontrakPertama == undefined) {
+      conn.query(sql3, function (error, results) {
+        if (error) {
+          res.json({
+            Error: true,
+            Message: "Eror Rest Sql3",
+          })
+        } else {
+          res.json({
+            Error: false,
+            Message: "Berhasil yokkk sql 3",
+            Data,
+            results,
+          })
+        }
+      });
+    }
+    else {
+            if (data.TglMulaiCuti == undefined) {
+                    conn.query(sql4, function (error, results) {
+                            if (error) {
+                              res.json({
+                                Error: true,
+                                Message: "Eror Rest Sql4 ",
+                              })
+                            } else {
+                              res.json({
+                                Error: false,
+                                Message: "Berhasil yokkk sql 4",
+                                Data,
+                                results,
+                              })
+                            }
+                     });
+           {
+                  conn.query(sql1, function (error, results) {
+                              if (error) {
+                                res.json({
+                                  Error: true,
+                                  Message: "Eror Rest Sql",
+                                })
+                              } else {
+                                res.json({
+                                  Error: false,
+                                  Message: "Berhasil yokkk sql",
+                                  Data,
+                                  results,
+                                      })}
+                             });
+                  };
+            };
+    };
+  };
+});
+
+
+// Api untuk proses login di APP
+app.post("/api/logindev", (req, res) => {
+  let post = {
+    Pass: req.body.Pass,
+    UserID: req.body.UserID,
+    DeviceID: req.body.DeviceID,
+  };
+
+  //conn.query(
+  // `SELECT DeviceID FROM user Where UserID="` + req.body.UserID + `" AND Pass="` + req.body.Pass +`"`;
+  // function (err, rows) {
+  //    if (err) throw err;
+  //    let DvID = rows[0];
+  //  }
+  // );
+  //  let DevID = rows[0];
+  // let DvI = DevID.DeviceID
+
+  let query = "Select DeviceID,RoleID,UserID FROM ?? WHERE (??=? AND ??=? AND ??=?) OR (??=? AND ??=? AND ??=?)";
+  let table = [
+    "user",
+    "Pass",
+    md5(post.Pass),
+    "UserID",
+    post.UserID,
+    "DeviceID",
+    post.DeviceID,
+    "Pass",
+    md5(post.Pass),
+    "Username",
+    post.UserID,
+    "DeviceID",
+    post.DeviceID,
+  ];
+
+  let query2 =
+    `UPDATE user SET DeviceID="` +
+    req.body.DeviceID +
+    `" WHERE UserID="` +
+    req.body.UserID +
+    `" OR Username="` +
+    post.UserID +
+    `"`;
+
+  let query3 =
+    `SELECT DeviceID,RoleID,UserID FROM user Where (UserID="` +
+    req.body.UserID +
+    `" AND Pass="` +
+    md5(post.Pass) +
+    `") OR (Username="` +
+    post.UserID +
+    `" AND Pass="` +
+    md5(post.Pass) +
+    `")`;
+
+  query = mysql.format(query, table);
+
+  conn.query(query, function (error, rows) {
+    if (error) {
+      console.log(error);
+    } else {
+      if (rows.length == 1) {
+        let Ambil = rows[0];
+        let UID = Ambil.UserID;
+        console.log(UID);
+        console.log(Ambil);
+
+        let Role = Ambil.RoleID;
+        res.json({ Message: "OK", Role, UID });
+      } else {
+        conn.query(query3, function (error, rows) {
+          if (error) {
+            console.log(error);
+          } else {
+            if (rows.length == 1) {
+              let DvcID = rows[0];
+              let DvID = DvcID.DeviceID;
+              if (rows.length == 1 && DvID == "") {
+                conn.query(query2, (err) => {
+                  let Ambil = rows[0];
+                  let UID = Ambil.UserID;
+                  let Role = Ambil.RoleID;
+                  if (err) throw err;
+                  res.json({ Message: "OK", Role, UID });
+                });
+              } else {
+                res.json({
+                  Error: true,
+                  Message:
+                    "Device Tidak Sesuai, Segera Hubungi Admin Jika Ganti Device",
+                });
+              }
+            } else {
+              res.json({
+                Error: true,
+                Message: "Username atau Password Salah",
+              });
+            }
+          }
+        });
+      }
+    }
   });
 });
+
 
 //////////////
 /// MENGEDIT USERNAME dan PASSWORD
@@ -607,11 +875,11 @@ app.put("/api/username/:id", (req, res) => {
   let query = conn.query(sql, (err, results) => {
     if (err) {
       let pesan = err.sqlMessage;
-      res.json({message: pesan});
+      res.json({ message: pesan });
     }
-   else{ 
-    res.send(JSON.stringify(results));
-  }
+    else {
+      res.send(JSON.stringify(results));
+    }
   });
 });
 
@@ -1070,18 +1338,20 @@ app.post("/api/logindev", (req, res) => {
     req.body.DeviceID +
     `" WHERE UserID="` +
     req.body.UserID +
-    `" OR Username="`+
+    `" OR Username="` +
     post.UserID +
     `"`;
 
   let query3 =
-    `SELECT DeviceID,RoleID,UserID FROM user Where UserID="` +
+    `SELECT DeviceID,RoleID,UserID FROM user Where (UserID="` +
     req.body.UserID +
     `" AND Pass="` +
     md5(post.Pass) +
-    `" OR Username="`+
+    `") OR (Username="` +
     post.UserID +
-    `"`;
+    `" AND Pass="` +
+    md5(post.Pass) +
+    `")`;
 
   query = mysql.format(query, table);
 
@@ -1337,12 +1607,12 @@ app.get("/api/rekaptahun/:id", (req, res) => {
 app.get("/api/laporanrekap/:id&:TglAwal&:TglAkhir", (req, res) => {
   conn.query(
     `CALL ReportPertanggal ('` +
-      req.params.id +
-      `','` +
-      req.params.TglAwal +
-      `','` +
-      req.params.TglAkhir +
-      `')`,
+    req.params.id +
+    `','` +
+    req.params.TglAwal +
+    `','` +
+    req.params.TglAkhir +
+    `')`,
     function (err, rows) {
       if (err) throw err;
       let rek = rows[0];
@@ -1486,12 +1756,12 @@ app.get("/api/laporan/:id", (req, res) => {
 app.get("/api/laporandetail/:id&:TglAwal&:TglAkhir", (req, res) => {
   conn.query(
     `CALL LaporanPertanggal ('` +
-      req.params.id +
-      `','` +
-      req.params.TglAwal +
-      `','` +
-      req.params.TglAkhir +
-      `')`,
+    req.params.id +
+    `','` +
+    req.params.TglAwal +
+    `','` +
+    req.params.TglAkhir +
+    `')`,
     function (err, rows) {
       if (err) throw err;
 
@@ -1742,12 +2012,12 @@ app.get("/api/applaporan/:id", (req, res) => {
 app.get("/api/apprecentscan/:id&:TglAwal&:TglAkhir", (req, res) => {
   conn.query(
     `CALL AppMenampilkanRecentScan ('` +
-      req.params.id +
-      `','` +
-      req.params.TglAwal +
-      `','` +
-      req.params.TglAkhir +
-      `')`,
+    req.params.id +
+    `','` +
+    req.params.TglAwal +
+    `','` +
+    req.params.TglAkhir +
+    `')`,
     function (err, rows) {
       if (err) throw err;
       let scan = rows[0];
@@ -1759,12 +2029,12 @@ app.get("/api/apprecentscan/:id&:TglAwal&:TglAkhir", (req, res) => {
 app.get("/api/tlaporan", (req, res) => {
   conn.query(
     `CALL MenampilkanLaporan ('` +
-      req.body.Nama +
-      `','` +
-      req.body.TglAwal +
-      `','` +
-      req.body.TglAkhir +
-      `')`,
+    req.body.Nama +
+    `','` +
+    req.body.TglAwal +
+    `','` +
+    req.body.TglAkhir +
+    `')`,
     function (err, rows) {
       if (err) throw err;
       let scan = rows[0];
@@ -1775,6 +2045,14 @@ app.get("/api/tlaporan", (req, res) => {
 
 app.delete("/api/deletescan", (req, res) => {
   let sql = `DELETE FROM attlog ORDER BY DatangID DESC LIMIT 1`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+app.delete("/api/del/:id", (req, res) => {
+  let sql = `DELETE FROM attlog WHERE UserID="` + req.params.id + `" AND TanggalScan = CURRENT_DATE()`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
@@ -1910,6 +2188,17 @@ app.get("/api/optgroup", (req, res) => {
     if (err) throw err;
     let group = rows[0];
     res.send(group);
+  });
+});
+
+
+
+///////////// API OPTION CABANG  /////////
+app.get("/api/optcabang", (req, res) => {
+  conn.query(`CALL optCabang`, function (err, rows) {
+    if (err) throw err;
+    let Cabang = rows[0];
+    res.send(Cabang);
   });
 });
 
