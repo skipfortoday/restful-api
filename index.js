@@ -966,6 +966,20 @@ app.put("/api/resetdevice/:id", (req, res) => {
   });
 });
 
+
+//////
+app.put("/api/resetpassworduser/:id", (req, res) => {
+  let data = {
+    UserID: req.params.id,
+    Pass: 'e10adc3949ba59abbe56e057f20f883e',
+  };
+  let sql = `UPDATE user SET Pass="`+data.Pass+`" WHERE UserID="` + req.params.id + `"`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(data));
+  });
+});
+
 ///////////////
 
 //Menampilkan Detail grup Per ID Pegawai
@@ -1557,6 +1571,20 @@ app.post("/api/loginLengkap", (req, res) => {
 
 app.get("/api/izin", (req, res) => {
   conn.query(`CALL MenampilkanIzin`, function (err, rows) {
+    if (err) throw err;
+    let izin = rows[0];
+    res.send(izin);
+  });
+});
+
+app.get("/api/izinsolo/:id&:TglAwal&:TglAkhir", (req, res) => {
+  conn.query(`CALL MenampilkanIzinPerorang('` +
+  req.params.id +
+  `','` +
+  req.params.TglAwal +
+  `','` +
+  req.params.TglAkhir +
+  `')`, function (err, rows) {
     if (err) throw err;
     let izin = rows[0];
     res.send(izin);
