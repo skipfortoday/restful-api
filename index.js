@@ -1,4 +1,5 @@
 const express = require("express");
+const moment = require("moment");
 let cors = require("cors");
 let md5 = require("md5");
 const bodyParser = require("body-parser");
@@ -2304,6 +2305,42 @@ app.get("/api/optcabang", (req, res) => {
     res.send(Cabang);
   });
 });
+
+/////////////////////////////////////////////
+///////////  API PROSES ABSENSI         ////
+///////////////////////////////////////////
+
+
+// Api untuk proses absensi
+app.post("/api/proses", (req, res) => {
+  let post = {
+    UserID: req.body.UserID,
+    TglAwal: req.body.TglAwal,
+    TglAkhir: req.body.TglAkhir,
+  };
+  // Mendapatkan Tanggal Yang Kosong 
+
+  let sql2 = `SELECT Tanggal FROM tmptanggal WHERE Tanggal NOT IN (SELECT TanggalScan FROM attlog WHERE UserID ="`+post.UserID+`") AND Tanggal BETWEEN "`+post.TglAwal+`" AND "`+post.TglAkhir+`"`
+
+ // query = mysql.format(query, table);
+
+  conn.query(sql2, function (error, rows) {
+    if (error) {
+      console.log(error);
+    } else { 
+        var i;
+        for (i = 0; i < rows.length; i++)
+        { conn.query(`Insert INTO attlog (UserID,TanggalScan,Status,Keterangan,KodeCabang,GroupID,RpPotonganIzinTidakMasuk) VALUES ("`+moment.parseZone(rows[i].Tanggal).format('YYYY-MM-DD')+`")`); }
+        res.json({ Message: "OK",rows});
+  };
+});
+
+});
+
+
+
+
+
 
 
 
