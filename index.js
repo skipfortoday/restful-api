@@ -1,5 +1,6 @@
 const express = require("express");
 const moment = require("moment");
+const multer = require("multer");
 let cors = require("cors");
 let md5 = require("md5");
 const bodyParser = require("body-parser");
@@ -7,9 +8,25 @@ const app = express();
 const mysql = require("mysql");
 const { request } = require("express");
 let session = require("express-session");
-let pdf = require("pdfkit"); //to create PDF using NODE JS
-let fs = require("fs"); // to create write streams
-let myDoc = new pdf();
+
+
+// Disk Upload File
+const path = require("path");
+const diskStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "/uploads"));
+  },
+  // konfigurasi penamaan file yang unik
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+
+
 
 // parse application/json
 
@@ -2336,6 +2353,71 @@ app.post("/api/proses", (req, res) => {
 });
 
 });
+
+
+// Upload File
+
+// menerapkan middleware multer hanya pada rute berikut
+app.post("/api/upload",multer({ storage: diskStorage }).single("photo"),
+  (req, res) => {
+    const file = req.file.path;
+    const filename = req.file.filename;
+    console.log(file);
+    console.log(filename);
+    var sql = "INSERT INTO test (path1) VALUES('"+filename+"')"
+    var sql2 = "SELECT keyf FROM test ORDER BY keyf DESC limit 1"
+    if (!file) {
+      res.status(400).send({
+        status: false,
+        data: "No File is selected.",
+      });
+    } else {
+      conn.query(sql, function (err,results) {
+        if (err) throw err;
+        else{
+        conn.query(sql2, function (err,rows) {
+          keyf = rows[0];
+          if (err) throw err;
+          res.send(keyf);
+        });}
+      });
+      //res.send(file);
+    }
+      // var sql = "INSERT INTO test VALUES('"+req.file.filename+"')";
+      //conn.query(sql, function(err, results){
+
+   //  })
+    
+  }
+);
+
+
+
+// menerapkan middleware multer hanya pada rute berikut
+app.put("/api/upload",multer({ storage: diskStorage }).single("photo"),
+  (req, res) => {
+    const file = req.file.path;
+    const filename = req.file.filename;
+    var sql = "UPDATE SET test (path2) VALUES('"+filename+"')"
+    if (!file) {
+      res.status(400).send({
+        status: false,
+        data: "No File is selected.",
+      });
+    } else {
+      conn.query(sql, function (err,results) {
+        if (err) throw err;
+        res.send(results);
+      });
+      //res.send(file);
+    }
+      // var sql = "INSERT INTO test VALUES('"+req.file.filename+"')";
+      //conn.query(sql, function(err, results){
+
+   //  })
+    
+  }
+);
 
 
 
