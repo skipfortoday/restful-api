@@ -2330,17 +2330,12 @@ app.post("/api/proses", (req, res) => {
     } else { 
         var i;
         for (i = 0; i < rows.length; i++)
-        { conn.query(`Insert INTO attlog (UserID,TanggalScan,Status,Keterangan,KodeCabang,GroupID,RpPotonganIzinTidakMasuk) VALUES ("`+moment.parseZone(rows[i].Tanggal).format('YYYY-MM-DD')+`")`); }
+        { conn.query(`CALL ProsesAbsensi('`+post.UserID+`','`+moment.parseZone(rows[i].Tanggal).format('YYYY-MM-DD')+`')`); }
         res.json({ Message: "OK",rows});
   };
 });
 
 });
-
-
-
-
-
 
 
 
