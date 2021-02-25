@@ -2433,24 +2433,24 @@ app.get("/api/pengumuman", (req, res) => {
   });
 });
 
-app.post("/api/pengumuman", (req, res) => {
-  var Data = {
-      kode = req.body.kode,
-      judul = req.body.judul,
-      isi = req.body.isi,
-      tgl_posting = req.body.tgl_posting,
-      user_posting = req.body.user_posting,
-      StartDate= req.body.StartDate,
-      EndDate= req.body.EndDate,
-      aktif= req.body.aktif,
-      group= req.body.group,
-  };
-  conn.query(`INSERT INTO news(kode,judul,isi,tgl_posting,user_posting,StartDate,EndDate,aktif,group) VALUES (data.kode,data.judul,isi,tgl_posting,user_posting,StartDate,EndDate,aktif,group)`, function (err, rows) {
-    if (err) throw err;
-    let news = rows;
-    res.send(news);
-  });
-});
+// app.post("/api/pengumuman", (req, res) => {
+//   var Data = {
+//       kode = req.body.kode,
+//       judul = req.body.judul,
+//       isi = req.body.isi,
+//       tgl_posting = req.body.tgl_posting,
+//       user_posting = req.body.user_posting,
+//       StartDate= req.body.StartDate,
+//       EndDate= req.body.EndDate,
+//       aktif= req.body.aktif,
+//       group= req.body.group,
+//   };
+//   conn.query(`INSERT INTO news(kode,judul,isi,tgl_posting,user_posting,StartDate,EndDate,aktif,group) VALUES (data.kode,data.judul,isi,tgl_posting,user_posting,StartDate,EndDate,aktif,group)`, function (err, rows) {
+//     if (err) throw err;
+//     let news = rows;
+//     res.send(news);
+//   });
+// });
 
 
 
