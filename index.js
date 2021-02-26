@@ -1171,7 +1171,7 @@ app.post("/api/group", (req, res) => {
     req.body.JamPulangSore +
     `',
     '` +
-    req.body.JamLemburSore +
+    req.body.MinJamLemburSore +
     `',
     '` +
     req.body.JamMulaiLemburSore +
@@ -1204,67 +1204,101 @@ app.post("/api/group", (req, res) => {
 //Mengedit Data GROUP untuk panel admin
 app.put("/api/group/:id", (req, res) => {
   let sql =
-    `UPDATE tblgrupjabatan SET GroupID="` +
+    `CALL EditGroupKaryawan (
+  '` +
     req.body.GroupID +
-    `", Jabatan="` +
+    `',
+  '` +
     req.body.Jabatan +
-    `", JamDatang="` +
+    `',
+  '` +
+    req.body.AdaOff +
+    `',
+  '` +
+    req.body.CekJamKembali +
+    `',
+  '` +
+    req.body.RuleTerlambatBertingkat +
+    `',
+  '` +
     req.body.JamDatang +
-    `",JamPulang="` +
-    req.body.JamPulang +
-    `", MaxJamDatang="` +
+    `',
+  '` +
     req.body.MaxJamDatang +
-    `", MinJamLembur="` +
+    `',
+  '` +
+    req.body.JamPulang +
+    `',
+  '` +
     req.body.MinJamLembur +
-    `", HariLibur="` +
-    req.body.HariLibur +
-    `", RpPotonganTerlambat="` +
-    req.body.RpPotonganTerlambat +
-    `", JamDatangSiang="` +
-    req.body.JamDatangSiang +
-    `",JamPulangSiang="` +
-    req.body.JamPulangSiang +
-    `", MaxJamDatangSiang="` +
-    req.body.MaxJamDatangSiang +
-    `", MinJamLemburSiang="` +
-    req.body.MinJamLemburSiang +
-    `", HariLibur="` +
-    req.body.HariLibur +
-    `", RpPotonganTerlambat="` +
-    req.body.RpPotonganTerlambatKembali +
-    `", RpPotonganTidakMasuk="` +
-    req.body.RpPotonganTidakMasuk +
-    `", RpLemburPerJam="` +
-    req.body.RpLemburPerJam +
-    `", JamDatangSore="` +
-    req.body.JamDatangSore +
-    `", MaxJamDatangSore="` +
-    req.body.MaxJamDatangSore +
-    `", JamMulaiPagi="` +
-    req.body.JamMulaiPagi +
-    `", JamMulaiSiang="` +
-    req.body.JamMulaiSiang +
-    `", JamMulaiSore="` +
-    req.body.JamMulaiSore +
-    `", JamMulaiLembur="` +
+    `',
+  '` +
     req.body.JamMulaiLembur +
-    `", JamMulaiLemburSiang="` +
+    `',
+  '` +
+    req.body.RpPotonganTerlambat +
+    `',
+  '` +
+    req.body.JamDatangSiang +
+    `',
+  '` +
+    req.body.MaxJamDatangSiang +
+    `',
+  '` +
+    req.body.JamPulangSiang +
+    `',
+  '` +
     req.body.JamMulaiLemburSiang +
-    `", JamMulaiLemburSore="` +
-    req.body.JamMulaiLemburSore +
-    `", MaxJamKembali="` +
-    req.body.MaxJamKembali +
-    `", MaxJamKembaliSiang="` +
-    req.body.MaxJamKembaliSiang +
-    `", MaxJamKembaliSore="` +
-    req.body.MaxJamKembaliSore +
-    `", JamPulangSore="` +
+    `',
+  '` +
+    req.body.MinJamLemburSiang +
+    `',
+  '` +
+    req.body.HariLibur +
+    `',
+  '` +
+    req.body.RpPotonganTerlambatKembali +
+    `',
+  '` +
+    req.body.RpPotonganTidakMasuk +
+    `',
+  '` +
+    req.body.RpLemburPerJam +
+    `',
+    '` +
+    req.body.JamDatangSore +
+    `',
+    '` +
+    req.body.MaxJamDatangSore +
+    `',
+    '` +
     req.body.JamPulangSore +
-    `", MinJamLemburSore="` +
+    `',
+    '` +
     req.body.MinJamLemburSore +
-    `" WHERE GroupID="` +
-    req.params.id +
-    `"`;
+    `',
+    '` +
+    req.body.JamMulaiLemburSore +
+    `',
+    '` +
+    req.body.JamMulaiPagi +
+    `',
+    '` +
+    req.body.MaxJamKembali +
+    `',
+    '` +
+    req.body.JamMulaiSiang +
+    `',
+    '` +
+    req.body.MaxJamKembaliSiang +
+    `',
+  '` +
+    req.body.JamMulaiSore +
+    `',
+  '` +
+    req.body.MaxJamKembaliSore +
+    `'
+  )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(results));
@@ -1368,11 +1402,11 @@ app.delete("/api/cabang/:id", (req, res) => {
 // Api untuk proses login di APP
 app.post("/api/login", (req, res) => {
   let data = {
-    Pass: md5(req.body.Pass),
-    UserID: req.body.UserID,
+    Password: md5(req.body.Password),
+    AdminID: req.body.AdminID,
   };
   let query = "Select * FROM ?? WHERE ??=? AND ??=?";
-  let table = ["user", "Pass", data.Pass, "UserID", data.UserID];
+  let table = ["admin", "Pass", data.Password, "UserID", data.AdminID];
 
   query = mysql.format(query, table);
   conn.query(query, function (err, rows) {
