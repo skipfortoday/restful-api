@@ -29,7 +29,7 @@ const diskStorage = multer.diskStorage({
 
 
 // parse application/json
-
+app.use("/public", express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use(
   session({
@@ -1402,11 +1402,11 @@ app.delete("/api/cabang/:id", (req, res) => {
 // Api untuk proses login di APP
 app.post("/api/login", (req, res) => {
   let data = {
-    Password: md5(req.body.Password),
-    AdminID: req.body.AdminID,
+    Pass: md5(req.body.Pass),
+    UserID: req.body.UserID,
   };
   let query = "Select * FROM ?? WHERE ??=? AND ??=?";
-  let table = ["admin", "Pass", data.Password, "UserID", data.AdminID];
+  let table = ["admin", "Password", data.Pass, "AdminID", data.UserID];
 
   query = mysql.format(query, table);
   conn.query(query, function (err, rows) {
