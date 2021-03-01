@@ -1402,11 +1402,11 @@ app.delete("/api/cabang/:id", (req, res) => {
 // Api untuk proses login di APP
 app.post("/api/login", (req, res) => {
   let data = {
-    Pass: md5(req.body.Pass),
-    UserID: req.body.UserID,
+    Password: md5(req.body.Password),
+    AdminID: req.body.AdminID,
   };
   let query = "Select * FROM ?? WHERE ??=? AND ??=?";
-  let table = ["admin", "Password", data.Pass, "AdminID", data.UserID];
+  let table = ["admin", "Password", data.Password, "AdminID", data.AdminID];
 
   query = mysql.format(query, table);
   conn.query(query, function (err, rows) {
@@ -1414,9 +1414,9 @@ app.post("/api/login", (req, res) => {
       throw err;
     } else {
       if (rows.length == 1) {
-        res.send(JSON.stringify(data))
+        res.json({ AdminID: rows[0].AdminID, RoleAdmin : rows[0].RoleAdmin, message: "OK" , Login: "true" });
       } else {
-        throw err;
+        res.json({ message: "Username Passoword Salah" , Login: "false" });
       }
     }
   });
@@ -1432,7 +1432,7 @@ app.post("/api/loginsu", (req, res) => {
   let sql = "INSERT INTO admin SET ?";
   let query = conn.query(sql, data, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(data));
+    res.json({ Message: "OK"});;
   });
 });
 
