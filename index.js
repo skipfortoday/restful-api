@@ -2486,7 +2486,74 @@ app.get("/api/pengumuman", (req, res) => {
 //   });
 // });
 
+////////////////////////////////////////////////////////////////////////////////////////////
 
+///////////////////////        API BERHUBUNGAN SUPER ADMIN        ///////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+//Menampilkan seluruh data cabang yang sudah terdaftar di panel admin
+app.get("/api/superadmin", (req, res) => {
+  let sql = `SELECT AdminID,  DATE_FORMAT(TanggalCreate, "%d-%m-%Y") as TanggalCreate FROM admin WHERE RoleAdmin ='1'`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+//Menampilkan detai data cabang yang sudah terdaftar di panel admin
+app.get("/api/superadmin/:id", (req, res) => {
+  conn.query(
+    `SELECT AdminID,Password, DATE_FORMAT(TanggalCreate, "%Y-%m-%d") as TanggalCreate FROM admin Where AdminID="`+ req.params.id +`"`,
+    function (err, rows) {
+      if (err) throw err;
+      let cabang = rows[0];
+      res.send(cabang);
+    }
+  );
+});
+
+//Menambahkan Data Cabang dengan kode cabang dan nama cabang
+app.post("/api/superadmin", (req, res) => {
+  let data = {
+    AdminID: req.body.AdminID,
+    Password: md5(req.body.Password),
+    RoleAdmin : "1",
+    TanggalCreate : moment.parseZone(moment()).format('YYYY-MM-DD'),
+  };
+  let sql = "INSERT INTO admin SET ?";
+  let query = conn.query(sql, data, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(data));
+  });
+});
+
+//Mengedit Nama Cabang untuk untuk panel admin
+app.put("/api/superadmin/:id", (req, res) => {
+  let data = {
+    AdminID: req.body.AdminID,
+    Password: md5(req.body.Password),
+  };
+  let sql =
+    `UPDATE admin SET Password="` +
+    data.Password +
+    `" WHERE AdminID="` +
+    req.params.id +
+    `"`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(data));
+  });
+});
+
+//Menghapus data cabang untuk panel admin
+app.delete("/api/superadmin/:id", (req, res) => {
+  let sql = `DELETE FROM admin WHERE AdminID="` + req.params.id + `"`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
 
 
 
