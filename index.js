@@ -2371,8 +2371,8 @@ app.post("/api/proses", (req, res) => {
   };
   // Mendapatkan Tanggal Yang Kosong 
 
-  let sql2 = `SELECT Tanggal FROM tmptanggal WHERE Tanggal NOT IN (SELECT TanggalScan FROM attlog WHERE UserID ="`+post.UserID+`") AND Tanggal BETWEEN "`+post.TglAwal+`" AND "`+post.TglAkhir+`"`
-
+  let sql2 = `SELECT Tanggal FROM tmptanggal WHERE Tanggal NOT IN (SELECT TanggalScan FROM attlog WHERE UserID ="`+post.UserID+`") AND Tanggal BETWEEN "`+post.TglAwal+`" AND "`+post.TglAkhir+`"`;
+  let sql3 = `CALL MencariTanggalLupaScanPulang('`+post.UserID+`','`+post.TglAwal+`','`+post.TglAkhir+`')`;
  // query = mysql.format(query, table);
 
   conn.query(sql2, function (error, rows) {
@@ -2382,7 +2382,16 @@ app.post("/api/proses", (req, res) => {
         var i;
         for (i = 0; i < rows.length; i++)
         { conn.query(`CALL ProsesAbsensi('`+post.UserID+`','`+moment.parseZone(rows[i].Tanggal).format('YYYY-MM-DD')+`')`); }
-        res.json({ Message: "OK",rows});
+        conn.query(sql3, function (error, rows) {
+          if (error) {
+            console.log(error);
+          } else { 
+              var i;
+              for (i = 0; i < rows.length; i++)
+              { conn.query(`CALL ProsesAbsensiLupaScanPulang('`+post.UserID+`','`+moment.parseZone(rows[i].TanggalScan).format('YYYY-MM-DD')+`')`); }
+              res.json({ Message: "OK",rows});
+        };
+      });
   };
 });
 
@@ -2555,7 +2564,39 @@ app.delete("/api/superadmin/:id", (req, res) => {
   });
 });
 
+/////////////////////////////////////////////
+///////////  API IZIN GROUP        ////
+///////////////////////////////////////////
 
+
+// Api untuk proses absensi
+app.post("/api/pilihizin", (req, res) => {
+  let Body = {
+    TanggalScan: req.body.TanggalScan,
+    Status: req.body.Status,
+    Keterangan : req.body.Keterangan,
+  };
+
+  let ArrayID = req.body.Nama ; 
+  console.log(ArrayID);
+  // Mendapatkan Tanggal Yang Kosong 
+
+  let sql2 = `SELECT Now() as Waktu`
+
+ // query = mysql.format(query, table);
+
+  conn.query(sql2, function (error, rows) {
+    if (error) {
+      console.log(error);
+    } else { 
+        var i;
+        for (i = 0; i < ArrayID.length; i++)
+        { conn.query(`CALL InputIzinPerorang('`+ArrayID[i].value+`','`+Body.TanggalScan+`','`+Body.Status+`','`+Body.Keterangan+`')`); }
+        res.json({ Message: "OK",rows});
+  };
+});
+
+});
 
 
 
