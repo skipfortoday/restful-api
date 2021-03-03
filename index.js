@@ -485,16 +485,12 @@ app.put("/api/user/:id", (req, res) => {
   let data = {
     Nama: req.body.Nama,
     UserID: req.body.UserID,
-    Pass: md5(req.body.Pass),
   };
 
   let sql =
   `CALL EditUser (
   '` +
   req.params.id +
-  `',
-  '` +
-  data.Pass +
   `',
 '` +
   req.body.Nama +
@@ -1059,6 +1055,45 @@ app.get("/api/group/:id", (req, res) => {
       if (err) throw err;
       let group = rows[0];
       res.send(group);
+    }
+  );
+});
+
+//Menampilkan Detail grup Per ID Pegawai
+app.get("/api/groupterlambat1/:id", (req, res) => {
+  conn.query(
+    `SELECT MaxJamDatang FROM tblruleterlambatbertingkat Where GroupID="` + req.params.id + `" AND Shift = '1'`,
+    function (err, rows) {
+       var i;
+        for (i = 0; i < rows.length; i++)
+    // { conn.query(`CALL ProsesAbsensiLupaScanPulang('`+post.UserID+`','`+moment.parseZone(rows[i].TanggalScan).format('YYYY-MM-DD')+`')`); }
+         {const propertyValues = Object.values(rows[i]);}
+      console.log(propertyValues)
+      res.send(propertyValues);
+    }
+  );
+});
+
+//Menampilkan Detail grup Per ID Pegawai
+app.get("/api/groupterlambat2/:id", (req, res) => {
+  conn.query(
+    `SELECT * FROM tblruleterlambat Where GroupID="` + req.params.id + `" AND Shift = '2'`,
+    function (err, rows) {
+      if (err) throw err;
+      console.log(rows);
+      res.send(rows);
+    }
+  );
+});
+
+//Menampilkan Detail grup Per ID Pegawai
+app.get("/api/groupterlambat3/:id", (req, res) => {
+  conn.query(
+    `SELECT * FROM tblruleterlambat Where GroupID="` + req.params.id + `" AND Shift = '3'`,
+    function (err, rows) {
+      if (err) throw err;
+      console.log(rows);
+      res.send(rows);
     }
   );
 });
