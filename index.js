@@ -419,7 +419,7 @@ app.post("/api/user", (req, res) => {
   let data = {
     Nama: req.body.Nama,
     UserID: req.body.UserID,
-    Pass: md5(req.body.Pass),
+    Pass: 'e10adc3949ba59abbe56e057f20f883e',
   };
 
   let sql =
