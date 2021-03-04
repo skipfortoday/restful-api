@@ -1060,16 +1060,12 @@ app.get("/api/group/:id", (req, res) => {
 });
 
 //Menampilkan Detail grup Per ID Pegawai
-app.get("/api/groupterlambat1/:id", (req, res) => {
+app.get("/api/TerlambatBertingkat/:id", (req, res) => {
   conn.query(
-    `SELECT MaxJamDatang FROM tblruleterlambatbertingkat Where GroupID="` + req.params.id + `" AND Shift = '1'`,
+    `SELECT * FROM tblruleterlambatbertingkat Where GroupID="` + req.params.id + `"`,
     function (err, rows) {
-       var i;
-        for (i = 0; i < rows.length; i++)
-    // { conn.query(`CALL ProsesAbsensiLupaScanPulang('`+post.UserID+`','`+moment.parseZone(rows[i].TanggalScan).format('YYYY-MM-DD')+`')`); }
-         {const propertyValues = Object.values(rows[i]);}
-      console.log(propertyValues)
-      res.send(propertyValues);
+      if (err) throw err;
+      res.send(rows);
     }
   );
 });
@@ -2380,6 +2376,16 @@ app.get("/api/optgroup", (req, res) => {
     res.send(group);
   });
 });
+
+///////////// API OPTION GROUP  /////////
+app.get("/api/optTerlambat", (req, res) => {
+  conn.query(`CALL optTerlambat`, function (err, rows) {
+    if (err) throw err;
+    let group = rows[0];
+    res.send(group);
+  });
+});
+
 
 
 
