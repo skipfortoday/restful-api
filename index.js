@@ -1071,28 +1071,65 @@ app.get("/api/TerlambatBertingkat/:id", (req, res) => {
 });
 
 //Menampilkan Detail grup Per ID Pegawai
-app.get("/api/groupterlambat2/:id", (req, res) => {
+app.get("/api/TerlambatBertingkat2/:id", (req, res) => {
   conn.query(
-    `SELECT * FROM tblruleterlambat Where GroupID="` + req.params.id + `" AND Shift = '2'`,
+    `SELECT * FROM tblruleterlambatbertingkat Where RuleTerlambatBertingkatID="` + req.params.id + `"`,
     function (err, rows) {
       if (err) throw err;
-      console.log(rows);
-      res.send(rows);
+      detail = rows[0];
+      res.send(detail);
     }
   );
 });
 
-//Menampilkan Detail grup Per ID Pegawai
-app.get("/api/groupterlambat3/:id", (req, res) => {
-  conn.query(
-    `SELECT * FROM tblruleterlambat Where GroupID="` + req.params.id + `" AND Shift = '3'`,
-    function (err, rows) {
-      if (err) throw err;
-      console.log(rows);
-      res.send(rows);
-    }
-  );
+
+//Menambahkan Data Cabang dengan kode cabang dan nama cabang
+app.post("/api/TerlambatBertingkat", (req, res) => {
+  let data = {
+    GroupID: req.body.GroupID,
+    Shift: req.body.Shift,
+    MaxJamDatang: req.body.MaxJamDatang,
+    RpPotonganTerlambat: req.body.RpPotonganTerlambat,
+  };
+  let sql = "INSERT INTO tblruleterlambatbertingkat SET ?";
+  let query = conn.query(sql, data, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(data));
+  });
 });
+
+//Mengedit Nama Cabang untuk untuk panel admin
+app.put("/api/TerlambatBertingkat/:id", (req, res) => {
+  let data = {
+    GroupID: req.body.GroupID,
+    Shift: req.body.Shift,
+    MaxJamDatang: req.body.MaxJamDatang,
+    RpPotonganTerlambat: req.body.RpPotonganTerlambat,
+  };
+  let sql =
+    `UPDATE tblruleterlambatbertingkat SET MaxJamDatang="` +
+    req.body.MaxJamDatang +
+    `", RpPotonganTerlambat="` +
+    req.body.RpPotonganTerlambat +
+    `" WHERE RuleTerlambatBertingkatID="` +
+    req.params.id +
+    `"`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(data));
+  });
+});
+
+//Menghapus data cabang untuk panel admin
+app.delete("/api/TerlambatBertingkat/:id", (req, res) => {
+  let sql = `DELETE FROM tblruleterlambatbertingkat WHERE RuleTerlambatBertingkatID="` + req.params.id + `"`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+
 
 //Tambahkan data GROUP untuk panel admin
 app.post("/api/group", (req, res) => {
