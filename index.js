@@ -188,7 +188,7 @@ app.post("/api/attlogUpdate", (req, res) => {
 
 //Post Untuk input prosesi absensi dari APP
 app.post("/api/attlog", (req, res) => {
-  let sql =
+  let sql = 
     `CALL ProsesMasuk (
 '` +
     req.body.UserID +
@@ -211,6 +211,35 @@ app.post("/api/attlog", (req, res) => {
     res.send(JSON.stringify(results));
   });
 });
+
+//Post Untuk input prosesi absensi manual
+app.post("/api/attlog", (req, res) => {
+  let parsing = { Tanggal: moment.parseZone(moment()).format('YYYY-MM-DD'),
+                  ScanMasuk: moment.parseZone(moment()).format('HH:mm:ss')}
+  let sql =
+    `CALL ProsesMasukManual (
+'` +
+    req.body.UserID +
+    `',
+'` +
+    parsing.Tanggal +
+    `',
+'` +
+    parsing.ScanMasuk +
+    `',
+'` +
+    req.body.Shift +
+    `',
+'` +
+    req.body.Keterangan +
+    `'  
+)`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
 
 //Post Untuk input prosesi absensi dari APP
 app.put("/api/keterangan/:id", (req, res) => {
@@ -2398,6 +2427,16 @@ app.put("/api/reqizinlv2/:id", (req, res) => {
 ///////////// API OPTION USER /////////
 app.get("/api/optuser", (req, res) => {
   conn.query(`CALL optUser`, function (err, rows) {
+    if (err) throw err;
+    let user = rows[0];
+    res.send(user);
+  });
+});
+
+
+///////////// API OPTION USER /////////
+app.get("/api/optusermanual", (req, res) => {
+  conn.query(`CALL optUserManual`, function (err, rows) {
     if (err) throw err;
     let user = rows[0];
     res.send(user);
