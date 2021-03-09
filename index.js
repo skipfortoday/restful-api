@@ -1829,6 +1829,17 @@ app.get("/api/gettime", (req, res) => {
   });
 });
 
+//Mengambil waktu server dan data jam kerja untuk APP bisa scan
+
+app.get("/api/gettime2", (req, res) => {
+  let sql = `SELECT DATE_FORMAT(NOW(), "%d %m %Y - %T")as Waktu`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) res.send(JSON.stringify(err));
+    test = results[0]
+    res.send(JSON.stringify(test));
+  });
+});
+
 //menampilkan report summary perbulan
 app.get("/api/sumreport/:id", (req, res) => {
   conn.query(
