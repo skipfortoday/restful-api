@@ -2473,6 +2473,15 @@ app.get("/api/optusermanualkeluar", (req, res) => {
 });
 
 ///////////// API OPTION USER /////////
+app.get("/api/optusermanualkembali", (req, res) => {
+  conn.query(`CALL optUserKembaliManual`, function (err, rows) {
+    if (err) throw err;
+    let user = rows[0];
+    res.send(user);
+  });
+});
+
+///////////// API OPTION USER /////////
 app.get("/api/optusermanualkeluarist", (req, res) => {
   conn.query(`CALL optUserIstirahatKeluarManual`, function (err, rows) {
     if (err) throw err;
