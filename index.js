@@ -213,7 +213,7 @@ app.post("/api/attlog", (req, res) => {
 });
 
 //Post Untuk input prosesi absensi manual
-app.post("/api/attlog", (req, res) => {
+app.post("/api/attlogmanual", (req, res) => {
   let parsing = { Tanggal: moment.parseZone(moment()).format('YYYY-MM-DD'),
                   ScanMasuk: moment.parseZone(moment()).format('HH:mm:ss')}
   let sql =
@@ -275,6 +275,7 @@ app.get("/api/datang/:id", (req, res) => {
 //Put data untuk update scan pulang setelah mendapatkan DatangID
 
 app.put("/api/datang/:id", (req, res) => {
+
   let sql =
     `CALL ProsesPulang (
     '` +
@@ -290,6 +291,26 @@ app.put("/api/datang/:id", (req, res) => {
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify());
+  });
+});
+
+app.put("/api/datangmanual/:id", (req, res) => {
+  let parsing = {   ScanPulang: moment.parseZone(moment()).format('HH:mm:ss')}
+  let sql =
+    `CALL ProsesPulang (
+    '` +
+    req.params.id +
+    `',
+    '` +
+    parsing.ScanPulang+
+    `',
+    '` +
+    req.body.KetPulang +
+    `'
+    )`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
   });
 });
 
