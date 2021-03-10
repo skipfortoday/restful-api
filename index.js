@@ -2447,7 +2447,43 @@ app.get("/api/optuser", (req, res) => {
 
 ///////////// API OPTION USER /////////
 app.get("/api/optusermanual", (req, res) => {
-  conn.query(`CALL optUserManual`, function (err, rows) {
+  conn.query(`CALL optUserMasukManual`, function (err, rows) {
+    if (err) throw err;
+    let user = rows[0];
+    res.send(user);
+  });
+});
+
+///////////// API OPTION USER /////////
+app.get("/api/optusermanualpulang", (req, res) => {
+  conn.query(`CALL optUserPulangManual`, function (err, rows) {
+    if (err) throw err;
+    let user = rows[0];
+    res.send(user);
+  });
+});
+
+///////////// API OPTION USER /////////
+app.get("/api/optusermanualkeluar", (req, res) => {
+  conn.query(`CALL optUserKeluarManual`, function (err, rows) {
+    if (err) throw err;
+    let user = rows[0];
+    res.send(user);
+  });
+});
+
+///////////// API OPTION USER /////////
+app.get("/api/optusermanualkeluarist", (req, res) => {
+  conn.query(`CALL optUserIstirahatKeluarManual`, function (err, rows) {
+    if (err) throw err;
+    let user = rows[0];
+    res.send(user);
+  });
+});
+
+///////////// API OPTION USER /////////
+app.get("/api/optusermanualkembaliist", (req, res) => {
+  conn.query(`CALL optUserIstirahatKembaliManual`, function (err, rows) {
     if (err) throw err;
     let user = rows[0];
     res.send(user);
