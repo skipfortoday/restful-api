@@ -2,4 +2,4 @@
 :: Created on: 1 FEBRUAI 2021
 
 @echo off
-npm start index.js
+npm install forever -g

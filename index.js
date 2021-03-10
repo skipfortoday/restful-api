@@ -340,6 +340,28 @@ app.post("/api/keluarkantor", (req, res) => {
   });
 });
 
+
+//Post Untuk input Keluar Kantor manual
+app.post("/api/keluarkantormanual", (req, res) => {
+  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss')}
+  let sql =
+    `CALL ProsesKeluarKantor (
+  '` +
+    req.body.DatangID +
+    `',
+  '` +
+    parsing.KeluarKantor +
+    `',
+  '` +
+    req.body.Keterangan +
+    `'
+  )`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
 //GET Data KeluarID untuk karyawan yang sama sesuai datang id dan validasi
 // untuk prosesi validasi scan balik kantor  karyawan
 
@@ -388,6 +410,28 @@ app.put("/api/keluarkantor/:id", (req, res) => {
   });
 });
 
+//Put data untuk update scan kembali Kantor setelah mendapatkan KeluarID
+
+app.put("/api/keluarkantormanual/:id", (req, res) => {
+  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss')}
+  let sql =
+    `CALL ProsesKembaliKantor (
+    '` +
+    req.params.id +
+    `',
+    '` +
+    parsing.KeluarKantor +
+    `',
+    '` +
+    req.body.KeteranganKembali +
+    `'
+    )`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////       API BERHUBUNGAN DENGAN DATA ISTIRAHAT KANTOR        /////////////////
@@ -396,6 +440,7 @@ app.put("/api/keluarkantor/:id", (req, res) => {
 
 //Put Untuk input Istirahat Kantor Menggunakan Datang ID
 app.put("/api/istirahat/:id", (req, res) => {
+  
   let sql =
     `CALL ProsesIstirahatKeluar(
   '` +
@@ -403,6 +448,27 @@ app.put("/api/istirahat/:id", (req, res) => {
     `',
   '` +
     req.body.IstirahatKeluar +
+    `',
+  '` +
+    req.body.KetIstirahatKeluar +
+    `'
+  )`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+//Put Untuk input Istirahat Kantor Menggunakan Datang ID Manual
+app.put("/api/istirahatmanual/:id", (req, res) => {
+  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss')}
+  let sql =
+    `CALL ProsesIstirahatKeluar(
+  '` +
+    req.params.id +
+    `',
+  '` +
+  parsing.KeluarKantor +
     `',
   '` +
     req.body.KetIstirahatKeluar +
@@ -424,6 +490,28 @@ app.put("/api/istirahatkembali/:id", (req, res) => {
     `',
     '` +
     req.body.IstirahatKembali +
+    `',
+    '` +
+    req.body.KetIstirahatKembali +
+    `'
+    )`;
+  let query = conn.query(sql, (err, results) => {
+    if (err) throw err;
+    res.send(JSON.stringify(results));
+  });
+});
+
+//Put data untuk Istirahat Kembali
+
+app.put("/api/istirahatkembalimanual/:id", (req, res) => {
+  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss')}
+  let sql =
+    `CALL ProsesIstirahatKembali (
+    '` +
+    req.params.id +
+    `',
+    '` +
+    parsing.KeluarKantor+
     `',
     '` +
     req.body.KetIstirahatKembali +
