@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 10/03/2021 11:04:59
+ Date: 10/03/2021 17:06:47
 */
 
 SET NAMES utf8mb4;
@@ -58,7 +58,7 @@ CREATE TABLE `attlog`  (
   `Lembur` time(0) NULL DEFAULT NULL,
   `RpLembur` decimal(10, 0) NULL DEFAULT 0,
   `Shift` int(5) NULL DEFAULT NULL,
-  `KodeCabang` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `KodeCabang` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `GroupID` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `dirfoto` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Status` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE `attlog`  (
   `JumlahLiburMingguan` int(1) NULL DEFAULT NULL,
   `TglEntry` date NULL DEFAULT NULL,
   PRIMARY KEY (`DatangID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1169 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1180 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of attlog
@@ -848,7 +848,7 @@ INSERT INTO `attlog` VALUES (1151, 'SB1SKA012', 'FITRIAH NUR AINI', '2021-03-04'
 INSERT INTO `attlog` VALUES (1152, 'SB1MIT006', 'Bintang Dimas', '2021-03-04', '09:02:55', NULL, NULL, 1, 0, '00:02:55', '17:01:52', NULL, NULL, 0, 2, 'SB1', 'MIT', NULL, NULL, NULL, 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
 INSERT INTO `attlog` VALUES (1153, 'SB1SKA017', 'LUDFIYAH', '2021-03-04', '09:04:42', NULL, NULL, NULL, 0, NULL, '16:59:00', NULL, NULL, 0, 2, 'SB1', 'SKA', NULL, NULL, NULL, 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, 'p', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
 INSERT INTO `attlog` VALUES (1154, 'SB1MIT001', 'Johanes ', '2021-03-04', '09:15:35', '00:10:35', 01, 1, 10000, '00:15:35', NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, 'fghj', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (1157, 'SB1MIT002', 'Robbin Kristanto', '2021-03-09', '07:15:46', '06:10:46', 01, 1, 10000, '06:15:46', '16:05:00', 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'OK MASUK', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1157, 'SB1MIT002', 'Robbin Kristanto', '2021-03-10', '07:15:46', '06:10:46', 01, 1, 10000, '06:15:46', '16:05:00', 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'OK MASUK', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1158, 'SB1MIT004', 'Rizqi Pratama', '2021-03-04', '14:18:54', '06:13:54', 01, 1, 10000, '06:18:54', '16:00:18', NULL, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'OK', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
 INSERT INTO `attlog` VALUES (1159, 'SB1MIT012', 'DANIEL GLORYO NADIRCO', '2021-03-04', '15:27:12', '05:27:12', 01, 1, 10000, '05:27:12', NULL, 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'AA', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1160, 'SB1MIT005', 'Ali', '2021-03-04', '15:59:25', '07:54:25', 01, 1, 10000, '07:59:25', '16:03:58', NULL, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'OKKK', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
@@ -859,6 +859,17 @@ INSERT INTO `attlog` VALUES (1164, 'SB1MIT006', 'Bintang Dimas', '2021-03-09', '
 INSERT INTO `attlog` VALUES (1165, 'SB1MIT005', 'Ali', '2021-03-09', '09:01:19', NULL, NULL, 1, 0, '00:01:19', NULL, 0, NULL, 0, 2, 'SB1', 'MIT', NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1166, 'SB1MIT001', 'Johanes ', '2021-03-09', '09:11:58', '01:06:58', 01, 1, 10000, '01:11:58', NULL, 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'SFGJI', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1168, 'SB1MIT012', 'DANIEL GLORYO NADIRCO', '2021-03-09', '13:42:26', '04:37:26', 01, 1, 10000, '04:42:26', NULL, 0, NULL, 0, 2, 'SB1', 'MIT', NULL, NULL, 'TSTZYYZ', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1169, 'SB1MIT009', 'Ricky Kuncoro', '2021-03-10', '13:07:08', '05:02:08', 01, 1, 10000, '05:07:08', '13:32:18', NULL, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 'undefined', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `attlog` VALUES (1170, 'SB1MIT006', 'PAK ALI\r\n', '2021-03-10', '13:19:56', '05:14:56', 01, 1, 10000, '05:19:56', '13:33:49', NULL, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 'undefined', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `attlog` VALUES (1171, 'SB1SKA003', 'PAK A', '2021-03-10', '13:34:25', '05:29:25', 01, 1, 55000, '05:33:25', '13:34:29', NULL, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 'undefined', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
+INSERT INTO `attlog` VALUES (1172, 'SB1SKA007', 'AGUS SUYANTO', '2021-03-10', '13:40:50', '05:35:50', 01, 1, 55000, '05:39:50', NULL, 0, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1173, 'SB1SKA002', 'ALEXANDRA CAROLINE', '2021-03-10', '14:10:24', '06:05:24', 01, 1, 55000, '06:09:24', NULL, 0, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', '14:37:24', '14:51:04', 'undefined', 'undefined', '02:21:04', 1, 10000, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1174, 'SB1MIT005', 'Ali', '2021-03-10', '15:31:48', '07:26:48', 01, 1, 10000, '07:31:48', NULL, 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'wdjsdkwjedl', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1175, 'SB1MIT013', 'ARIEF NUR ABDULLAH', '2021-03-10', '16:03:48', '07:58:48', 01, 1, 10000, '08:03:48', NULL, 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1176, 'SB1MIT012', 'DANIEL GLORYO NADIRCO', '2021-03-10', '16:11:48', '07:06:48', 01, 1, 10000, '07:11:48', NULL, 0, NULL, 0, 2, 'SB1', 'MIT', NULL, NULL, 'ios', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1177, 'SB1MIT010', 'Aries Ganteng Luar Biasa', '2021-03-10', '17:01:27', '08:56:27', 01, 1, 10000, '09:01:27', NULL, 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1178, 'SB1SKA003', 'BETTY', '2021-03-10', '17:04:18', '08:59:18', 01, 1, 55000, '09:03:18', NULL, 0, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1179, 'SB1KKA002', 'ANDREAS LAMBANGTORO', '2021-03-10', '17:04:52', '08:59:52', 01, 1, 0, '09:03:52', NULL, 0, NULL, 0, 1, 'SB1', 'KKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for cabang
@@ -1012,7 +1023,7 @@ CREATE TABLE `tblkeluarkantor`  (
   `KeteranganKembali` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `TotalKeluar` time(0) NULL DEFAULT NULL,
   PRIMARY KEY (`KeluarID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 156 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 168 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tblkeluarkantor
@@ -1169,6 +1180,18 @@ INSERT INTO `tblkeluarkantor` VALUES (152, 1165, '2021-03-09', '12:05:28', NULL,
 INSERT INTO `tblkeluarkantor` VALUES (153, 997, '2021-03-03', '14:58:42', '15:00:01', 'aawaasZZ', 'WARDSDF', '00:01:19');
 INSERT INTO `tblkeluarkantor` VALUES (154, 1152, '2021-03-04', '16:06:55', '16:07:30', 'KAMAR MANDI', 'LEGOOO', '00:00:35');
 INSERT INTO `tblkeluarkantor` VALUES (155, 1162, '2021-03-09', '12:11:13', '12:11:26', 'LALAPO', 'LILILI', '00:00:13');
+INSERT INTO `tblkeluarkantor` VALUES (156, 1172, '2021-03-10', '13:53:39', '15:14:10', 'TEST', 'Kembali', '01:20:31');
+INSERT INTO `tblkeluarkantor` VALUES (157, 1173, '2021-03-10', '14:53:21', '15:14:51', 'TEST', 'Kembali', '00:21:30');
+INSERT INTO `tblkeluarkantor` VALUES (158, 1174, '2021-03-10', '15:32:14', '15:59:17', 'sdw', 'dfrg', '00:27:03');
+INSERT INTO `tblkeluarkantor` VALUES (159, 1174, '2021-03-10', '15:32:17', '15:59:38', 'sdw', 'undefined', '00:27:21');
+INSERT INTO `tblkeluarkantor` VALUES (160, 1174, '2021-03-10', '15:32:19', '15:59:24', 'sdw', 'fe', '00:27:05');
+INSERT INTO `tblkeluarkantor` VALUES (161, 1174, '2021-03-10', '15:32:21', '15:59:31', 'sdw', 'undefined', '00:27:10');
+INSERT INTO `tblkeluarkantor` VALUES (162, 1174, '2021-03-10', '15:32:24', '15:59:34', 'sdw', 'undefined', '00:27:10');
+INSERT INTO `tblkeluarkantor` VALUES (163, 1177, '2021-03-10', '17:01:33', NULL, 'TEST', NULL, NULL);
+INSERT INTO `tblkeluarkantor` VALUES (164, 1175, '2021-03-10', '17:02:37', NULL, 'TEST', NULL, NULL);
+INSERT INTO `tblkeluarkantor` VALUES (165, 1176, '2021-03-10', '17:04:04', NULL, 'TEST', NULL, NULL);
+INSERT INTO `tblkeluarkantor` VALUES (166, 1178, '2021-03-10', '17:04:23', NULL, 'TEST', NULL, NULL);
+INSERT INTO `tblkeluarkantor` VALUES (167, 1179, '2021-03-10', '17:04:56', NULL, 'TEST', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tblrole
@@ -3602,6 +3625,27 @@ END
 delimiter ;
 
 -- ----------------------------
+-- Procedure structure for OnDutyRoster
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `OnDutyRoster`;
+delimiter ;;
+CREATE PROCEDURE `OnDutyRoster`()
+BEGIN
+	SET lc_time_names = 'id_ID';
+ SELECT   a.UserID, b.Nama, c.Jabatan, a.DatangID, DATE_FORMAT(a.TanggalScan,"%W, %d/%M/%Y") as Tanggal,a.ScanMasuk,	a.Terlambat,a.ScanPulang,a.Lembur,a.Shift,a.Keterangan,a.KetPulang,a.Status, d.JamKeluar , d.JamKembali, a.IstirahatKeluar, a.IstirahatKembali, a.KetIstirahatKeluar, a.KetIstirahatKembali, d.Keterangan as KeteranganKeluar,
+ d.KeteranganKembali
+ FROM attlog a JOIN User b ON a.UserID = b.UserID
+ JOIN tblgrupjabatan c ON a.GroupID = c.GroupID
+ LEFT OUTER JOIN tblkeluarkantor d ON d.DatangID = a.DatangID AND d.JamKeluar IS NOT NULL AND D.JamKembali is null 
+ WHERE (a.TanggalScan = CURRENT_DATE() AND a.Shift IS NOT NULL ) 
+ or (a.TanggalScan = CURRENT_DATE() AND a.Shift IS NOT NULL AND d.JamKembali IS NOT NULL) 
+ ORDER BY b.Nama;
+ 
+END
+;;
+delimiter ;
+
+-- ----------------------------
 -- Procedure structure for optCabang
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `optCabang`;
@@ -3663,7 +3707,7 @@ BEGIN
 	-- Istirahat keluar
 	-- cek apakah yang absen ini statusnya true diperbolehkan absen manual
 	-- cross cek Robbin 9 mar 2021 jam 16.18 done
-		select datangid,userid, nama, scanmasuk, tanggalscan, scanpulang, IstirahatKeluar, IstirahatKembali from attlog where tanggalscan = date(now()) and scanpulang is null  and scanmasuk is not null 
+		select datangid,userid as value, nama as label, scanmasuk, tanggalscan, scanpulang, IstirahatKeluar, IstirahatKembali from attlog where tanggalscan = date(now()) and scanpulang is null  and scanmasuk is not null 
  and istirahatkeluar is null and datangid not in (select datangid from tblkeluarkantor);
 
 	 
@@ -3681,7 +3725,7 @@ BEGIN
 	-- Istirahat kembali
 	-- cek apakah yang absen ini statusnya true diperbolehkan absen manual
 	-- cross cek Robbin 9 mar 2021 jam 16.18 done
-	select userid, nama, datangid, tanggalscan from attlog where tanggalscan = date(now()) and scanpulang is null  and scanmasuk is not null 
+	select userid as value, nama as label, datangid, tanggalscan from attlog where tanggalscan = date(now()) and scanpulang is null  and scanmasuk is not null 
  and istirahatkeluar is not null ;
 	 
 END
@@ -3698,7 +3742,7 @@ BEGIN
   -- keluar kantor manual pakai web
 	-- cek apakah yang absen ini statusnya true diperbolehkan absen manual
 	-- cross cek Robbin 9 mar 2021 jam 16.18 done
-	select user.userid, user.Nama, attlog.tanggalscan, attlog.scanmasuk, attlog.scanpulang from user left outer join attlog on attlog.userID = user.userID where user.status = 'true' and user.tglkeluar is null and attlog.tanggalscan = date(now()) and scanpulang is null and scanmasuk is not null and datangid not in (select datangid from tblkeluarkantor);
+	select user.userid as value, user.Nama as label,attlog.DatangID, attlog.tanggalscan, attlog.scanmasuk, attlog.scanpulang from user left outer join attlog on attlog.userID = user.userID where user.status = 'true' and user.tglkeluar is null and attlog.tanggalscan = date(now()) and scanpulang is null and scanmasuk is not null and datangid not in (select datangid from tblkeluarkantor);
 
 	 
 END
@@ -3716,7 +3760,21 @@ BEGIN
 	-- cek apakah yang absen ini statusnya true diperbolehkan absen manual
 	-- cek apakah user itu sudah masuk ke kolom keluar kantor
 	-- cross cek Robbin 9 mar 2021 jam 16.56 done 
-	select userid, attlog.nama from attlog where tanggalscan = date(now()) and scanpulang is null and scanmasuk is not null and datangid in (select datangid from tblkeluarkantor where jamkembali is null);
+	-- 20210310 - ali menambahkan KeluarID
+	/*select userid as value, attlog.nama as label 
+	from attlog 
+	where tanggalscan = date(now()) and scanpulang is null and scanmasuk is not null 
+	and datangid in (select datangid from tblkeluarkantor where jamkembali is null);*/
+	
+	SELECT a.UserID as value, a.nama as label, t.KeluarID
+	FROM attlog a
+	LEFT OUTER JOIN tblkeluarkantor t ON t.DatangID = a.DatangID
+	WHERE a.TanggalScan = CURRENT_DATE 
+	AND a.ScanPulang IS NULL 
+	AND a.ScanMasuk IS NOT NULL
+	AND t.JamKembali IS NULL;
+		
+	
 	 
 END
 ;;
@@ -3764,7 +3822,7 @@ BEGIN
 	-- absen pulang
 	-- cek apakah yang absen ini statusnya true diperbolehkan absen manual
 	-- cross cek Robbin 9 mar 2021 jam 16.18 done
-	select datangid, userid as value, nama as label from attlog where tanggalscan = date(now()) and scanpulang is null  and scanmasuk is not null and istirahatkeluar is null and datangid not in (select datangid from tblkeluarkantor);
+	select datangid, userid as value, nama as label from attlog where tanggalscan = date(now()) and scanpulang is null  and scanmasuk is not null and istirahatkeluar is null and datangid not in (select datangid from tblkeluarkantor where JamKembali is null or (JamKeluar is not null and jamkembali is null));
 	 
 END
 ;;
@@ -4088,6 +4146,8 @@ BEGIN
 	SET @Nama = (SELECT Nama FROM user where UserID =P_UserID);
 -- Mencari Group ID Karyawan
 			SET @S_GroupID = ( SELECT GroupID FROM `user` WHERE UserID = P_UserID);
+			
+			SET @KodeCabang =(SELECT KodeCabang FROM `user` WHERE UserID = P_UserID);
 
 
 -- Memilih Kapan Jam Datang Sesuai dengan shift yang dipilih karyawan 
@@ -4149,14 +4209,16 @@ BEGIN
 		JumlahTerlambat,
 		PenandaTerlambat,	
 		TotalTerlambatTanpaToleransi,
-	  RpPotonganTerlambat ) 
+	  RpPotonganTerlambat,
+		KodeCabang ) 
 		
 		VALUES (P_UserID,@Nama, P_TanggalScan, P_ScanMasuk, P_Shift,P_Keterangan, @S_GroupID, 
 		@kondisi, 
 		@kondisi0_1,
 		IF(P_ScanMasuk>=@jamDatang, 1, NULL),
 		IF(P_ScanMasuk>=@jamDatang, @diff, NULL),
-		@FinalPot); 
+		@FinalPot,
+		@KodeCabang); 
 
 END
 ;;

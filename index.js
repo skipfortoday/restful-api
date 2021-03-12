@@ -2639,6 +2639,16 @@ app.get("/api/optcabang", (req, res) => {
   });
 });
 
+
+///////////// API ON DUTY /////////
+app.get("/api/onduty", (req, res) => {
+  conn.query(`CALL OnDutyRoster`, function (err, rows) {
+    if (err) throw err;
+    let Cabang = rows[0];
+    res.send(Cabang);
+  });
+});
+
 /////////////////////////////////////////////
 ///////////  API PROSES ABSENSI         ////
 ///////////////////////////////////////////
