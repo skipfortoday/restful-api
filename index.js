@@ -215,7 +215,8 @@ app.post("/api/attlog", (req, res) => {
 //Post Untuk input prosesi absensi manual
 app.post("/api/attlogmanual", (req, res) => {
   let parsing = { Tanggal: moment.parseZone(moment()).format('YYYY-MM-DD'),
-                  ScanMasuk: moment.parseZone(moment()).format('HH:mm:ss')}
+                ScanMasuk: moment.parseZone(moment()).format('HH:mm:ss'),
+                UserID: req.body.UserID}
   let sql =
     `CALL ProsesMasukManual (
 '` +
@@ -236,7 +237,7 @@ app.post("/api/attlogmanual", (req, res) => {
 )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(results));
+    res.send(JSON.stringify(parsing));
   });
 });
 
@@ -295,7 +296,8 @@ app.put("/api/datang/:id", (req, res) => {
 });
 
 app.put("/api/datangmanual/:id", (req, res) => {
-  let parsing = {   ScanPulang: moment.parseZone(moment()).format('HH:mm:ss')}
+  let parsing = {   ScanPulang: moment.parseZone(moment()).format('HH:mm:ss'),
+  UserID: req.body.UserID}
   let sql =
     `CALL ProsesPulang (
     '` +
@@ -310,7 +312,7 @@ app.put("/api/datangmanual/:id", (req, res) => {
     )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(results));
+    res.send(JSON.stringify(parsing));
   });
 });
 
@@ -343,7 +345,7 @@ app.post("/api/keluarkantor", (req, res) => {
 
 //Post Untuk input Keluar Kantor manual
 app.post("/api/keluarkantormanual", (req, res) => {
-  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss')}
+  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'),UserID: req.body.UserID}
   let sql =
     `CALL ProsesKeluarKantor (
   '` +
@@ -358,7 +360,7 @@ app.post("/api/keluarkantormanual", (req, res) => {
   )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(results));
+    res.send(JSON.stringify(parsing));
   });
 });
 
@@ -413,7 +415,7 @@ app.put("/api/keluarkantor/:id", (req, res) => {
 //Put data untuk update scan kembali Kantor setelah mendapatkan KeluarID
 
 app.put("/api/keluarkantormanual/:id", (req, res) => {
-  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss')}
+  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'),UserID: req.body.UserID}
   let sql =
     `CALL ProsesKembaliKantor (
     '` +
@@ -428,7 +430,7 @@ app.put("/api/keluarkantormanual/:id", (req, res) => {
     )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(results));
+    res.send(JSON.stringify(parsing));
   });
 });
 
@@ -461,7 +463,7 @@ app.put("/api/istirahat/:id", (req, res) => {
 
 //Put Untuk input Istirahat Kantor Menggunakan Datang ID Manual
 app.put("/api/istirahatmanual/:id", (req, res) => {
-  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss')}
+  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'), UserID: req.body.UserID}
   let sql =
     `CALL ProsesIstirahatKeluar(
   '` +
@@ -476,7 +478,7 @@ app.put("/api/istirahatmanual/:id", (req, res) => {
   )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(results));
+    res.send(JSON.stringify(parsing));
   });
 });
 
@@ -504,7 +506,7 @@ app.put("/api/istirahatkembali/:id", (req, res) => {
 //Put data untuk Istirahat Kembali
 
 app.put("/api/istirahatkembalimanual/:id", (req, res) => {
-  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss')}
+  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'),UserID: req.body.UserID}
   let sql =
     `CALL ProsesIstirahatKembali (
     '` +
@@ -519,7 +521,7 @@ app.put("/api/istirahatkembalimanual/:id", (req, res) => {
     )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(results));
+    res.send(JSON.stringify(parsing));
   });
 });
 
@@ -2187,6 +2189,126 @@ app.get("/api/laporandetail/:id&:TglAwal&:TglAkhir", (req, res) => {
     }
   );
 });
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
+app.get("/api/laporandetail/:id&:TglAwal&:TglAkhir", (req, res) => {
+  conn.query(
+    `CALL LaporanPertanggal ('` +
+    req.params.id +
+    `','` +
+    req.params.TglAwal +
+    `','` +
+    req.params.TglAkhir +
+    `')`,
+    function (err, rows) {
+      if (err) throw err;
+
+      let scan = rows[0];
+
+      let strDatangID = ""; // 1,2,3
+      let newArray = {};
+      scan.map(function (data, key) {
+        strDatangID += data.DatangID;
+        data["detail"] = [];
+        newArray[data.TanggalScan] = data;
+        if (key < scan.length - 1) strDatangID += ",";
+      });
+
+      let sql =
+        `SELECT *,  
+        IF(JamKembali IS NULL, DATE_FORMAT(JamKeluar, "%H:%i"), CONCAT(DATE_FORMAT(JamKeluar, "%H:%i"),' - ', DATE_FORMAT(JamKembali, "%H:%i"))) AS KelKan, 
+        CONCAT('Total = ',IF(JamKembali IS NULL, '', DATE_FORMAT(TIMEDIFF(JamKembali,JamKeluar), "%H:%i"))) AS Durasi , 
+        CONCAT('Ket. : ',IFNULL(Keterangan,'')) AS Ket, 
+        CONCAT('Ket. Kembali : ',IFNULL(KeteranganKembali,'')) AS KetKembali 
+ 
+        FROM tblkeluarkantor WHERE DatangID IN(` +
+        strDatangID +
+        `) `;
+      let query = conn.query(sql, (err, results) => {
+        if (err) throw err;
+        results.map(function (data, key) {
+          data["k"] = "Keluar Kantor";
+          newArray[data.TanggalScan]["detail"].push(data);
+        });
+        //console.log(newArray['105']);
+        //res.send(JSON.stringify(results));
+        res.send(newArray);
+      });
+
+      // console.log("SELECT * FROM tblkeluarkantor WHERE DatangID IN('"+strDatangID+"') ");
+      /*conn.query() => {
+
+      } 
+        function (err, rows){
+
+          if(err) throw err;
+          let details = rows[0];
+
+          details.map(function(data, key){
+            scan[data.DatangID]['detail'] = [$data]; 
+          });
+          console.log(scan);
+          res.send(scan);
+        }*/
+    }
+  );
+});app.get("/api/laporandetail2/:id", (req, res) => {
+  conn.query(
+    `CALL MenampilkanScan('` + req.params.id + `')`,
+    function (err, rows) {
+      if (err) throw err;
+
+      let scan = rows[0];
+
+      let strDatangID = ""; // 1,2,3
+      let newArray = {};
+      scan.map(function (data, key) {
+        strDatangID += data.DatangID;
+        data["detail"] = [];
+        newArray[data.TanggalScan] = data;
+        if (key < scan.length - 1) strDatangID += ",";
+      });
+
+      let sql =
+        `SELECT *,  
+        IF(JamKembali IS NULL, DATE_FORMAT(JamKeluar, "%H:%i"), CONCAT(DATE_FORMAT(JamKeluar, "%H:%i"),' - ', DATE_FORMAT(JamKembali, "%H:%i"))) AS KelKan, 
+        CONCAT('Total = ',IF(JamKembali IS NULL, '', DATE_FORMAT(TIMEDIFF(JamKembali,JamKeluar), "%H:%i"))) AS Durasi , 
+        CONCAT('Ket. : ',IFNULL(Keterangan,'')) AS Ket, 
+        CONCAT('Ket. Kembali : ',IFNULL(KeteranganKembali,'')) AS KetKembali 
+ 
+        FROM tblkeluarkantor WHERE DatangID IN(` +
+        strDatangID +
+        `) `;
+      let query = conn.query(sql, (err, results) => {
+        if (err) throw err;
+        results.map(function (data, key) {
+          data["k"] = "Keluar Kantor";
+          newArray[data.TanggalScan]["detail"].push(data);
+        });
+        //console.log(newArray['105']);
+        //res.send(JSON.stringify(results));
+        res.send(newArray);
+      });
+
+      // console.log("SELECT * FROM tblkeluarkantor WHERE DatangID IN('"+strDatangID+"') ");
+      /*conn.query() => {
+
+      } 
+        function (err, rows){
+
+          if(err) throw err;
+          let details = rows[0];
+
+          details.map(function(data, key){
+            scan[data.DatangID]['detail'] = [$data]; 
+          });
+          console.log(scan);
+          res.send(scan);
+        }*/
+    }
+  );
+});
+
 
 ///////////////////////////////////////////////////////////
 
