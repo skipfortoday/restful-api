@@ -216,7 +216,8 @@ app.post("/api/attlog", (req, res) => {
 app.post("/api/attlogmanual", (req, res) => {
   let parsing = { Tanggal: moment.parseZone(moment()).format('YYYY-MM-DD'),
                 ScanMasuk: moment.parseZone(moment()).format('HH:mm:ss'),
-                UserID: req.body.UserID}
+                UserID: req.body.UserID,
+                Nama: req.body.NamaUser}
   let sql =
     `CALL ProsesMasukManual (
 '` +
@@ -297,7 +298,8 @@ app.put("/api/datang/:id", (req, res) => {
 
 app.put("/api/datangmanual/:id", (req, res) => {
   let parsing = {   ScanPulang: moment.parseZone(moment()).format('HH:mm:ss'),
-  UserID: req.body.UserID}
+  UserID: req.body.UserID,
+  Nama: req.body.NamaUser}
   let sql =
     `CALL ProsesPulang (
     '` +
@@ -345,7 +347,7 @@ app.post("/api/keluarkantor", (req, res) => {
 
 //Post Untuk input Keluar Kantor manual
 app.post("/api/keluarkantormanual", (req, res) => {
-  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'),UserID: req.body.UserID}
+  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'),UserID: req.body.UserID,Nama: req.body.NamaUser}
   let sql =
     `CALL ProsesKeluarKantor (
   '` +
@@ -415,7 +417,7 @@ app.put("/api/keluarkantor/:id", (req, res) => {
 //Put data untuk update scan kembali Kantor setelah mendapatkan KeluarID
 
 app.put("/api/keluarkantormanual/:id", (req, res) => {
-  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'),UserID: req.body.UserID}
+  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'),UserID: req.body.UserID,Nama: req.body.NamaUser}
   let sql =
     `CALL ProsesKembaliKantor (
     '` +
@@ -463,7 +465,7 @@ app.put("/api/istirahat/:id", (req, res) => {
 
 //Put Untuk input Istirahat Kantor Menggunakan Datang ID Manual
 app.put("/api/istirahatmanual/:id", (req, res) => {
-  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'), UserID: req.body.UserID}
+  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'), UserID: req.body.UserID,Nama: req.body.NamaUser}
   let sql =
     `CALL ProsesIstirahatKeluar(
   '` +
@@ -506,7 +508,7 @@ app.put("/api/istirahatkembali/:id", (req, res) => {
 //Put data untuk Istirahat Kembali
 
 app.put("/api/istirahatkembalimanual/:id", (req, res) => {
-  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'),UserID: req.body.UserID}
+  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'),UserID: req.body.UserID,Nama: req.body.NamaUser}
   let sql =
     `CALL ProsesIstirahatKembali (
     '` +
