@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 12/03/2021 16:41:11
+ Date: 15/03/2021 09:44:50
 */
 
 SET NAMES utf8mb4;
@@ -33,8 +33,7 @@ CREATE TABLE `admin`  (
 -- Records of admin
 -- ----------------------------
 INSERT INTO `admin` VALUES ('danil', 'e10adc3949ba59abbe56e057f20f883e', 1, '2021-03-02');
-INSERT INTO `admin` VALUES ('Han', '08cef42bc8dfc721d628c2467bc4c937', 1, NULL);
-INSERT INTO `admin` VALUES ('riz', '29c34aeb44e381cebe68cfa18382aa41', 1, NULL);
+INSERT INTO `admin` VALUES ('Dimas', '7d49e40f4b3d8f68c19406a58303f826', 1, '2021-03-13');
 INSERT INTO `admin` VALUES ('Robbin', 'c81e728d9d4c2f636f067f89cc14862c', 1, '2021-03-02');
 INSERT INTO `admin` VALUES ('superadmin', 'b65fdca760be8830fc1cc3ff1510ae5e', 99, NULL);
 
@@ -89,7 +88,7 @@ CREATE TABLE `attlog`  (
   `JumlahLiburMingguan` int(1) NULL DEFAULT NULL,
   `TglEntry` date NULL DEFAULT NULL,
   PRIMARY KEY (`DatangID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1256 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1265 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of attlog
@@ -727,7 +726,6 @@ INSERT INTO `attlog` VALUES (1017, 'SB1MIT006', 'Bintang Dimas', '2021-03-08', N
 INSERT INTO `attlog` VALUES (1018, 'SB1MIT006', 'Bintang Dimas', '2021-03-09', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'CUTI', 'Lupa Absen', 1, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1019, 'SB1MIT006', 'Bintang Dimas', '2021-03-10', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'CUTI', 'Lupa Absen', 1, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1020, 'SB1MIT006', 'Bintang Dimas', '2021-03-11', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'CUTI', 'Lupa Absen', 1, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (1022, 'SB1MIT006', 'Bintang Dimas', '2021-03-13', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'CUTI', 'Lupa Absen', 1, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1023, 'SB1MIT006', 'Bintang Dimas', '2021-03-14', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'LIBUR', '', 0, NULL, NULL, 0, 0, 1, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1024, 'SB1MIT006', 'Bintang Dimas', '2021-03-15', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'CUTI', 'Lupa Absen', 1, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1025, 'SB1MIT006', 'Bintang Dimas', '2021-03-16', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'CUTI', 'Lupa Absen', 1, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
@@ -876,6 +874,15 @@ INSERT INTO `attlog` VALUES (1252, 'SB1SKA001', 'EMIE ICHTIARTIE', '2021-03-12',
 INSERT INTO `attlog` VALUES (1253, 'SB1KKA002', 'ANDREAS LAMBANGTORO', '2021-03-12', '16:20:10', '08:15:10', 01, 1, 0, '08:19:10', NULL, 0, NULL, 0, 1, 'SB1', 'KKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', '16:24:47', '16:36:36', 'ddddd', '12334', '16:36:36', 1, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1254, 'SB1MIT006', 'Bintang Dimas', '2021-03-12', '16:36:49', '08:31:49', 01, 1, 10000, '08:36:49', NULL, 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'masuk angin', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', '16:37:06', NULL, 'ddddd', NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1255, 'SB1MIT013', 'ARIEF NUR ABDULLAH', '2021-03-12', '16:37:45', '08:32:45', 01, 1, 10000, '08:37:45', NULL, 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'masuk angin', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1256, 'SB1MIT005', 'Ali', '2021-03-13', '08:15:28', NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, 0, 2, 'SB1', 'MIT', NULL, NULL, 'tes', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', '08:17:39', '08:18:08', 'mbakso', 'warek', NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1257, 'SB1SKA007', 'AGUS SUYANTO', '2021-03-13', '08:21:22', '00:16:22', 01, 1, 10000, '00:20:22', NULL, 0, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'masuk', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1258, 'SB1MIT010', 'Aries Ganteng Luar Biasa', '2021-03-13', '08:25:08', '00:20:08', 01, 1, 10000, '00:25:08', NULL, 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1259, 'SB1SKA002', 'ALEXANDRA CAROLINE', '2021-03-13', '11:15:41', '03:10:41', 01, 1, 55000, '03:14:41', NULL, 0, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'yyyy', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1260, 'SB1MIT013', 'ARIEF NUR ABDULLAH', '2021-03-13', '11:17:39', '03:12:39', 01, 1, 10000, '03:17:39', NULL, 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1261, 'SB1SKA004', 'CITRA INSTAN SARI', '2021-03-13', '11:17:44', '03:12:44', 01, 1, 55000, '03:16:44', NULL, 0, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1262, 'SB1SKA006', 'DEWI KURNIAWATI', '2021-03-13', '11:17:48', NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, 0, 2, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1263, 'SB1SKA001', 'EMIE ICHTIARTIE', '2021-03-13', '11:17:52', NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, 0, 2, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1264, 'SB1SKA005', 'DEVI KUMALA SARI', '2021-03-13', '11:18:01', '03:13:01', 01, 1, 55000, '03:17:01', NULL, 0, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for cabang
@@ -1029,7 +1036,7 @@ CREATE TABLE `tblkeluarkantor`  (
   `KeteranganKembali` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `TotalKeluar` time(0) NULL DEFAULT NULL,
   PRIMARY KEY (`KeluarID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 184 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 187 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tblkeluarkantor
@@ -1214,6 +1221,9 @@ INSERT INTO `tblkeluarkantor` VALUES (180, 1251, '2021-03-12', '16:28:03', '16:2
 INSERT INTO `tblkeluarkantor` VALUES (181, 1251, '2021-03-12', '16:28:17', '16:33:14', 'DOKTER TONGFANG', 'jadi super saiya girl', '00:04:57');
 INSERT INTO `tblkeluarkantor` VALUES (182, 1251, '2021-03-12', '16:37:15', '16:37:22', 'masuk angin', 'jadi supergirl', '00:00:07');
 INSERT INTO `tblkeluarkantor` VALUES (183, 1251, '2021-03-12', '16:37:28', NULL, 'DOKTER TONGFANG', NULL, NULL);
+INSERT INTO `tblkeluarkantor` VALUES (184, 1256, '2021-03-13', '08:16:10', '08:16:48', 'ke pacet', 'kesel', '00:00:38');
+INSERT INTO `tblkeluarkantor` VALUES (185, 1256, '2021-03-13', '08:18:35', '08:18:59', 'refreshing', 'kesel', '00:00:24');
+INSERT INTO `tblkeluarkantor` VALUES (186, 1256, '2021-03-13', '13:36:23', '13:36:58', 'mbakso', 'kesel', '00:00:35');
 
 -- ----------------------------
 -- Table structure for tblrole
@@ -2557,7 +2567,7 @@ INSERT INTO `user` VALUES ('SB1MIT002', 'c81e728d9d4c2f636f067f89cc14862c', 'Rob
 INSERT INTO `user` VALUES ('SB1MIT003', 'e10adc3949ba59abbe56e057f20f883e', 'Tri Adi Hartono', 'Staff - IT', 'Bratang Gede 3H 25', '1973-12-17', '085230364867', '2008-11-01', '2009-11-01', '2008-11-01', NULL, 'MIT', 'SB1', 'true', 'true', 'true', '2ed553a0b2f284d0', NULL, 3);
 INSERT INTO `user` VALUES ('SB1MIT004', 'e10adc3949ba59abbe56e057f20f883e', 'Rizqi Pratama', 'Staff - IT', 'Jalan Panjang Jiwo Gang IV No.10', '1999-12-20', '081217040564', '2020-12-14', '2021-01-01', NULL, NULL, 'MIT', 'SB1', 'true', 'true', 'true', 'dcf5dce328d022c7', 'RIZ', 3);
 INSERT INTO `user` VALUES ('SB1MIT005', 'e10adc3949ba59abbe56e057f20f883e', 'Ali', 'Staff - IT', 'Surabaya', '2021-02-04', '123', '2021-02-04', NULL, NULL, NULL, 'MIT', 'SB1', 'true', 'true', 'true', '484092e6804f9c26', 'ALSO', 4);
-INSERT INTO `user` VALUES ('SB1MIT006', 'e10adc3949ba59abbe56e057f20f883e', 'Bintang Dimas', 'Staff - IT', 'Surabaya', '2021-02-04', '123', '2021-02-04', '2021-02-04', '2021-02-04', NULL, 'MIT', 'SB1', 'true', 'true', 'true', '62d12aecb93ce1c0', 'DIMS', 4);
+INSERT INTO `user` VALUES ('SB1MIT006', 'e10adc3949ba59abbe56e057f20f883e', 'Bintang Dimas', 'Staff - IT', 'Surabaya', '2021-02-04', '123', '2021-02-04', '2021-02-04', '2021-02-04', NULL, 'MIT', 'SB1', NULL, 'true', 'true', '62d12aecb93ce1c0', 'DIMS', 4);
 INSERT INTO `user` VALUES ('SB1MIT007', 'e10adc3949ba59abbe56e057f20f883e', 'Davi', 'Staff - IT', 'Surabaya', '2021-02-04', '123', '2021-02-04', '2021-02-04', NULL, NULL, 'MIT', 'SB1', 'true', 'true', 'true', 'f1d977536f1c4ff9', 'KADHAFI', 3);
 INSERT INTO `user` VALUES ('SB1MIT008', 'e10adc3949ba59abbe56e057f20f883e', 'FEBRINIA ERINE ARMADANTI', 'Staff - IT', 'Surabaya', '1998-02-05', '082233859903', '2021-02-04', '2000-01-19', NULL, NULL, 'MIT', 'SB1', 'true', 'true', 'true', 'c2e97ced604c4429', NULL, 3);
 INSERT INTO `user` VALUES ('SB1MIT009', '863134f4773ba412cd488debf373fead', 'Ricky Kuncoro', 'Staff - IT', 'Jl. Kusuma Bangsa Nomor 118, Tambaksari, Kecamatan. Tambaksari, Kota Surabaya, Jawa Timur Kode Pos 60136', '2021-02-04', '1233', '2021-02-04', '2020-11-01', NULL, NULL, 'MIT', 'SB1', 'true', 'true', 'true', '39aea3ec5975cacb', 'RIKUN97', 3);
@@ -3977,7 +3987,7 @@ delimiter ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `ProsesIstirahatKeluar`;
 delimiter ;;
-CREATE PROCEDURE `ProsesIstirahatKeluar`(IN `P_DatangID` INT(20), IN `P_IstirahatKeluar` TIME, IN `P_KetIstirahatKeluar` VARCHAR(50))
+CREATE PROCEDURE `ProsesIstirahatKeluar`(IN `P_DatangID` INT(20), IN `P_IstirahatKeluar` TIME, IN `P_KetIstirahatKeluar` VARCHAR(200))
 BEGIN
 	
 			
@@ -3996,7 +4006,7 @@ delimiter ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `ProsesIstirahatKembali`;
 delimiter ;;
-CREATE PROCEDURE `ProsesIstirahatKembali`(IN `P_DatangID` INT(20), IN `P_IstirahatKembali` TIME, IN `P_KetIstirahatKembali` VARCHAR(50))
+CREATE PROCEDURE `ProsesIstirahatKembali`(IN `P_DatangID` INT(20), IN `P_IstirahatKembali` TIME, IN `P_KetIstirahatKembali` VARCHAR(200))
 BEGIN
 
 	-- Mencari User ID dari datng id yang dikirim
@@ -4175,7 +4185,7 @@ delimiter ;
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `ProsesMasukManual`;
 delimiter ;;
-CREATE PROCEDURE `ProsesMasukManual`(IN `P_UserID` VARCHAR(20), IN `P_TanggalScan` DATE, IN `P_ScanMasuk` TIME, IN `P_Shift` INT(2), IN `P_Keterangan` VARCHAR(20))
+CREATE PROCEDURE `ProsesMasukManual`(IN `P_UserID` VARCHAR(20), IN `P_TanggalScan` DATE, IN `P_ScanMasuk` TIME, IN `P_Shift` INT(2), IN `P_Keterangan` VARCHAR(200))
 BEGIN
 	SET @Nama = (SELECT Nama FROM user where UserID =P_UserID);
 -- Mencari Group ID Karyawan
