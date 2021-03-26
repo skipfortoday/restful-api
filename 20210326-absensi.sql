@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : Rizqi Tato
+ Source Server         : localhost
  Source Server Type    : MySQL
  Source Server Version : 50724
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 15/03/2021 09:44:50
+ Date: 26/03/2021 10:58:19
 */
 
 SET NAMES utf8mb4;
@@ -27,14 +27,14 @@ CREATE TABLE `admin`  (
   `RoleAdmin` int(11) NULL DEFAULT NULL,
   `TanggalCreate` date NULL DEFAULT NULL,
   PRIMARY KEY (`AdminID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of admin
 -- ----------------------------
 INSERT INTO `admin` VALUES ('danil', 'e10adc3949ba59abbe56e057f20f883e', 1, '2021-03-02');
 INSERT INTO `admin` VALUES ('Dimas', '7d49e40f4b3d8f68c19406a58303f826', 1, '2021-03-13');
-INSERT INTO `admin` VALUES ('Robbin', 'c81e728d9d4c2f636f067f89cc14862c', 1, '2021-03-02');
+INSERT INTO `admin` VALUES ('Robbin', 'e10adc3949ba59abbe56e057f20f883e', 1, '2021-03-02');
 INSERT INTO `admin` VALUES ('superadmin', 'b65fdca760be8830fc1cc3ff1510ae5e', 99, NULL);
 
 -- ----------------------------
@@ -88,7 +88,7 @@ CREATE TABLE `attlog`  (
   `JumlahLiburMingguan` int(1) NULL DEFAULT NULL,
   `TglEntry` date NULL DEFAULT NULL,
   PRIMARY KEY (`DatangID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1265 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1319 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of attlog
@@ -408,7 +408,7 @@ INSERT INTO `attlog` VALUES (669, 'SB1SKA026', 'SITI MAYSHAROH', '2021-02-23', '
 INSERT INTO `attlog` VALUES (670, 'SB1SKA010', 'FITRI INDAH WULANDARI', '2021-02-23', '08:54:32', NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, 2, 'SB1', 'SKA', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (671, 'SB1MIT010', 'Aries Ganteng Luar Biasa', '2021-02-23', '08:56:19', NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (672, 'SB1MIT002', 'Robbin Kristanto', '2021-02-23', '08:57:03', NULL, NULL, NULL, 0, NULL, '22:10:41', 1, '05:10:41', 129167, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, 'ok lembur jam 10', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 5, 10, NULL, NULL);
-INSERT INTO `attlog` VALUES (673, 'SB1MIT005', 'Ali', '2021-02-23', '08:58:16', '00:53:16', 01, 1, 10000, '00:58:16', NULL, 0, NULL, NULL, 1, 'SB1', 'MIT', NULL, NULL, 'hmmmmmm', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (673, 'SB1MIT005', 'Ali', '2021-02-23', '08:58:16', '00:53:16', 01, 1, 10000, '00:58:16', '17:03:58', 0, NULL, NULL, 1, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'awqwqwww', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (674, 'SB1SKA014', 'HARI MULYASTUTIK', '2021-02-23', '09:02:17', NULL, NULL, NULL, 0, NULL, '17:00:45', 1, '05:00:45', 0, 2, 'SB1', 'SKA', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, 't', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 5, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (675, 'SB1MIT012', 'DANIEL GLORYO NADIRCO', '2021-02-23', '09:02:40', NULL, NULL, 1, 0, '00:02:40', NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (676, 'SB1MIT011', 'Diar', '2021-02-23', '09:06:00', '00:01:00', 01, 1, 10000, '00:06:00', '17:04:49', NULL, NULL, 0, 2, 'SB1', 'MIT', NULL, NULL, 'susah', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
@@ -502,13 +502,13 @@ INSERT INTO `attlog` VALUES (782, 'SB1SKA010', 'FITRI INDAH WULANDARI', '2021-02
 INSERT INTO `attlog` VALUES (783, 'SB1MIT006', 'Bintang Dimas', '2021-02-24', '08:56:21', NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (784, 'SB1MIT010', 'Aries Ganteng Luar Biasa', '2021-02-24', '09:00:18', NULL, NULL, 1, 0, '00:00:18', NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (785, 'SB1MIT002', 'Robbin Kristanto', '2021-02-24', '09:01:17', NULL, NULL, 1, 0, '00:01:17', '17:10:12', NULL, NULL, 0, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (786, 'SB1MIT005', 'Ali', '2021-02-24', '09:01:44', NULL, NULL, 1, 0, '00:01:44', NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (786, 'SB1MIT005', 'Ali', '2021-02-24', '09:01:44', NULL, NULL, 1, 0, '00:01:44', '17:03:58', 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (787, 'SB1MIT011', 'Diar', '2021-02-24', '09:03:17', NULL, NULL, 1, 0, '00:03:17', NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (788, 'SB1SKA014', 'HARI MULYASTUTIK', '2021-02-24', '09:04:28', NULL, NULL, NULL, 0, NULL, '17:00:32', 1, '05:00:32', 0, 2, 'SB1', 'SKA', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '_', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 5, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (789, 'SB1MIT001', 'Johanes ', '2021-02-24', '09:11:43', '01:06:43', 01, 1, 10000, '01:11:43', NULL, 0, NULL, NULL, 1, 'SB1', 'MIT', NULL, NULL, 'dfhh', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (790, 'SB1MIT012', 'DANIEL GLORYO NADIRCO', '2021-03-17', '09:04:28', NULL, 00, 0, 0, NULL, '17:00:32', 1, '05:00:32', 0, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '_', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 5, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (792, 'SB1MIT012', 'DANIEL GLORYO NADIRCO', '2021-02-24', '16:13:38', '08:08:38', 01, 1, 10000, '08:13:38', '16:22:40', NULL, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'fjvh', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (793, 'SB1MIT005', 'Ali', '2021-02-25', '08:05:52', NULL, NULL, 1, 0, '00:05:52', NULL, 0, NULL, NULL, 1, 'SB1', 'MIT', NULL, NULL, 'telaaat', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (793, 'SB1MIT005', 'Ali', '2021-02-25', '08:05:52', NULL, NULL, 1, 0, '00:05:52', '17:03:58', 0, NULL, NULL, 1, 'SB1', 'MIT', NULL, NULL, 'telaaat', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (794, 'SB1UMM001', 'GOGOS SUHARTONO', '2021-02-25', '08:05:57', '00:04:57', 01, 1, 0, '00:04:57', '17:02:25', NULL, NULL, 0, 1, 'SB1', 'UMM', NULL, NULL, 'absen baru aktif', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (795, 'SB1MIT003', 'Tri Adi Hartono', '2021-02-25', '08:05:56', NULL, NULL, 1, 0, '00:05:56', NULL, 0, NULL, NULL, 1, 'SB1', 'MIT', NULL, NULL, 'Hujan', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (796, 'SB1MIT002', 'Robbin Kristanto', '2021-02-25', '08:06:16', '00:01:16', 01, 1, 10000, '00:06:16', NULL, 0, NULL, NULL, 1, 'SB1', 'MIT', NULL, NULL, 'masuk angin krn gerimis', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
@@ -532,7 +532,7 @@ INSERT INTO `attlog` VALUES (815, 'SB1MIT012', 'DANIEL GLORYO NADIRCO', '2021-02
 INSERT INTO `attlog` VALUES (817, 'SB1MIT011', 'Diar', '2021-02-26', '09:00:25', NULL, NULL, 1, 0, '00:00:25', NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (818, 'SB1MIT006', 'Bintang Dimas', '2021-02-26', '09:01:04', NULL, NULL, 1, 0, '00:01:04', '17:04:28', NULL, NULL, 0, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (819, 'SB1MIT001', 'Johanes ', '2021-02-26', '09:02:43', NULL, NULL, 1, 0, '00:02:43', NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (820, 'SB1MIT005', 'Ali', '2021-02-26', '09:02:53', NULL, NULL, 1, 0, '00:02:53', NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (820, 'SB1MIT005', 'Ali', '2021-02-26', '09:02:53', NULL, NULL, 1, 0, '00:02:53', NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen Pulang', 0, NULL, NULL, 0, 1, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (821, 'SB1MIT002', 'Robbin Kristanto', '2021-02-26', '09:20:42', '00:15:42', 01, 1, 10000, '00:20:42', NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, 'ok masuk', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (822, 'SB1MIT009', 'Ricky Kuncoro', '2021-02-26', '15:29:24', '06:24:24', 01, 1, 10000, '06:29:24', '16:09:50', NULL, NULL, 0, 2, 'SB1', 'MIT', NULL, NULL, 'dvv', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, 'testing', '15:39:03', '15:41:11', 'DVV', 'CBK', '03:11:11', 1, 10000, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (823, 'SB1MIT009', 'Ricky Kuncoro', '2021-02-27', '07:56:12', NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, 1, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', '15:12:13', '15:12:52', 'CARI BAKSO', 'SUDAH KEMBALI', '02:42:52', 1, 10000, 0, 0, 0, 0, NULL, NULL);
@@ -559,7 +559,7 @@ INSERT INTO `attlog` VALUES (844, 'SB1SG1001', 'ESTRI NOVITASARI', '2021-03-01',
 INSERT INTO `attlog` VALUES (845, 'SB1MIT006', 'Bintang Dimas', '2021-03-01', '10:26:48', '01:21:48', 01, 1, 10000, '01:26:48', NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, 'lupa scan', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (847, 'SB1MIT006', 'Bintang Dimas', '2021-03-01', '13:53:12', '04:48:12', 01, 1, 10000, '04:53:12', NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (848, 'SB1MIT006', 'Bintang Dimas', '2021-03-01', '13:54:21', '04:49:21', 01, 1, 10000, '04:54:21', NULL, 0, NULL, NULL, 2, 'SB1', 'MIT', NULL, NULL, 'tes', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (849, 'SB1MIT012', 'DANIEL GLORYO NADIRCO', '2021-03-15', '10:22:07', '01:17:07', 01, 1, 10000, '01:22:07', NULL, NULL, NULL, 0, 2, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'fhh, Lupa Absen Pulang', 0, NULL, NULL, 0, 1, 0, 0, NULL, 0, 0, NULL, 'maksa', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (849, 'SB1MIT012', 'DANIEL GLORYO NADIRCO', '2021-03-15', '10:22:07', '01:17:07', 01, 1, 10000, '01:22:07', '16:13:26', NULL, NULL, 0, 2, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'fhh, Lupa Absen Pulang', 0, NULL, NULL, 0, 1, 0, 0, NULL, 0, 0, NULL, 'ggggggg', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
 INSERT INTO `attlog` VALUES (850, 'SB1MIT012', 'DANIEL GLORYO NADIRCO', '2021-03-01', '08:10:11', '07:05:11', 01, 1, 10000, '07:10:11', NULL, 0, NULL, NULL, 1, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'ccvvv, Lupa Absen Pulang', 0, NULL, NULL, 0, 1, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (851, 'SB1MIT003', 'Tri Adi Hartono', '2021-03-02', '07:52:23', NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, 1, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (852, 'SB1MIT008', 'FEBRINIA ERINE ARMADANTI', '2021-03-02', '07:55:22', NULL, NULL, NULL, 0, NULL, '16:08:35', NULL, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, '', 0, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
@@ -729,7 +729,6 @@ INSERT INTO `attlog` VALUES (1020, 'SB1MIT006', 'Bintang Dimas', '2021-03-11', N
 INSERT INTO `attlog` VALUES (1023, 'SB1MIT006', 'Bintang Dimas', '2021-03-14', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'LIBUR', '', 0, NULL, NULL, 0, 0, 1, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1024, 'SB1MIT006', 'Bintang Dimas', '2021-03-15', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'CUTI', 'Lupa Absen', 1, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1025, 'SB1MIT006', 'Bintang Dimas', '2021-03-16', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'CUTI', 'Lupa Absen', 1, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (1026, 'SB1MIT006', 'Bintang Dimas', '2021-03-17', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'CUTI', 'Lupa Absen', 1, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1027, 'SB1MIT011', 'Diar', '2021-02-01', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1028, 'SB1MIT011', 'Diar', '2021-02-02', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1029, 'SB1MIT011', 'Diar', '2021-02-03', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
@@ -780,16 +779,6 @@ INSERT INTO `attlog` VALUES (1074, 'SB1MIT005', 'Ali', '2021-02-14', NULL, NULL,
 INSERT INTO `attlog` VALUES (1075, 'SB1MIT005', 'Ali', '2021-02-15', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1076, 'SB1MIT005', 'Ali', '2021-02-16', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1077, 'SB1MIT005', 'Ali', '2021-02-21', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'LIBUR', '', 0, NULL, NULL, 0, 0, 1, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (1078, 'SB1MIT005', 'Ali', '2021-02-27', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (1079, 'SB1MIT005', 'Ali', '2021-02-28', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'LIBUR', '', 0, NULL, NULL, 0, 0, 1, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (1080, 'SB1MIT005', 'Ali', '2021-03-01', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (1081, 'SB1MIT005', 'Ali', '2021-03-02', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (1083, 'SB1MIT005', 'Ali', '2021-03-04', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (1084, 'SB1MIT005', 'Ali', '2021-03-05', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (1085, 'SB1MIT005', 'Ali', '2021-03-06', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (1086, 'SB1MIT005', 'Ali', '2021-03-07', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'LIBUR', '', 0, NULL, NULL, 0, 0, 1, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (1087, 'SB1MIT005', 'Ali', '2021-03-08', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (1088, 'SB1MIT005', 'Ali', '2021-03-09', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1097, 'SB1MIT012', 'DANIEL GLORYO NADIRCO', '2021-03-16', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, NULL, NULL, 0, 1, 0, 0, NULL, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1098, 'SB1MIT007', 'Davi', '2020-10-01', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'CUTI', 'Lupa Absen', 1, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1099, 'SB1MIT007', 'Davi', '2020-10-02', NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, NULL, 'SB1', 'MIT', NULL, 'CUTI', 'Lupa Absen', 1, NULL, NULL, 0, 0, 0, 0, NULL, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
@@ -859,7 +848,7 @@ INSERT INTO `attlog` VALUES (1170, 'SB1MIT006', 'PAK ALI\r\n', '2021-03-10', '13
 INSERT INTO `attlog` VALUES (1171, 'SB1SKA003', 'PAK A', '2021-03-10', '13:34:25', '05:29:25', 01, 1, 55000, '05:33:25', '13:34:29', NULL, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 'undefined', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
 INSERT INTO `attlog` VALUES (1172, 'SB1SKA007', 'AGUS SUYANTO', '2021-03-10', '13:40:50', '05:35:50', 01, 1, 55000, '05:39:50', NULL, 0, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1173, 'SB1SKA002', 'ALEXANDRA CAROLINE', '2021-03-10', '14:10:24', '06:05:24', 01, 1, 55000, '06:09:24', NULL, 0, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', '14:37:24', '14:51:04', 'undefined', 'undefined', '02:21:04', 1, 10000, 0, 0, 0, 0, NULL, NULL);
-INSERT INTO `attlog` VALUES (1174, 'SB1MIT005', 'Ali', '2021-03-10', '15:31:48', '07:26:48', 01, 1, 10000, '07:31:48', NULL, 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'wdjsdkwjedl', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1174, 'SB1MIT005', 'Ali', '2021-03-10', '15:31:48', '07:26:48', 01, 1, 10000, '07:31:48', '17:03:58', 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'wdjsdkwjedl', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1175, 'SB1MIT013', 'ARIEF NUR ABDULLAH', '2021-03-10', '16:03:48', '07:58:48', 01, 1, 10000, '08:03:48', NULL, 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1176, 'SB1MIT012', 'DANIEL GLORYO NADIRCO', '2021-03-10', '16:11:48', '07:06:48', 01, 1, 10000, '07:11:48', NULL, 0, NULL, 0, 2, 'SB1', 'MIT', NULL, NULL, 'ios', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1177, 'SB1MIT010', 'Aries Ganteng Luar Biasa', '2021-03-10', '17:01:27', '08:56:27', 01, 1, 10000, '09:01:27', NULL, 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
@@ -883,6 +872,38 @@ INSERT INTO `attlog` VALUES (1261, 'SB1SKA004', 'CITRA INSTAN SARI', '2021-03-13
 INSERT INTO `attlog` VALUES (1262, 'SB1SKA006', 'DEWI KURNIAWATI', '2021-03-13', '11:17:48', NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, 0, 2, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1263, 'SB1SKA001', 'EMIE ICHTIARTIE', '2021-03-13', '11:17:52', NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, 0, 2, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
 INSERT INTO `attlog` VALUES (1264, 'SB1SKA005', 'DEVI KUMALA SARI', '2021-03-13', '11:18:01', '03:13:01', 01, 1, 55000, '03:17:01', NULL, 0, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1265, 'SB1SKA007', 'AGUS SUYANTO', '2021-03-15', '09:50:31', '01:45:31', 01, 1, 35000, '01:49:31', NULL, 0, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1266, 'SB1SKA002', 'ALEXANDRA CAROLINE', '2021-03-15', '16:12:57', '08:07:57', 01, 1, 55000, '08:11:57', NULL, 0, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'gggggggg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1267, 'SB1KKA002', 'ANDREAS LAMBANGTORO', '2021-03-15', '16:13:07', '07:08:07', 01, 1, 0, '07:12:07', NULL, 0, NULL, 0, 2, 'SB1', 'KKA', NULL, NULL, 'gggggggg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1268, 'SB1SKA007', 'AGUS SUYANTO', '2021-03-16', '08:13:57', '00:08:57', 01, 1, 10000, '00:12:57', NULL, 0, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1269, 'SB1KKA002', 'ANDREAS LAMBANGTORO', '2021-03-16', '08:14:02', '00:09:02', 01, 1, 0, '00:13:02', NULL, 0, NULL, 0, 1, 'SB1', 'KKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1270, 'SB1MIT007', 'Davi', '2021-03-16', '08:14:12', '00:09:12', 01, 1, 10000, '00:14:12', NULL, 0, NULL, 0, 1, 'SB1', 'MIT', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1271, 'SB1SKA004', 'CITRA INSTAN SARI', '2021-03-16', '08:14:16', NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, 0, 2, 'SB1', 'SKA', NULL, NULL, 'TEST', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1272, 'SB1SKA002', 'ALEXANDRA CAROLINE', '2021-03-16', '08:24:35', '00:19:35', 01, 1, 10000, '00:23:35', NULL, 0, NULL, 0, 1, 'SB1', 'SKA', NULL, NULL, 'gggggggg', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1273, 'SB1MIT006', 'Bintang Dimas', '2021-03-12', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'CUTI', 'lupa absen pulang', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1291, 'SB1MIT005', 'Ali', '2021-02-27', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1292, 'SB1MIT005', 'Ali', '2021-02-28', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'LIBUR', '', 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1293, 'SB1MIT005', 'Ali', '2021-03-01', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1294, 'SB1MIT005', 'Ali', '2021-03-02', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1295, 'SB1MIT005', 'Ali', '2021-03-03', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1296, 'SB1MIT005', 'Ali', '2021-03-05', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1297, 'SB1MIT005', 'Ali', '2021-03-06', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1298, 'SB1MIT005', 'Ali', '2021-03-07', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'LIBUR', '', 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1299, 'SB1MIT005', 'Ali', '2021-03-08', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1300, 'SB1MIT005', 'Ali', '2021-03-11', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1301, 'SB1MIT005', 'Ali', '2021-03-14', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'LIBUR', '', 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1302, 'SB1MIT005', 'Ali', '2021-03-15', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1303, 'SB1MIT005', 'Ali', '2021-03-16', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1304, 'SB1MIT005', 'Ali', '2021-03-17', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1305, 'SB1MIT005', 'Ali', '2021-03-18', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1306, 'SB1MIT005', 'Ali', '2021-03-19', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1307, 'SB1MIT005', 'Ali', '2021-03-20', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1308, 'SB1MIT005', 'Ali', '2021-03-21', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'LIBUR', '', 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1309, 'SB1MIT005', 'Ali', '2021-03-22', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1310, 'SB1MIT005', 'Ali', '2021-03-23', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1311, 'SB1MIT005', 'Ali', '2021-03-24', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'TIDAK MASUK', 'Lupa Absen Pulang', 0, 0, 0, 0, 1, 0, 0, 0, 100000, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1313, 'undefined', NULL, '0000-00-00', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, NULL, NULL, NULL, 'undefined', 'undefined', 0, 0, 0, 0, 0, 0, 0, 0, NULL, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, NULL, NULL);
+INSERT INTO `attlog` VALUES (1318, 'SB1MIT005', 'Ali', '2021-03-25', NULL, NULL, 00, 0, 0, '00:00:00', NULL, 0, NULL, 0, NULL, 'SB1', 'MIT', NULL, 'SAKIT', 'Sakit hati', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 0, 0, 0, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for cabang
@@ -896,7 +917,7 @@ CREATE TABLE `cabang`  (
   `hrdID` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `NoTelp` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`KodeCabang`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cabang
@@ -923,7 +944,7 @@ CREATE TABLE `news`  (
   `EndDate` date NULL DEFAULT NULL,
   `aktif` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `Group` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of news
@@ -983,12 +1004,13 @@ CREATE TABLE `tblgrupjabatan`  (
   `JamMulaiSiang` time(0) NULL DEFAULT NULL,
   `JamMulaiSore` time(0) NULL DEFAULT NULL,
   PRIMARY KEY (`GroupID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tblgrupjabatan
 -- ----------------------------
-INSERT INTO `tblgrupjabatan` VALUES ('ADK', 'Admin klinik', '08:30:00', '08:30:00', '18:00:00', '18:29:00', '00:00:00', '75000', NULL, NULL, '0', '12:00:00', '12:05:00', '20:00:00', '20:30:00', 'Senin', 'false', 'false', NULL, '13:00:00', NULL, '00:00:00', 'false', '00:00:00', NULL, 'true', '18:00:00', '20:00:00', '10:00:00', 0, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', '12:30:00', '00:00:00', '12:00:00', '12:00:00', '00:00:00');
+INSERT INTO `tblgrupjabatan` VALUES ('ADD', 'Admin Distributor', '08:00:00', '08:05:00', '16:00:00', '16:05:00', '0', '0', NULL, NULL, NULL, '00:00:00', '00:00:00', '00:00:00', '00:00:00', 'Senin', NULL, NULL, 'true', '12:30:00', 'false', '0', NULL, NULL, NULL, '00:00:00', '16:29:00', '00:00:00', NULL, 0, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', NULL, NULL, NULL, '00:00:00', '00:00:00', '12:00:00', '00:00:00', '00:00:00');
+INSERT INTO `tblgrupjabatan` VALUES ('ADK', 'Admin klinik', '08:30:00', '08:30:00', '18:00:00', '18:29:00', '0', '75000', NULL, NULL, '0', '12:00:00', '12:05:00', '20:00:00', '20:30:00', 'Senin', 'false', 'false', NULL, '13:00:00', NULL, '0', 'false', '00:00:00', NULL, 'true', '18:00:00', '20:00:00', '10:00:00', 0, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', '12:30:00', '00:00:00', '12:00:00', '12:00:00', '00:00:00');
 INSERT INTO `tblgrupjabatan` VALUES ('BT2', 'Beauty Therapist', '08:31:00', '08:35:00', '17:00:00', '17:29:00', '20000', '50000', NULL, NULL, '1', '10:31:00', '10:35:00', '19:00:00', '19:29:00', '-', 'false', 'false', 'true', '00:00:00', NULL, '00:00:00', 'false', '00:00:00', NULL, 'true', '17:00:00', '19:00:00', '10:00:00', 0, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', '23:55:00', '00:00:00', '00:00:00', '12:30:00', '00:00:00', '12:00:00', '12:00:00', '00:00:00');
 INSERT INTO `tblgrupjabatan` VALUES ('BTE', 'Beauty Theraphis JKT', '08:30:00', '08:30:00', '18:00:00', '18:29:00', '5000', '50000', NULL, NULL, '0', '09:30:00', '09:31:00', '19:00:00', '19:30:00', 'Senin', 'false', 'false', NULL, '12:30:00', 'true', '00:00:00', 'false', '00:00:00', NULL, 'true', '18:00:00', '19:00:00', '08:30:00', 0, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', '12:30:00', '00:00:00', '12:00:00', '12:00:00', '00:00:00');
 INSERT INTO `tblgrupjabatan` VALUES ('CS1', 'Customer Service', '09:01:00', '09:05:00', '17:00:00', '17:29:00', '25000', '100000', NULL, NULL, '1', '11:01:00', '11:05:00', '19:00:00', '19:29:00', '-', 'false', 'false', 'true', '00:00:00', NULL, '00:00:00', 'false', '00:00:00', NULL, 'true', '17:00:00', '19:00:00', '10:00:00', 0, '00:00:00', '00:00:00', '00:00:00', '00:00:00', '00:00:00', '23:55:00', '00:00:00', '00:00:00', '12:30:00', '00:00:00', '12:00:00', '12:00:00', '00:00:00');
@@ -1036,7 +1058,7 @@ CREATE TABLE `tblkeluarkantor`  (
   `KeteranganKembali` varchar(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `TotalKeluar` time(0) NULL DEFAULT NULL,
   PRIMARY KEY (`KeluarID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 187 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 187 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tblkeluarkantor
@@ -1232,7 +1254,7 @@ DROP TABLE IF EXISTS `tblrole`;
 CREATE TABLE `tblrole`  (
   `RoleID` int(1) NULL DEFAULT NULL,
   `NamaRole` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tblrole
@@ -1256,7 +1278,7 @@ CREATE TABLE `tblruleterlambat`  (
   `MaxJamDatang3` time(0) NULL DEFAULT NULL,
   `RpPotonganTerlambat3` int(255) NULL DEFAULT NULL,
   PRIMARY KEY (`TerlambatRuleID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tblruleterlambat
@@ -1275,7 +1297,7 @@ CREATE TABLE `tblruleterlambatbertingkat`  (
   `MaxJamDatang` time(0) NULL DEFAULT NULL,
   `RpPotonganTerlambat` int(255) NULL DEFAULT NULL,
   PRIMARY KEY (`RuleTerlambatBertingkatID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 71 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 71 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tblruleterlambatbertingkat
@@ -1350,7 +1372,7 @@ INSERT INTO `tblruleterlambatbertingkat` VALUES (70, NULL, NULL, NULL, NULL);
 DROP TABLE IF EXISTS `tempanggota`;
 CREATE TABLE `tempanggota`  (
   `UserID` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tempanggota
@@ -1365,7 +1387,7 @@ CREATE TABLE `test`  (
   `path1` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `keyf` int(255) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`keyf`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of test
@@ -1395,7 +1417,7 @@ CREATE TABLE `tmpizin`  (
   `YN1` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `YN2` varchar(2) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`IzinID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tmpizin
@@ -1410,7 +1432,7 @@ DROP TABLE IF EXISTS `tmptanggal`;
 CREATE TABLE `tmptanggal`  (
   `Tanggal` date NOT NULL,
   PRIMARY KEY (`Tanggal`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tmptanggal
@@ -2522,7 +2544,7 @@ CREATE TABLE `token`  (
   `AlamatIP` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
   `TanggalAkses` date NULL DEFAULT NULL,
   PRIMARY KEY (`TokenID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of token
@@ -2554,7 +2576,7 @@ CREATE TABLE `user`  (
   `RoleID` int(1) NULL DEFAULT NULL,
   PRIMARY KEY (`UserID`) USING BTREE,
   UNIQUE INDEX `Username`(`Username`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
@@ -2960,6 +2982,41 @@ END
 delimiter ;
 
 -- ----------------------------
+-- Function structure for hariToDay
+-- ----------------------------
+DROP FUNCTION IF EXISTS `hariToDay`;
+delimiter ;;
+CREATE FUNCTION `hariToDay`(hari VARCHAR(6))
+ RETURNS varchar(10) CHARSET latin1
+BEGIN
+	#Routine body goes here...
+	DECLARE dayn VARCHAR(10);
+	
+	CASE LOWER(hari)
+		WHEN 'minggu' THEN
+			SET dayn = 'Sunday';
+		WHEN 'senin' THEN
+			SET dayn = 'Monday';
+		WHEN 'selasa' THEN
+			SET dayn = 'Tuesday';
+		WHEN 'rabu' THEN
+			SET dayn = 'Wednesday';
+		WHEN 'kamis' THEN
+			SET dayn = 'Thursday';
+		WHEN 'jumat' THEN
+			SET dayn = 'Friday';
+		WHEN 'sabtu' THEN
+			SET dayn = 'Saturday';
+		ELSE SET dayn = '';
+	END CASE;
+
+
+	RETURN dayn;
+END
+;;
+delimiter ;
+
+-- ----------------------------
 -- Procedure structure for HeaderLaporan
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `HeaderLaporan`;
@@ -3356,6 +3413,35 @@ END
 delimiter ;
 
 -- ----------------------------
+-- Procedure structure for MenampilkanAbsensiPerOrang
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `MenampilkanAbsensiPerOrang`;
+delimiter ;;
+CREATE PROCEDURE `MenampilkanAbsensiPerOrang`(IN P_UserID VARCHAR(50) , IN P_TglAwal DATE, IN P_TglAkhir DATE)
+BEGIN
+	-- procedure ini saya copy dari MenampilkanIzinPerorang, untuk ditampilkan di list componen izin solo,
+	SELECT
+		a.DatangID,
+		DATE_FORMAT( a.TanggalScan, "%d/%M/%Y" ) AS TanggalIzin,
+		b.Nama,
+		a.STATUS,
+		a.Keterangan 
+	FROM
+		attlog a
+	JOIN USER b ON a.UserID = b.UserID 
+	WHERE
+		-- a.STATUS IS NOT NULL AND  
+		a.UserID = P_UserID 
+		AND a.TanggalScan BETWEEN P_TglAwal 
+		AND P_TglAkhir 
+	ORDER BY
+		a.TanggalScan DESC;
+
+END
+;;
+delimiter ;
+
+-- ----------------------------
 -- Procedure structure for MenampilkanAccIzin
 -- ----------------------------
 DROP PROCEDURE IF EXISTS `MenampilkanAccIzin`;
@@ -3366,6 +3452,27 @@ BEGIN
 	
 	
 	SELECT *FROM tmpizin WHERE Acc1 IS NOT NULL AND Acc3 IS NOT NULL ;
+
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for MenampilkanDetailAbsensi
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `MenampilkanDetailAbsensi`;
+delimiter ;;
+CREATE PROCEDURE `MenampilkanDetailAbsensi`(IN `P_DatangID` INT(20))
+BEGIN
+	SELECT
+		a.DatangID,
+		DATE_FORMAT( a.TanggalScan, "%Y-%m-%d" ) AS TanggalScan,
+		a.STATUS,
+		a.Keterangan 
+	FROM
+		attlog a
+	WHERE
+		a.DatangID = P_DatangID;
 
 END
 ;;
@@ -3918,6 +4025,58 @@ SET @Nama = (SELECT Nama FROM user where UserID =P_UserID);
 		
 		VALUES (P_UserID,@Nama, P_TanggalScan, @StatusFinal, @Keterangan, @S_KC , @S_GroupID, 
 		@RpPotongan,@KondisiCuti,@KondisiLibur,@KondisiTidakMasuk); 
+
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for ProsesAbsensiLengkap
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `ProsesAbsensiLengkap`;
+delimiter ;;
+CREATE PROCEDURE `ProsesAbsensiLengkap`(IN userid VARCHAR(50),
+	IN tglawal DATE,
+	IN tglakhir DATE)
+BEGIN
+	
+	SELECT UserID FROM attlog WHERE UserID = userid; -- AND (TanggalScan >= '2021-02-23' AND TanggalScan <= '2021-03-25');
+
+-- 	SELECT
+-- 		Tanggal 
+-- 	FROM
+-- 		tmptanggal 
+-- 	WHERE
+-- 		Tanggal NOT IN ( SELECT TanggalScan FROM attlog WHERE UserID = userid AND TanggalScan BETWEEN tglawal AND tglakhir) 
+-- 		AND 
+-- 		Tanggal BETWEEN tglawal AND tglakhir;
+	
+	-- query insert
+	/*INSERT INTO attlog (
+		UserID,
+		Nama,
+		TanggalScan, 
+		Status, 
+		Keterangan, 
+		KodeCabang, 
+		GroupID, 
+		RpPotonganIzinTidakMasuk, 
+		JumlahCuti, 
+		JumlahLibur, 
+		JumlahIzinTidakMasuk) 
+	VALUES (
+		P_UserID,
+		@Nama,
+		P_TanggalScan,
+		@StatusFinal, 
+		@Keterangan,
+		@S_KC ,
+		@S_GroupID, 
+		@RpPotongan,
+		@KondisiCuti,
+		@KondisiLibur,
+		@KondisiTidakMasuk
+	); */
 
 END
 ;;
@@ -4508,6 +4667,58 @@ FROM attlog
 WHERE TanggalScan BETWEEN P_TglAwal AND P_TglAkhir
 AND UserID = P_UserID);
 
+
+END
+;;
+delimiter ;
+
+-- ----------------------------
+-- Procedure structure for UpdateIzinAbsensiPerOrang
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `UpdateIzinAbsensiPerOrang`;
+delimiter ;;
+CREATE PROCEDURE `UpdateIzinAbsensiPerOrang`(IN `P_DatangID` INT(11), 
+	IN `P_UserID` VARCHAR(20), 
+	IN `P_TanggalScan` DATE, 
+	IN `P_Status` VARCHAR(20), 
+	IN `P_Keterangan` VARCHAR(250))
+BEGIN
+	SET @Nama = (SELECT Nama FROM user where UserID =P_UserID);
+	SET @S_GroupID = ( SELECT GroupID FROM `user` WHERE UserID = P_UserID);
+	SET @S_KC = ( SELECT KodeCabang FROM `user` WHERE UserID = P_UserID);
+	
+	SET @kondisiTidakMasuk = IF((P_Status = 'TIDAK MASUK'),1, 0);	
+	SET @kondisiCuti = IF((P_Status = 'CUTI'),1, 0);
+	SET @kondisiCutiBersama = IF((P_Status = 'CUTI BERSAMA'),1, 0);
+	SET @KondisiCutiGabungan = (SELECT (@kondisiCuti + @kondisiCutiBersama));
+	SET @kondisiLibur = IF((P_Status = 'LIBUR'),1, 0);	
+	SET @kondisiDinasLuar = IF((P_Status = 'DINAS LUAR'),1, 0);	
+	SET @kondisiCutiKhusus = IF((P_Status = 'CUTI KHUSUS'),1, 0);	
+	SET @kondisiTidakAbsen = IF((P_Status = 'TIDAK ABSEN'),1, 0);	
+	SET @kondisiSakit = IF((P_Status = 'SAKIT'),1, 0);
+	
+	
+	SET @RpPotongan = ( SELECT (@kondisiTidakMasuk * RpPotonganTidakMasuk) FROM tblgrupjabatan WHERE  GroupID =@S_GroupID);
+
+	
+	UPDATE attlog 
+	SET	
+		`Status` = P_Status,
+		Keterangan = P_Keterangan,
+		RpPotonganIzinTidakMasuk = @RpPotongan,
+		JumlahCuti = @KondisiCutiGabungan,
+		JumlahLibur = @kondisiLibur,
+		JumlahDinasLuar = @kondisiDinasLuar,
+		JumlahCutiKhusus = @kondisiCutiKhusus,
+		JumlahTidakAbsen = @kondisiTidakAbsen,
+		JumlahIzinTidakMasuk = @kondisiTidakMasuk,
+		JmlSakit = @kondisiSakit
+		
+	WHERE 
+		UserID = P_UserID
+		AND DatangID = P_DatangID
+		AND TanggalScan = P_TanggalScan;
+		
 
 END
 ;;

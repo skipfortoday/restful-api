@@ -47,9 +47,9 @@ app.use(bodyParser.json());
 
 //create database connection
 const conn = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
+  host: "192.168.11.1",
+  user: "absensi",
+  password: "lv1ors34@",
   database: "absensi",
   timezone: "utc",
 });
