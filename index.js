@@ -1840,7 +1840,7 @@ app.get("/api/izin", (req, res) => {
 });
 
 app.get("/api/izinsolo/:id&:TglAwal&:TglAkhir", (req, res) => {
-  conn.query(`CALL MenampilkanIzinPerorang('` +
+  conn.query(`CALL MenampilkanAbsensiPerOrang('` +
   req.params.id +
   `','` +
   req.params.TglAwal +
@@ -1857,6 +1857,19 @@ app.get("/api/izinsolo/:id&:TglAwal&:TglAkhir", (req, res) => {
 app.get("/api/izin/:id", (req, res) => {
   conn.query(
     `CALL MenampilkanDetailIzin('` + req.params.id + `')`,
+    function (err, rows) {
+      if (err) throw err;
+      let izin = rows[0];
+      let detailizin = izin[0];
+      res.send(detailizin);
+    }
+  );
+});
+
+//tampilkan detail data absensi berdasarkan DatangID
+app.get("/api/detailabsensi/:id", (req, res) => {
+  conn.query(
+    `CALL MenampilkanDetailAbsensi('` + req.params.id + `')`,
     function (err, rows) {
       if (err) throw err;
       let izin = rows[0];
@@ -1893,6 +1906,31 @@ app.post("/api/izin", (req, res) => {
     if (err) throw err;
     res.send(JSON.stringify(data));
   });
+});
+
+//Update data absensi per orang
+app.put("/api/izin/:id", (req, res) => {
+  let data = {
+    DatangID: req.params.id,
+    TanggalScan: req.body.TanggalScan,
+    UserID: req.body.UserID,
+    Status: req.body.Status,
+    Keterangan: req.body.Keterangan,
+  };
+
+  conn.query(
+    `CALL UpdateIzinAbsensiPerOrang(
+      ` + req.params.id + `,
+      '` + req.body.UserID + `',
+      '` + req.body.TanggalScan + `',
+      '` + req.body.Status + `',
+      '` + req.body.Keterangan + `'
+    )`,
+    function (err, rows) {
+      if (err) throw err;
+      res.send(JSON.stringify(data));
+    }
+  );
 });
 
 app.post("/api/izingroup", (req, res) => {
@@ -2779,6 +2817,9 @@ app.get("/api/onduty", (req, res) => {
 
 
 // Api untuk proses absensi
+/**
+ */
+
 app.post("/api/proses", (req, res) => {
   let post = {
     UserID: req.body.UserID,
@@ -2787,29 +2828,44 @@ app.post("/api/proses", (req, res) => {
   };
   // Mendapatkan Tanggal Yang Kosong 
 
-  let sql2 = `SELECT Tanggal FROM tmptanggal WHERE Tanggal NOT IN (SELECT TanggalScan FROM attlog WHERE UserID ="`+post.UserID+`") AND Tanggal BETWEEN "`+post.TglAwal+`" AND "`+post.TglAkhir+`"`;
+  let sql2 = `
+    SELECT Tanggal 
+    FROM tmptanggal 
+    WHERE 
+      Tanggal NOT IN (
+        SELECT TanggalScan 
+        FROM attlog 
+        WHERE UserID ="`+post.UserID+`"
+        AND TanggalScan BETWEEN "`+post.TglAwal+`" AND "`+post.TglAkhir+`" -- 2021-03-24 Ali: saya tambah line ini agar mempercepat query kalau data sudah besar nantinya.
+      ) 
+      AND Tanggal BETWEEN "`+post.TglAwal+`" AND "`+post.TglAkhir+`"`;
   let sql3 = `CALL MencariTanggalLupaScanPulang('`+post.UserID+`','`+post.TglAwal+`','`+post.TglAkhir+`')`;
- // query = mysql.format(query, table);
+  // query = mysql.format(query, table);
 
   conn.query(sql2, function (error, rows) {
     if (error) {
       console.log(error);
     } else { 
-        var i;
-        for (i = 0; i < rows.length; i++)
-        { conn.query(`CALL ProsesAbsensi('`+post.UserID+`','`+moment.parseZone(rows[i].Tanggal).format('YYYY-MM-DD')+`')`); }
-        conn.query(sql3, function (error, rows) {
-          if (error) {
-            console.log(error);
-          } else { 
-              var i;
-              for (i = 0; i < rows.length; i++)
-              { conn.query(`CALL ProsesAbsensiLupaScanPulang('`+post.UserID+`','`+moment.parseZone(rows[i].TanggalScan).format('YYYY-MM-DD')+`')`); }
-              res.json({ Message: "OK",rows});
+      var i;
+      for (i = 0; i < rows.length; i++)
+      { 
+        conn.query(`CALL ProsesAbsensi('`+post.UserID+`','`+moment.parseZone(rows[i].Tanggal).format('YYYY-MM-DD')+`')`); 
+      }
+        
+      conn.query(sql3, function (error, rows) {
+        if (error) {
+          console.log(error);
+        } else { 
+          var i;
+          for (i = 0; i < rows.length; i++)
+          { 
+            conn.query(`CALL ProsesAbsensiLupaScanPulang('`+post.UserID+`','`+moment.parseZone(rows[i].TanggalScan).format('YYYY-MM-DD')+`')`); 
+          }
+          res.json({ Message: "OK",rows});
         };
       });
-  };
-});
+    };
+  });
 
 });
 
