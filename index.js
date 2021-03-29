@@ -47,9 +47,9 @@ app.use(bodyParser.json());
 
 //create database connection
 const conn = mysql.createConnection({
-  host: "192.168.11.1",
-  user: "absensi",
-  password: "lv1ors34@",
+  host: "localhost",
+  user: "root",
+  password: "",
   database: "absensi",
   timezone: "utc",
 });
@@ -1912,19 +1912,28 @@ app.post("/api/izin", (req, res) => {
 app.put("/api/izin/:id", (req, res) => {
   let data = {
     DatangID: req.params.id,
-    TanggalScan: req.body.TanggalScan,
     UserID: req.body.UserID,
+    TanggalScan: req.body.TanggalScan,
     Status: req.body.Status,
     Keterangan: req.body.Keterangan,
+    EditJam:req.body.editJam,
+    ADMIN:req.body.ADMIN,
+    ScanMasuk: req.body.ScanMasuk,
+    ScanPulang: req.body.ScanPulang
   };
 
   conn.query(
+    // ` + req.params.id + `,
     `CALL UpdateIzinAbsensiPerOrang(
-      ` + req.params.id + `,
       '` + req.body.UserID + `',
       '` + req.body.TanggalScan + `',
+      '` + req.body.TanggalScanSampai + `',
       '` + req.body.Status + `',
-      '` + req.body.Keterangan + `'
+      '` + req.body.Keterangan + `',
+      ` + req.body.editJam + `,
+      '` + req.body.ADMIN +`',
+      '` + req.body.ScanMasuk +`',
+      '` + req.body.ScanPulang +`'
     )`,
     function (err, rows) {
       if (err) throw err;
