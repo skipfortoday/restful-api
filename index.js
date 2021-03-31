@@ -1874,6 +1874,7 @@ app.get("/api/detailabsensi/:id", (req, res) => {
       if (err) throw err;
       let izin = rows[0];
       let detailizin = izin[0];
+      detailizin.editJam = false;
       res.send(detailizin);
     }
   );
@@ -1911,30 +1912,34 @@ app.post("/api/izin", (req, res) => {
 //Update data absensi per orang
 app.put("/api/izin/:id", (req, res) => {
   let data = {
-    DatangID: req.params.id,
     UserID: req.body.UserID,
     TanggalScan: req.body.TanggalScan,
-    Status: req.body.Status,
+    TanggalScanSampai: req.body.TanggalScanSampai,
+    Status: req.body.Status.value,
     Keterangan: req.body.Keterangan,
+    
     EditJam:req.body.editJam,
     ADMIN:req.body.ADMIN,
+    Shift: req.body.Shift == undefined ? null : req.body.Shift.value,
     ScanMasuk: req.body.ScanMasuk,
     ScanPulang: req.body.ScanPulang
   };
 
+  let sql = `CALL UpdateIzinAbsensiPerOrang(
+    '` + req.body.UserID + `',
+    '` + req.body.TanggalScan + `',
+    '` + req.body.TanggalScanSampai + `',
+    '` + req.body.Status.value + `',
+    '` + req.body.Keterangan + `',
+    ` + req.body.editJam + `,
+    '` + req.body.ADMIN +`',
+    '` + data.Shift + `',
+    '` + req.body.ScanMasuk +`',
+    '` + req.body.ScanPulang +`'
+  )`;
+//  console.log(sql)
   conn.query(
-    // ` + req.params.id + `,
-    `CALL UpdateIzinAbsensiPerOrang(
-      '` + req.body.UserID + `',
-      '` + req.body.TanggalScan + `',
-      '` + req.body.TanggalScanSampai + `',
-      '` + req.body.Status + `',
-      '` + req.body.Keterangan + `',
-      ` + req.body.editJam + `,
-      '` + req.body.ADMIN +`',
-      '` + req.body.ScanMasuk +`',
-      '` + req.body.ScanPulang +`'
-    )`,
+    sql,
     function (err, rows) {
       if (err) throw err;
       res.send(JSON.stringify(data));
@@ -3077,6 +3082,33 @@ app.post("/api/pilihizin", (req, res) => {
   };
 });
 
+});
+
+app.get("/api/history/:Nama&:TglAwal&:TglAkhir", (req, res) => {
+  let sql = `
+  SELECT 
+    id,
+    DATE_FORMAT(TglEntry, "%Y-%m-%d %H:%i:%s") TglEntry,
+    Nama,
+    CONCAT(IFNULL(OldShift,"0"), " -> ", IFNULL(NewShift,"0")) Shift,
+    DATE_FORMAT(TanggalScan, "%Y-%m-%d") TglAbsen,
+    CONCAT(IFNULL(DATE_FORMAT(OldScanMasuk,"%H:%i:%s"),"00:00:00")," -> ", IFNULL(DATE_FORMAT(NewScanMasuk,"%H:%i:%s"),"00:00:00")) ScanMasuk,
+    CONCAT(IFNULL(DATE_FORMAT(OldScanPulang,"%H:%i:%s"),"00:00:00")," -> ", IFNULL(DATE_FORMAT(NewScanPulang,"%H:%i:%s"),"00:00:00")) ScanPulang,
+    CONCAT(IFNULL(OldStatus,""), " -> ", IFNULL(NewStatus,"")) Status,
+    CONCAT(IFNULL(OldKeterangan,""), " -> ", IFNULL(NewKeterangan,"")) Keterangan,
+    UserEntry editBy
+  FROM attlog_log
+  WHERE 
+    (UserID = '`+req.params.Nama+`' OR '`+req.params.Nama+`' = 'all')
+    AND TanggalScan >= '`+req.params.TglAwal+`'
+    AND TanggalScan <= '`+req.params.TglAkhir+`'
+  ORDER BY TanggalScan DESC
+  `;
+  //console.log(sql);
+  conn.query(sql, function (err, rows) {
+    if (err) throw err;
+    res.send(rows);
+  });
 });
 
 
