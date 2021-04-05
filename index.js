@@ -12,6 +12,7 @@ let session = require("express-session");
 
 // Disk Upload File
 const path = require("path");
+const database = require("./config/database");
 const diskStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, "/uploads"));
@@ -47,11 +48,11 @@ app.use(bodyParser.json());
 
 //create database connection
 const conn = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "absensi",
-  timezone: "utc",
+  host: database.host,
+  user: database.user,
+  password: database.password,
+  database: database.dbname,
+  timezone: database.timezone,
 });
 
 //connect to database
@@ -188,7 +189,7 @@ app.post("/api/attlogUpdate", (req, res) => {
 
 //Post Untuk input prosesi absensi dari APP
 app.post("/api/attlog", (req, res) => {
-  let sql = 
+  let sql =
     `CALL ProsesMasuk (
 '` +
     req.body.UserID +
@@ -214,10 +215,12 @@ app.post("/api/attlog", (req, res) => {
 
 //Post Untuk input prosesi absensi manual
 app.post("/api/attlogmanual", (req, res) => {
-  let parsing = { Tanggal: moment.parseZone(moment()).format('YYYY-MM-DD'),
-                ScanMasuk: moment.parseZone(moment()).format('HH:mm:ss'),
-                UserID: req.body.UserID,
-                Nama: req.body.NamaUser}
+  let parsing = {
+    Tanggal: moment.parseZone(moment()).format('YYYY-MM-DD'),
+    ScanMasuk: moment.parseZone(moment()).format('HH:mm:ss'),
+    UserID: req.body.UserID,
+    Nama: req.body.NamaUser
+  }
   let sql =
     `CALL ProsesMasukManual (
 '` +
@@ -297,16 +300,18 @@ app.put("/api/datang/:id", (req, res) => {
 });
 
 app.put("/api/datangmanual/:id", (req, res) => {
-  let parsing = {   ScanPulang: moment.parseZone(moment()).format('HH:mm:ss'),
-  UserID: req.body.UserID,
-  Nama: req.body.NamaUser}
+  let parsing = {
+    ScanPulang: moment.parseZone(moment()).format('HH:mm:ss'),
+    UserID: req.body.UserID,
+    Nama: req.body.NamaUser
+  }
   let sql =
     `CALL ProsesPulang (
     '` +
     req.params.id +
     `',
     '` +
-    parsing.ScanPulang+
+    parsing.ScanPulang +
     `',
     '` +
     req.body.KetPulang +
@@ -347,7 +352,7 @@ app.post("/api/keluarkantor", (req, res) => {
 
 //Post Untuk input Keluar Kantor manual
 app.post("/api/keluarkantormanual", (req, res) => {
-  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'),UserID: req.body.UserID,Nama: req.body.NamaUser}
+  let parsing = { KeluarKantor: moment.parseZone(moment()).format('HH:mm:ss'), UserID: req.body.UserID, Nama: req.body.NamaUser }
   let sql =
     `CALL ProsesKeluarKantor (
   '` +
@@ -417,7 +422,7 @@ app.put("/api/keluarkantor/:id", (req, res) => {
 //Put data untuk update scan kembali Kantor setelah mendapatkan KeluarID
 
 app.put("/api/keluarkantormanual/:id", (req, res) => {
-  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'),UserID: req.body.UserID,Nama: req.body.NamaUser}
+  let parsing = { KeluarKantor: moment.parseZone(moment()).format('HH:mm:ss'), UserID: req.body.UserID, Nama: req.body.NamaUser }
   let sql =
     `CALL ProsesKembaliKantor (
     '` +
@@ -444,7 +449,7 @@ app.put("/api/keluarkantormanual/:id", (req, res) => {
 
 //Put Untuk input Istirahat Kantor Menggunakan Datang ID
 app.put("/api/istirahat/:id", (req, res) => {
-  
+
   let sql =
     `CALL ProsesIstirahatKeluar(
   '` +
@@ -465,14 +470,14 @@ app.put("/api/istirahat/:id", (req, res) => {
 
 //Put Untuk input Istirahat Kantor Menggunakan Datang ID Manual
 app.put("/api/istirahatmanual/:id", (req, res) => {
-  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'), UserID: req.body.UserID,Nama: req.body.NamaUser}
+  let parsing = { KeluarKantor: moment.parseZone(moment()).format('HH:mm:ss'), UserID: req.body.UserID, Nama: req.body.NamaUser }
   let sql =
     `CALL ProsesIstirahatKeluar(
   '` +
     req.params.id +
     `',
   '` +
-  parsing.KeluarKantor +
+    parsing.KeluarKantor +
     `',
   '` +
     req.body.KetIstirahatKeluar +
@@ -508,14 +513,14 @@ app.put("/api/istirahatkembali/:id", (req, res) => {
 //Put data untuk Istirahat Kembali
 
 app.put("/api/istirahatkembalimanual/:id", (req, res) => {
-  let parsing = {   KeluarKantor : moment.parseZone(moment()).format('HH:mm:ss'),UserID: req.body.UserID,Nama: req.body.NamaUser}
+  let parsing = { KeluarKantor: moment.parseZone(moment()).format('HH:mm:ss'), UserID: req.body.UserID, Nama: req.body.NamaUser }
   let sql =
     `CALL ProsesIstirahatKembali (
     '` +
     req.params.id +
     `',
     '` +
-    parsing.KeluarKantor+
+    parsing.KeluarKantor +
     `',
     '` +
     req.body.KetIstirahatKembali +
@@ -556,6 +561,29 @@ app.get("/api/user/:id", (req, res) => {
   );
 });
 
+const formatTglYmd = (tgl) => {
+  const td = new Date(tgl);
+  let
+    Y = td.getFullYear(),
+    m = td.getMonth() + 1, // getMonth() dimulai dari 0, 
+    d = td.getDate();
+  if (m < 10) m = "0" + m;
+  if (d < 10) d = "0" + d;
+
+  const Ymd = Y + "-" + m + "-" + d;
+  return Ymd;
+}
+
+function addOneYear(tgl) {
+  var d = new Date(tgl);
+  var year = d.getFullYear();
+  var month = d.getMonth();
+  var day = d.getDate();
+  var newTgl = new Date(year + 1, month, day);
+
+  return formatTglYmd(newTgl);
+}
+
 //Tambahkan data user untuk panel admin
 app.post("/api/user", (req, res) => {
   let data = {
@@ -588,7 +616,7 @@ app.post("/api/user", (req, res) => {
     req.body.TglMasuk +
     `',
   '` +
-    req.body.TglMulaiCuti +
+    addOneYear(req.body.TglAwalKontrakPertama) +
     `',
   '` +
     req.body.TglAwalKontrakPertama +
@@ -630,52 +658,52 @@ app.put("/api/user/:id", (req, res) => {
   };
 
   let sql =
-  `CALL EditUser (
+    `CALL EditUser (
   '` +
-  req.params.id +
-  `',
+    req.params.id +
+    `',
 '` +
-  req.body.Nama +
-  `',
+    req.body.Nama +
+    `',
 '` +
-  req.body.Alamat +
-  `',
+    req.body.Alamat +
+    `',
 '` +
-  req.body.TglLahir +
-  `',
+    req.body.TglLahir +
+    `',
 '` +
-  req.body.HP +
-  `',
+    req.body.HP +
+    `',
 '` +
-  req.body.TglMasuk +
-  `',
+    req.body.TglMasuk +
+    `',
 '` +
-  req.body.TglMulaiCuti +
-  `',
+    addOneYear(req.body.TglAwalKontrakPertama) +
+    `',
 '` +
-  req.body.TglAwalKontrakPertama +
-  `',
+    req.body.TglAwalKontrakPertama +
+    `',
 '` +
-  req.body.GroupID +
-  `',
+    req.body.GroupID +
+    `',
 '` +
-  req.body.KodeCabang +
-  `',
+    req.body.KodeCabang +
+    `',
 '` +
-  req.body.Status +
-  `',
+    req.body.Status +
+    `',
 '` +
-  req.body.TampilkanLembur +
-  `',
+    req.body.TampilkanLembur +
+    `',
 '` +
-  req.body.RoleID +
-  `',
+    req.body.RoleID +
+    `',
 '` +
-  req.body.Posisi +
-  `',
+    req.body.Posisi +
+    `',
 '` +
-  req.body.TampilkanTerlambat +
-  `'
+    req.body.TampilkanTerlambat +
+    `'
   )`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
@@ -933,39 +961,40 @@ app.put("/api/usertest/:id", (req, res) => {
       });
     }
     else {
-            if (data.TglMulaiCuti == undefined) {
-                    conn.query(sql4, function (error, results) {
-                            if (error) {
-                              res.json({
-                                Error: true,
-                                Message: "Eror Rest Sql4 ",
-                              })
-                            } else {
-                              res.json({
-                                Error: false,
-                                Message: "Berhasil yokkk sql 4",
-                                Data,
-                                results,
-                              })
-                            }
-                     });
-           {
-                  conn.query(sql1, function (error, results) {
-                              if (error) {
-                                res.json({
-                                  Error: true,
-                                  Message: "Eror Rest Sql",
-                                })
-                              } else {
-                                res.json({
-                                  Error: false,
-                                  Message: "Berhasil yokkk sql",
-                                  Data,
-                                  results,
-                                      })}
-                             });
-                  };
-            };
+      if (data.TglMulaiCuti == undefined) {
+        conn.query(sql4, function (error, results) {
+          if (error) {
+            res.json({
+              Error: true,
+              Message: "Eror Rest Sql4 ",
+            })
+          } else {
+            res.json({
+              Error: false,
+              Message: "Berhasil yokkk sql 4",
+              Data,
+              results,
+            })
+          }
+        });
+        {
+          conn.query(sql1, function (error, results) {
+            if (error) {
+              res.json({
+                Error: true,
+                Message: "Eror Rest Sql",
+              })
+            } else {
+              res.json({
+                Error: false,
+                Message: "Berhasil yokkk sql",
+                Data,
+                results,
+              })
+            }
+          });
+        };
+      };
     };
   };
 });
@@ -1129,7 +1158,7 @@ app.put("/api/resetpassworduser/:id", (req, res) => {
     UserID: req.params.id,
     Pass: 'e10adc3949ba59abbe56e057f20f883e',
   };
-  let sql = `UPDATE user SET Pass="`+data.Pass+`" WHERE UserID="` + req.params.id + `"`;
+  let sql = `UPDATE user SET Pass="` + data.Pass + `" WHERE UserID="` + req.params.id + `"`;
   let query = conn.query(sql, (err, results) => {
     if (err) throw err;
     res.send(JSON.stringify(data));
@@ -1624,9 +1653,9 @@ app.post("/api/login", (req, res) => {
       throw err;
     } else {
       if (rows.length == 1) {
-        res.json({ AdminID: rows[0].AdminID, RoleAdmin : rows[0].RoleAdmin, message: "OK" , Login: "true" });
+        res.json({ AdminID: rows[0].AdminID, RoleAdmin: rows[0].RoleAdmin, message: "OK", Login: "true" });
       } else {
-        res.json({ message: "Username Passoword Salah" , Login: "false" });
+        res.json({ message: "Username Passoword Salah", Login: "false" });
       }
     }
   });
@@ -1642,7 +1671,7 @@ app.post("/api/loginsu", (req, res) => {
   let sql = "INSERT INTO admin SET ?";
   let query = conn.query(sql, data, (err, results) => {
     if (err) throw err;
-    res.json({ Message: "OK"});;
+    res.json({ Message: "OK" });;
   });
 });
 
@@ -1841,16 +1870,16 @@ app.get("/api/izin", (req, res) => {
 
 app.get("/api/izinsolo/:id&:TglAwal&:TglAkhir", (req, res) => {
   conn.query(`CALL MenampilkanAbsensiPerOrang('` +
-  req.params.id +
-  `','` +
-  req.params.TglAwal +
-  `','` +
-  req.params.TglAkhir +
-  `')`, function (err, rows) {
-    if (err) throw err;
-    let izin = rows[0];
-    res.send(izin);
-  });
+    req.params.id +
+    `','` +
+    req.params.TglAwal +
+    `','` +
+    req.params.TglAkhir +
+    `')`, function (err, rows) {
+      if (err) throw err;
+      let izin = rows[0];
+      res.send(izin);
+    });
 });
 
 //tampilkan data izin yang sudah diterima berdasakan id
@@ -1917,9 +1946,9 @@ app.put("/api/izin/:id", (req, res) => {
     TanggalScanSampai: req.body.TanggalScanSampai,
     Status: req.body.Status.value,
     Keterangan: req.body.Keterangan,
-    
-    EditJam:req.body.editJam,
-    ADMIN:req.body.ADMIN,
+
+    EditJam: req.body.editJam,
+    ADMIN: req.body.ADMIN,
     Shift: req.body.Shift == undefined ? null : req.body.Shift.value,
     ScanMasuk: req.body.ScanMasuk,
     ScanPulang: req.body.ScanPulang
@@ -1932,12 +1961,12 @@ app.put("/api/izin/:id", (req, res) => {
     '` + req.body.Status.value + `',
     '` + req.body.Keterangan + `',
     ` + req.body.editJam + `,
-    '` + req.body.ADMIN +`',
+    '` + req.body.ADMIN + `',
     '` + data.Shift + `',
-    '` + req.body.ScanMasuk +`',
-    '` + req.body.ScanPulang +`'
+    '` + req.body.ScanMasuk + `',
+    '` + req.body.ScanPulang + `'
   )`;
-//  console.log(sql)
+  //  console.log(sql)
   conn.query(
     sql,
     function (err, rows) {
@@ -2306,7 +2335,7 @@ app.get("/api/laporandetail/:id&:TglAwal&:TglAkhir", (req, res) => {
         }*/
     }
   );
-});app.get("/api/laporandetail2/:id", (req, res) => {
+}); app.get("/api/laporandetail2/:id", (req, res) => {
   conn.query(
     `CALL MenampilkanScan('` + req.params.id + `')`,
     function (err, rows) {
@@ -2849,33 +2878,31 @@ app.post("/api/proses", (req, res) => {
       Tanggal NOT IN (
         SELECT TanggalScan 
         FROM attlog 
-        WHERE UserID ="`+post.UserID+`"
-        AND TanggalScan BETWEEN "`+post.TglAwal+`" AND "`+post.TglAkhir+`" -- 2021-03-24 Ali: saya tambah line ini agar mempercepat query kalau data sudah besar nantinya.
+        WHERE UserID ="`+ post.UserID + `"
+        AND TanggalScan BETWEEN "`+ post.TglAwal + `" AND "` + post.TglAkhir + `" -- 2021-03-24 Ali: saya tambah line ini agar mempercepat query kalau data sudah besar nantinya.
       ) 
-      AND Tanggal BETWEEN "`+post.TglAwal+`" AND "`+post.TglAkhir+`"`;
-  let sql3 = `CALL MencariTanggalLupaScanPulang('`+post.UserID+`','`+post.TglAwal+`','`+post.TglAkhir+`')`;
+      AND Tanggal BETWEEN "`+ post.TglAwal + `" AND "` + post.TglAkhir + `"`;
+  let sql3 = `CALL MencariTanggalLupaScanPulang('` + post.UserID + `','` + post.TglAwal + `','` + post.TglAkhir + `')`;
   // query = mysql.format(query, table);
 
   conn.query(sql2, function (error, rows) {
     if (error) {
       console.log(error);
-    } else { 
+    } else {
       var i;
-      for (i = 0; i < rows.length; i++)
-      { 
-        conn.query(`CALL ProsesAbsensi('`+post.UserID+`','`+moment.parseZone(rows[i].Tanggal).format('YYYY-MM-DD')+`')`); 
+      for (i = 0; i < rows.length; i++) {
+        conn.query(`CALL ProsesAbsensi('` + post.UserID + `','` + moment.parseZone(rows[i].Tanggal).format('YYYY-MM-DD') + `')`);
       }
-        
+
       conn.query(sql3, function (error, rows) {
         if (error) {
           console.log(error);
-        } else { 
+        } else {
           var i;
-          for (i = 0; i < rows.length; i++)
-          { 
-            conn.query(`CALL ProsesAbsensiLupaScanPulang('`+post.UserID+`','`+moment.parseZone(rows[i].TanggalScan).format('YYYY-MM-DD')+`')`); 
+          for (i = 0; i < rows.length; i++) {
+            conn.query(`CALL ProsesAbsensiLupaScanPulang('` + post.UserID + `','` + moment.parseZone(rows[i].TanggalScan).format('YYYY-MM-DD') + `')`);
           }
-          res.json({ Message: "OK",rows});
+          res.json({ Message: "OK", rows });
         };
       });
     };
@@ -2887,13 +2914,13 @@ app.post("/api/proses", (req, res) => {
 // Upload File
 
 // menerapkan middleware multer hanya pada rute berikut
-app.post("/api/upload",multer({ storage: diskStorage }).single("photo"),
+app.post("/api/upload", multer({ storage: diskStorage }).single("photo"),
   (req, res) => {
     const file = req.file.path;
     const filename = req.file.filename;
     console.log(file);
     console.log(filename);
-    var sql = "INSERT INTO test (path1) VALUES('"+filename+"')"
+    var sql = "INSERT INTO test (path1) VALUES('" + filename + "')"
     var sql2 = "SELECT keyf FROM test ORDER BY keyf DESC limit 1"
     if (!file) {
       res.status(400).send({
@@ -2901,56 +2928,57 @@ app.post("/api/upload",multer({ storage: diskStorage }).single("photo"),
         data: "No File is selected.",
       });
     } else {
-      conn.query(sql, function (err,results) {
+      conn.query(sql, function (err, results) {
         if (err) throw err;
-        else{
-        conn.query(sql2, function (err,rows) {
-          keyf = rows[0];
-          if (err) throw err;
-          res.send(keyf);
-        });}
+        else {
+          conn.query(sql2, function (err, rows) {
+            keyf = rows[0];
+            if (err) throw err;
+            res.send(keyf);
+          });
+        }
       });
       //res.send(file);
     }
-      // var sql = "INSERT INTO test VALUES('"+req.file.filename+"')";
-      //conn.query(sql, function(err, results){
+    // var sql = "INSERT INTO test VALUES('"+req.file.filename+"')";
+    //conn.query(sql, function(err, results){
 
-   //  })
-    
+    //  })
+
   }
 );
 
 
 
 // menerapkan middleware multer hanya pada rute berikut
-app.put("/api/upload",multer({ storage: diskStorage }).single("photo"),
+app.put("/api/upload", multer({ storage: diskStorage }).single("photo"),
   (req, res) => {
     const file = req.file.path;
     const filename = req.file.filename;
-    var sql = "UPDATE SET test (path2) VALUES('"+filename+"')"
+    var sql = "UPDATE SET test (path2) VALUES('" + filename + "')"
     if (!file) {
       res.status(400).send({
         status: false,
         data: "No File is selected.",
       });
     } else {
-      conn.query(sql, function (err,results) {
+      conn.query(sql, function (err, results) {
         if (err) throw err;
         res.send(results);
       });
       //res.send(file);
     }
-      // var sql = "INSERT INTO test VALUES('"+req.file.filename+"')";
-      //conn.query(sql, function(err, results){
+    // var sql = "INSERT INTO test VALUES('"+req.file.filename+"')";
+    //conn.query(sql, function(err, results){
 
-   //  })
-    
+    //  })
+
   }
 );
 
 
-  ///////////////////////////////////////////////////////
- ////////           API PENGUMUMAN           //////////
+///////////////////////////////////////////////////////
+////////           API PENGUMUMAN           //////////
 /////////////////////////////////////////////////////
 
 
@@ -2999,7 +3027,7 @@ app.get("/api/superadmin", (req, res) => {
 //Menampilkan detai data cabang yang sudah terdaftar di panel admin
 app.get("/api/superadmin/:id", (req, res) => {
   conn.query(
-    `SELECT AdminID,Password, DATE_FORMAT(TanggalCreate, "%Y-%m-%d") as TanggalCreate FROM admin Where AdminID="`+ req.params.id +`"`,
+    `SELECT AdminID,Password, DATE_FORMAT(TanggalCreate, "%Y-%m-%d") as TanggalCreate FROM admin Where AdminID="` + req.params.id + `"`,
     function (err, rows) {
       if (err) throw err;
       let cabang = rows[0];
@@ -3013,8 +3041,8 @@ app.post("/api/superadmin", (req, res) => {
   let data = {
     AdminID: req.body.AdminID,
     Password: md5(req.body.Password),
-    RoleAdmin : "1",
-    TanggalCreate : moment.parseZone(moment()).format('YYYY-MM-DD'),
+    RoleAdmin: "1",
+    TanggalCreate: moment.parseZone(moment()).format('YYYY-MM-DD'),
   };
   let sql = "INSERT INTO admin SET ?";
   let query = conn.query(sql, data, (err, results) => {
@@ -3060,27 +3088,26 @@ app.post("/api/pilihizin", (req, res) => {
   let Body = {
     TanggalScan: req.body.TanggalScan,
     Status: req.body.Status,
-    Keterangan : req.body.Keterangan,
+    Keterangan: req.body.Keterangan,
   };
 
-  let ArrayID = req.body.Nama ; 
+  let ArrayID = req.body.Nama;
   console.log(ArrayID);
   // Mendapatkan Tanggal Yang Kosong 
 
   let sql2 = `SELECT Now() as Waktu`
 
- // query = mysql.format(query, table);
+  // query = mysql.format(query, table);
 
   conn.query(sql2, function (error, rows) {
     if (error) {
       console.log(error);
-    } else { 
-        var i;
-        for (i = 0; i < ArrayID.length; i++)
-        { conn.query(`CALL InputIzinPerorang('`+ArrayID[i].value+`','`+Body.TanggalScan+`','`+Body.Status+`','`+Body.Keterangan+`')`); }
-        res.json({ Message: "OK",rows});
-  };
-});
+    } else {
+      var i;
+      for (i = 0; i < ArrayID.length; i++) { conn.query(`CALL InputIzinPerorang('` + ArrayID[i].value + `','` + Body.TanggalScan + `','` + Body.Status + `','` + Body.Keterangan + `')`); }
+      res.json({ Message: "OK", rows });
+    };
+  });
 
 });
 
@@ -3099,9 +3126,9 @@ app.get("/api/history/:Nama&:TglAwal&:TglAkhir", (req, res) => {
     UserEntry editBy
   FROM attlog_log
   WHERE 
-    (UserID = '`+req.params.Nama+`' OR '`+req.params.Nama+`' = 'all')
-    AND TanggalScan >= '`+req.params.TglAwal+`'
-    AND TanggalScan <= '`+req.params.TglAkhir+`'
+    (UserID = '`+ req.params.Nama + `' OR '` + req.params.Nama + `' = 'all')
+    AND TanggalScan >= '`+ req.params.TglAwal + `'
+    AND TanggalScan <= '`+ req.params.TglAkhir + `'
   ORDER BY TanggalScan DESC
   `;
   //console.log(sql);
