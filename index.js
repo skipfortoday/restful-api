@@ -1253,6 +1253,42 @@ app.get("/api/TerlambatBertingkat2/:id", (req, res) => {
   );
 });
 
+// menyalin terlambat bertingkat ke group lainnya
+app.post("/api/SalinTerlambatBertingkat", (req, res) => {
+  let data = {
+    GroupID: req.body.GroupID,
+    RuleID: req.body.RuleID
+  };
+
+  let cGroupID = data.RuleID[0].GroupID;
+  var arrValues = [];
+  var arrGroups = [];
+  data.GroupID.map(function (item) {
+    if (item.value !== cGroupID) {
+      data.RuleID.map(function (rule) {
+        let GroupID = item.value;
+        let Shift = rule.Shift;
+        let MaxJamDatang = rule.MaxJamDatang;
+        let RpPotonganTerlambat = rule.RpPotonganTerlambat;
+        let str = "('" + GroupID + "','" + Shift + "','" + MaxJamDatang + "','" + RpPotonganTerlambat + "')";
+        arrValues.push(str);
+      });
+      arrGroups.push(item.value);
+
+    }
+  });
+  let joinArrGroup = arrGroups.join("','");
+  let qdel = "DELETE FROM tblruleterlambatbertingkat WHERE GroupID IN('" + joinArrGroup + "');";
+
+  let qinsert = "INSERT INTO tblruleterlambatbertingkat(GroupID,Shift,MaxJamDatang, RpPotonganTerlambat) VALUES " + arrValues.join() + ";";
+  conn.query(qdel, (err, results) => {
+    if (err) throw err;
+    conn.query(qinsert, (err, results) => {
+      if (err) throw err;
+      res.send(true);
+    });
+  });
+});
 
 //Menambahkan Data Cabang dengan kode cabang dan nama cabang
 app.post("/api/TerlambatBertingkat", (req, res) => {
@@ -1913,8 +1949,9 @@ app.get("/api/detailabsensi/:id", (req, res) => {
 app.post("/api/izin", (req, res) => {
   let data = {
     TanggalScan: req.body.TanggalScan,
+    TanggalScanSampai: req.body.TanggalScanSampai,
     UserID: req.body.UserID,
-    Status: req.body.Status,
+    Status: req.body.Status.value,
     Keterangan: req.body.Keterangan,
   };
   let sql =
@@ -1926,7 +1963,10 @@ app.post("/api/izin", (req, res) => {
     req.body.TanggalScan +
     `',
   '` +
-    req.body.Status +
+    req.body.TanggalScanSampai +
+    `',
+  '` +
+    req.body.Status.value +
     `',
   '` +
     req.body.Keterangan +
@@ -3084,7 +3124,7 @@ app.delete("/api/superadmin/:id", (req, res) => {
 
 
 // Api untuk proses absensi
-app.post("/api/pilihizin", (req, res) => {
+app.post("/api/pilihizin", async (req, res) => {
   let Body = {
     TanggalScan: req.body.TanggalScan,
     Status: req.body.Status,
@@ -3092,23 +3132,33 @@ app.post("/api/pilihizin", (req, res) => {
   };
 
   let ArrayID = req.body.Nama;
-  console.log(ArrayID);
-  // Mendapatkan Tanggal Yang Kosong 
+  let sql = 'SELECT *FROM admin'
+  var startDay = new Date(req.body.TanggalScan);
+  var endDay = new Date(req.body.TanggalScanSampai);
+  var responeSudahAda = [];
 
-  let sql2 = `SELECT Now() as Waktu`
-
-  // query = mysql.format(query, table);
-
-  conn.query(sql2, function (error, rows) {
-    if (error) {
-      console.log(error);
-    } else {
-      var i;
-      for (i = 0; i < ArrayID.length; i++) { conn.query(`CALL InputIzinPerorang('` + ArrayID[i].value + `','` + Body.TanggalScan + `','` + Body.Status + `','` + Body.Keterangan + `')`); }
-      res.json({ Message: "OK", rows });
-    };
-  });
-
+   for (var day = startDay; day <= endDay; day.setDate(day.getDate() + 1)) {
+    var TanggalScan = formatTglYmd(day);
+    var i;
+    for (i = 0; i < ArrayID.length; i++) {
+      //InputIzinPerorang
+      conn.query(`CALL InputIzinLiburMassal(
+              '` + ArrayID[i].value + `',
+              '` + TanggalScan + `',
+              '` + Body.Status + `',
+              '` + Body.Keterangan + `')`,
+        function (error, results, field) {
+          if (error) {
+            return console.error(error.message);
+          } else {
+            var resp = JSON.parse(JSON.stringify(results[0]));
+            responeSudahAda.push(resp[0].StatusAction);
+          }
+        }
+      );
+    } console.log(responeSudahAda);
+  }
+  res.json({ Message: "OK", responeSudahAda });
 });
 
 app.get("/api/history/:Nama&:TglAwal&:TglAkhir", (req, res) => {
@@ -3137,6 +3187,17 @@ app.get("/api/history/:Nama&:TglAwal&:TglAkhir", (req, res) => {
     res.send(rows);
   });
 });
+
+//Menampilkan seluruh data cabang yang sudah terdaftar di panel admin
+app.get("/api/superadmin", async (req, res, next) => {
+  try {
+    const user = await getUserFromDb({ id: req.params.id })
+    res.json(user);
+  } catch (e) {
+    //this will eventually be handled by your error handling middleware
+    next(e)
+  }
+})
 
 
 
