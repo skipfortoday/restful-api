@@ -5,10 +5,12 @@ let cors = require("cors");
 let md5 = require("md5");
 const bodyParser = require("body-parser");
 const app = express();
-const mysql = require("mysql");
+// const mysql = require("mysql");
+const mysql = require('mysql');
 const { request } = require("express");
 let session = require("express-session");
 
+const util = require('util');
 
 // Disk Upload File
 const path = require("path");
@@ -25,9 +27,6 @@ const diskStorage = multer.diskStorage({
     );
   },
 });
-
-
-
 
 // parse application/json
 app.use("/public", express.static(path.join(__dirname, 'public')));
@@ -55,11 +54,7 @@ const conn = mysql.createConnection({
   timezone: database.timezone,
 });
 
-//connect to database
-conn.connect((err) => {
-  if (err) throw err;
-  console.log("Mysql Connected...");
-});
+const asyncQuery = util.promisify(conn.query).bind(conn);
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1956,25 +1951,21 @@ app.post("/api/izin", (req, res) => {
   };
   let sql =
     `CALL InputIzinPerorang (
-  '` +
-    req.body.UserID +
-    `',
-  '` +
-    req.body.TanggalScan +
-    `',
-  '` +
-    req.body.TanggalScanSampai +
-    `',
-  '` +
-    req.body.Status.value +
-    `',
-  '` +
-    req.body.Keterangan +
-    `'
-  )`;
-  let query = conn.query(sql, (err, results) => {
+      '` + req.body.UserID + `',
+      '` + req.body.TanggalScan + `',
+      '` + req.body.TanggalScanSampai + `',
+      '` + req.body.Status.value + `',
+      '` + req.body.Keterangan + `',
+      `+ req.body.editJam +`,
+      '` + req.body.Shift.value + `',
+      '` + req.body.ScanMasuk + `',
+      '` + req.body.ScanPulang + `'
+    )`;
+
+  conn.query(sql, (err, results) => {
     if (err) throw err;
-    res.send(JSON.stringify(data));
+    //console.log(JSON.stringify(results[0]));
+    res.send(JSON.stringify(results[0]));
   });
 });
 
@@ -3122,42 +3113,40 @@ app.delete("/api/superadmin/:id", (req, res) => {
 ///////////  API IZIN GROUP        ////
 ///////////////////////////////////////////
 
+async function apiCall(Body) {
+  let query = `CALL InputIzinLiburMassal(
+    '` + Body.UserID + `',
+    '` + Body.TanggalScan + `',
+    '` + Body.Status + `',
+    '` + Body.Keterangan + `')`;
+
+  const rows = await asyncQuery(query);
+  var resp = JSON.parse(JSON.stringify(rows[0]));
+  return resp[0].StatusAction;
+}
 
 // Api untuk proses absensi
 app.post("/api/pilihizin", async (req, res) => {
-  let Body = {
-    TanggalScan: req.body.TanggalScan,
-    Status: req.body.Status,
-    Keterangan: req.body.Keterangan,
-  };
-
   let ArrayID = req.body.Nama;
-  let sql = 'SELECT *FROM admin'
   var startDay = new Date(req.body.TanggalScan);
   var endDay = new Date(req.body.TanggalScanSampai);
   var responeSudahAda = [];
 
-   for (var day = startDay; day <= endDay; day.setDate(day.getDate() + 1)) {
+  for (var day = startDay; day <= endDay; day.setDate(day.getDate() + 1)) {
     var TanggalScan = formatTglYmd(day);
     var i;
     for (i = 0; i < ArrayID.length; i++) {
-      //InputIzinPerorang
-      conn.query(`CALL InputIzinLiburMassal(
-              '` + ArrayID[i].value + `',
-              '` + TanggalScan + `',
-              '` + Body.Status + `',
-              '` + Body.Keterangan + `')`,
-        function (error, results, field) {
-          if (error) {
-            return console.error(error.message);
-          } else {
-            var resp = JSON.parse(JSON.stringify(results[0]));
-            responeSudahAda.push(resp[0].StatusAction);
-          }
-        }
-      );
-    } console.log(responeSudahAda);
+      let Body = {
+        UserID: ArrayID[i].value,
+        TanggalScan: TanggalScan,
+        Status: req.body.Status,
+        Keterangan: req.body.Keterangan,
+      };
+      let x = await apiCall(Body);
+      if(x != null) responeSudahAda.push(x);
+    }
   }
+
   res.json({ Message: "OK", responeSudahAda });
 });
 
