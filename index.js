@@ -2000,9 +2000,10 @@ app.put("/api/izin/:id", (req, res) => {
   //  console.log(sql)
   conn.query(
     sql,
-    function (err, rows) {
+    function (err, results) {
       if (err) throw err;
-      res.send(JSON.stringify(data));
+      //res.send(JSON.stringify(data));
+      res.send(JSON.stringify(results[0]));
     }
   );
 });
